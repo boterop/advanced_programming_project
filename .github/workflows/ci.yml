@@ -9,14 +9,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
         with:
-          node-version: 22.x
-      - name: Install Dependencies
-        run: yarn
-      - name: Check Format
-        run: yarn check-format
-      - name: Check Lint
-        run: yarn lint
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+
       - name: Run Tests
-        run: yarn test
+        run: ./mvnw test
+
+      - name: Build Package
+        run: ./mvnw package -DskipTests
