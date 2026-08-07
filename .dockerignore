@@ -1,0 +1,13 @@
+node_modules
+.git*
+Dockerfile
+README.md
+LICENSE
+.vscode
+.tool-versions
+.env*.example
+tests
+CHANGELOG.md
+coverage
+*.log
+cache
