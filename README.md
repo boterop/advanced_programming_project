@@ -44,6 +44,32 @@ On Windows:
 .\mvnw.cmd spring-boot:run
 ```
 
+## Code Style
+
+This project uses [ktlint](https://pinterest.github.io/ktlint/) to enforce Kotlin code style and formatting.
+
+### Format code
+
+Automatically format all Kotlin source files:
+
+```bash
+./mvnw ktlint:format
+```
+
+### Check code style
+
+Check the project without modifying files:
+
+```bash
+./mvnw ktlint:check
+```
+
+### Verify
+
+```bash
+./mvnw verify
+```
+
 ## Build
 
 Create a packaged application:
