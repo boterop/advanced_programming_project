@@ -1,8 +1,9 @@
 package com.project.advanced.project.domain.valueobject
 
+import com.project.advanced.project.domain.entity.Ocupante
 import com.project.advanced.project.domain.exception.ReglaDominioException
-import com.project.advanced.project.domain.valueobject.Estancia
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -16,6 +17,32 @@ class EstanciaTest {
     private val startDate = LocalDate.now()
     private val endDate = startDate.plusDays(10)
     private val estancia = Estancia(startDate, endDate)
+
+    @Nested
+    inner class CalcularValor {
+        val documento = DocumentoIdentidad("123456789")
+        val nombre = Nombre("Jhon Doe")
+        val correo = CorreoElectronico("jhon.doe@gmail.com")
+
+        @Test
+        fun `should calculate the correct value`() {
+            val fechaNacimientoFacturable = FechaNacimiento(LocalDate.now().minusYears(30))
+            val fechaNacimientoNoFacturable = FechaNacimiento(LocalDate.now().minusYears(2))
+
+            val ocupantes =
+                listOf(
+                    Ocupante.crear(documento, nombre, correo, fechaNacimientoNoFacturable),
+                    Ocupante.crear(documento, nombre, correo, fechaNacimientoFacturable),
+                    Ocupante.crear(documento, nombre, correo, fechaNacimientoNoFacturable),
+                    Ocupante.crear(documento, nombre, correo, fechaNacimientoFacturable),
+                    Ocupante.crear(documento, nombre, correo, fechaNacimientoNoFacturable),
+                )
+            val tarifa = 10.0
+            val valor = estancia.calcularValor(ocupantes, tarifa)
+
+            assertEquals(200.0, valor)
+        }
+    }
 
     @Nested
     inner class Solapa {

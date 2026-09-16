@@ -1,7 +1,9 @@
 package com.project.advanced.project.domain.valueobject
 
+import com.project.advanced.project.domain.entity.Ocupante
 import com.project.advanced.project.domain.exception.ReglaDominioException
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 data class Estancia(
     val entrada: LocalDate,
@@ -14,6 +16,16 @@ data class Estancia(
         if (entrada.isEqual(salida)) {
             throw ReglaDominioException("La entrada no puede ser igual a la salida")
         }
+    }
+
+    fun calcularValor(
+        ocupantes: List<Ocupante>,
+        tarifa: Double,
+    ): Double {
+        val facturables = ocupantes.count { it.esFacturable(this) }
+        val noches = entrada.until(salida, ChronoUnit.DAYS)
+
+        return tarifa * facturables * noches
     }
 
     fun solapa(
