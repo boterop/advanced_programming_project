@@ -2,6 +2,7 @@ package com.project.advanced.project.domain.valueobject
 
 import com.project.advanced.project.domain.exception.ReglaDominioException
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 data class Periodo(
     val inicio: LocalDate,
@@ -15,6 +16,8 @@ data class Periodo(
             throw ReglaDominioException("El periodo no puede ser nulo")
         }
     }
+
+    fun noches(): Int = inicio.until(fin, ChronoUnit.DAYS)
 
     fun contiene(fecha: LocalDate): Boolean = fecha.isAfter(this.inicio) && fecha.isBefore(this.fin)
 

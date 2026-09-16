@@ -1,6 +1,5 @@
 package com.project.advanced.project.domain.entity
 
-import com.project.advanced.project.domain.entity.Ocupante
 import com.project.advanced.project.domain.valueobject.CorreoElectronico
 import com.project.advanced.project.domain.valueobject.DocumentoIdentidad
 import com.project.advanced.project.domain.valueobject.Estancia
