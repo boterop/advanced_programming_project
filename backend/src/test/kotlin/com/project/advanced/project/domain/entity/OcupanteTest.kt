@@ -15,8 +15,8 @@ import java.time.LocalDate
 
 class OcupanteTest {
     val documento = DocumentoIdentidad("123456789")
-    val nombre = Nombre("Ana Gómez")
-    val correo = CorreoElectronico("ana@example.com")
+    val nombre = Nombre("Jhon Doe")
+    val correo = CorreoElectronico("jhon.doe@gmail.com")
     val fechaNacimiento = FechaNacimiento(LocalDate.of(1999, 10, 9))
 
     @Nested
