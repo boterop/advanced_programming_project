@@ -3,6 +3,7 @@ package com.project.advanced.project.domain.entity
 import com.project.advanced.project.domain.entity.Ocupante
 import com.project.advanced.project.domain.valueobject.CorreoElectronico
 import com.project.advanced.project.domain.valueobject.DocumentoIdentidad
+import com.project.advanced.project.domain.valueobject.Estancia
 import com.project.advanced.project.domain.valueobject.FechaNacimiento
 import com.project.advanced.project.domain.valueobject.Nombre
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -37,12 +38,16 @@ class OcupanteTest {
 
         @Test
         fun `should return true if the ocupante is facturable`() {
-            assertTrue(ocupante.esFacturable(Estancia(LocalDate.now())))
+            val entrada = LocalDate.now()
+            val salida = LocalDate.now().plusDays(2)
+            assertTrue(ocupante.esFacturable(Estancia(entrada, salida)))
         }
 
         @Test
         fun `should return false if the ocupante is not facturable`() {
-            assertFalse(ocupante.esFacturable(Estancia(fechaNacimiento.valor.plusDays(1))))
+            val entrada = fechaNacimiento.valor.plusDays(1)
+            val salida = entrada.plusDays(2)
+            assertFalse(ocupante.esFacturable(Estancia(entrada, salida)))
         }
     }
 }

@@ -3,6 +3,7 @@ package com.project.advanced.project.domain.entity
 import com.project.advanced.project.domain.exception.ReglaDominioException
 import com.project.advanced.project.domain.valueobject.CorreoElectronico
 import com.project.advanced.project.domain.valueobject.DocumentoIdentidad
+import com.project.advanced.project.domain.valueobject.Estancia
 import com.project.advanced.project.domain.valueobject.FechaNacimiento
 import com.project.advanced.project.domain.valueobject.Nombre
 
