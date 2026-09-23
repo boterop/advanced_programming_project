@@ -83,4 +83,8 @@ class Reserva private constructor(
                 motivoCancelacion,
             )
     }
+
+    override fun hashCode(): Int = codigo.hashCode()
+
+    override fun equals(other: Any?): Boolean = other is Reserva && other.codigo == this.codigo
 }

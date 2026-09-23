@@ -1,5 +1,6 @@
 package com.project.advanced.project.domain.entity
 
+<<<<<<< HEAD
 import com.project.advanced.project.domain.valueobject.CorreoElectronico
 import com.project.advanced.project.domain.valueobject.DocumentoIdentidad
 import com.project.advanced.project.domain.valueobject.Estancia
@@ -10,6 +11,8 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Nested
+=======
+>>>>>>> 3daccc3 (Clase 21/09)
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
