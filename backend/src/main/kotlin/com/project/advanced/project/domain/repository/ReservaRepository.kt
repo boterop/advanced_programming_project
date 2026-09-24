@@ -1,8 +1,12 @@
 package com.project.advanced.project.domain.repository
 
 import com.project.advanced.project.domain.entity.Reserva
-import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.stereotype.Repository
+import com.project.advanced.project.domain.valueobject.IdApartamento
+import com.project.advanced.project.domain.valueobject.Periodo
 
-@Repository
-interface ReservaRepository : JpaRepository<Reserva, Long>
+interface ReservaRepository {
+    fun buscarActivasPorApartamento(
+        apartamentoId: IdApartamento,
+        periodo: Periodo,
+    ): List<Reserva>
+}
