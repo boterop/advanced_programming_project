@@ -5,6 +5,7 @@ import com.project.advanced.project.domain.valueobject.DocumentoIdentidad
 import com.project.advanced.project.domain.valueobject.Estancia
 import com.project.advanced.project.domain.valueobject.FechaNacimiento
 import com.project.advanced.project.domain.valueobject.Nombre
+import com.project.advanced.project.domain.valueobject.Periodo
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -39,14 +40,16 @@ class OcupanteTest {
         fun `should return true if the ocupante is facturable`() {
             val entrada = LocalDate.now()
             val salida = LocalDate.now().plusDays(2)
-            assertTrue(ocupante.esFacturable(Estancia(entrada, salida)))
+            val estancia = Estancia(Periodo(entrada, salida))
+            assertTrue(ocupante.esFacturable(estancia))
         }
 
         @Test
         fun `should return false if the ocupante is not facturable`() {
             val entrada = fechaNacimiento.valor.plusDays(1)
             val salida = entrada.plusDays(2)
-            assertFalse(ocupante.esFacturable(Estancia(entrada, salida)))
+            val estancia = Estancia(Periodo(entrada, salida))
+            assertFalse(ocupante.esFacturable(estancia))
         }
     }
 }

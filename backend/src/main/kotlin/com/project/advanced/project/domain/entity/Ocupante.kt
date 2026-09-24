@@ -38,5 +38,5 @@ class Ocupante private constructor(
     }
 
     fun esFacturable(estancia: Estancia): Boolean =
-        fechaNacimiento.calcularEdad(estancia.entrada) >= 18 // TODO: Este valor debería ser un parametro
+        fechaNacimiento.calcularEdad(estancia.periodo.inicio) >= 18 // TODO: Este valor debería ser un parametro
 }

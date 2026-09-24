@@ -12,12 +12,15 @@ data class Periodo(
         if (inicio.isAfter(fin)) {
             throw ReglaDominioException("El inicio del periodo no puede ser posterior al fin")
         }
+        if (inicio.isEqual(fin)) {
+            throw ReglaDominioException("El inicio y el fin del periodo no pueden ser iguales")
+        }
         if (inicio == null || fin == null) {
             throw ReglaDominioException("El periodo no puede ser nulo")
         }
     }
 
-    fun noches(): Int = inicio.until(fin, ChronoUnit.DAYS)
+    fun noches(): Long = inicio.until(fin, ChronoUnit.DAYS)
 
     fun contiene(fecha: LocalDate): Boolean = fecha.isAfter(this.inicio) && fecha.isBefore(this.fin)
 
