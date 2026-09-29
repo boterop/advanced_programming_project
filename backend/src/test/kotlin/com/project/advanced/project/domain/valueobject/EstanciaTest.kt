@@ -1,7 +1,10 @@
 package com.project.advanced.project.domain.valueobject
 
 import com.project.advanced.project.domain.entity.Ocupante
+import com.project.advanced.project.domain.valueobject.Dinero
 import com.project.advanced.project.domain.valueobject.Periodo
+import com.project.advanced.project.domain.valueobject.Tarifa
+import com.project.advanced.project.domain.valueobject.Temporada
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -34,10 +37,10 @@ class EstanciaTest {
                     Ocupante.crear(documento, nombre, correo, fechaNacimientoFacturable),
                     Ocupante.crear(documento, nombre, correo, fechaNacimientoNoFacturable),
                 )
-            val tarifa = 10.0
+            val tarifa = Tarifa(Temporada.ALTA, Dinero(10.0))
             val valor = estancia.calcularValor(ocupantes, tarifa)
 
-            assertEquals(200.0, valor)
+            assertEquals(Dinero(200.0), valor)
         }
     }
 }

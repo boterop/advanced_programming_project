@@ -1,9 +1,11 @@
 package com.project.advanced.project.domain.entity
 
+import com.project.advanced.project.domain.valueobject.Capacidad
+import com.project.advanced.project.domain.valueobject.Dinero
 import com.project.advanced.project.domain.valueobject.EstadoApartamento
 import com.project.advanced.project.domain.valueobject.IdApartamento
-import com.project.advanced.project.domain.valueobject.IdTemporada
 import com.project.advanced.project.domain.valueobject.Tarifa
+import com.project.advanced.project.domain.valueobject.Temporada
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -12,8 +14,8 @@ import org.junit.jupiter.api.Test
 
 class ApartamentoTest {
     private val id = IdApartamento(" apt-1 ")
-    private val tarifas = listOf(Tarifa(IdTemporada("verano"), 100.0))
-    private val apartamento = Apartamento.crear(id, "Apartamento central", 2, 4, EstadoApartamento.PREPARADO, true, tarifas)
+    private val tarifas = listOf(Tarifa(Temporada.ALTA, Dinero(100.0)), Tarifa(Temporada.BAJA, Dinero(10.0)))
+    private val apartamento = Apartamento.crear(id, "Apartamento central", 2, Capacidad(4), EstadoApartamento.PREPARADO, true, tarifas)
 
     @Nested
     inner class Crear {
@@ -24,7 +26,7 @@ class ApartamentoTest {
                     id,
                     "Apartamento central",
                     2,
-                    4,
+                    Capacidad(4),
                     EstadoApartamento.FUERA_DE_SERVICIO,
                     false,
                     tarifas,
@@ -33,7 +35,7 @@ class ApartamentoTest {
             assertEquals(id, apartamento.id)
             assertEquals("Apartamento central", apartamento.nombre)
             assertEquals(2, apartamento.dormitorios)
-            assertEquals(4, apartamento.capacidad)
+            assertEquals(4, apartamento.capacidad.valor)
             assertEquals(EstadoApartamento.PREPARADO, apartamento.estado)
             assertTrue(apartamento.activo)
             assertEquals(tarifas, apartamento.tarifas)
