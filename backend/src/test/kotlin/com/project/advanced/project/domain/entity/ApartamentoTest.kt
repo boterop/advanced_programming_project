@@ -19,15 +19,16 @@ class ApartamentoTest {
     inner class Crear {
         @Test
         fun `should create an apartamento in prepared and active state`() {
-            val apartamento = Apartamento.crear(
-                id,
-                "Apartamento central",
-                2,
-                4,
-                EstadoApartamento.FUERA_DE_SERVICIO,
-                false,
-                tarifas,
-            )
+            val apartamento =
+                Apartamento.crear(
+                    id,
+                    "Apartamento central",
+                    2,
+                    4,
+                    EstadoApartamento.FUERA_DE_SERVICIO,
+                    false,
+                    tarifas,
+                )
 
             assertEquals(id, apartamento.id)
             assertEquals("Apartamento central", apartamento.nombre)
