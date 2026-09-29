@@ -35,6 +35,7 @@ class Reserva private constructor(
         if (idExterno == null) throw ReglaDominioException("El idExterno no puede ser nulo")
         if (titular == null) throw ReglaDominioException("El titular no puede ser nulo")
         if (ocupantes == null) throw ReglaDominioException("Los ocupantes no pueden ser nulos")
+        if (ocupantes.size === 0) throw ReglaDominioException("La reserva debe tener minimo 1 ocupante")
         if (horaLlegada == null) throw ReglaDominioException("La horaLlegada no puede ser nula")
         if (valor < 0) throw ReglaDominioException("El valor no puede ser negativo")
         if (politica == null) throw ReglaDominioException("La politica no puede ser nula")
@@ -46,7 +47,7 @@ class Reserva private constructor(
             throw ReglaDominioException("La fecha de inicio de la estancia no puede ser anterior a la fecha actual")
         }
 
-        if (apartamento.admite(ocupantes.size)) {
+        if (!apartamento.admite(ocupantes.size)) {
             throw ReglaDominioException("El apartamento no admite el numero de ocupantes")
         }
     }
