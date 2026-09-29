@@ -1,6 +1,7 @@
 package com.project.advanced.project.domain.entity
 
 import com.project.advanced.project.domain.exception.ReglaDominioException
+import com.project.advanced.project.domain.valueobject.Capacidad
 import com.project.advanced.project.domain.valueobject.EstadoApartamento
 import com.project.advanced.project.domain.valueobject.IdApartamento
 import com.project.advanced.project.domain.valueobject.Tarifa
@@ -9,7 +10,7 @@ class Apartamento private constructor(
     val id: IdApartamento,
     val nombre: String,
     val dormitorios: Int,
-    val capacidad: Int,
+    val capacidad: Capacidad,
     var estado: EstadoApartamento,
     var activo: Boolean,
     val tarifas: List<Tarifa>,
@@ -18,7 +19,7 @@ class Apartamento private constructor(
         if (id == null) throw ReglaDominioException("El IdApartamento no puede ser nulo")
         if (nombre == null) throw ReglaDominioException("El nombre no puede ser nulo")
         if (dormitorios < 0) throw ReglaDominioException("El dormitorios no puede ser negativo")
-        if (capacidad < 0) throw ReglaDominioException("La capacidad no puede ser negativa")
+        if (capacidad == null) throw ReglaDominioException("La capacidad no puede ser nula")
         if (tarifas == null) throw ReglaDominioException("Las tarifas no pueden ser nulas")
 
         estado = EstadoApartamento.PREPARADO
@@ -30,14 +31,14 @@ class Apartamento private constructor(
             id: IdApartamento,
             nombre: String,
             dormitorios: Int,
-            capacidad: Int,
+            capacidad: Capacidad,
             estado: EstadoApartamento,
             activo: Boolean,
             tarifas: List<Tarifa>,
         ): Apartamento = Apartamento(id, nombre, dormitorios, capacidad, EstadoApartamento.PREPARADO, true, tarifas)
     }
 
-    fun admite(totalOcupantes: Int): Boolean = totalOcupantes <= capacidad
+    fun admite(totalOcupantes: Int): Boolean = totalOcupantes <= capacidad.valor
 
     fun esActivo(): Boolean = activo
 }

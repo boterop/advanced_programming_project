@@ -4,8 +4,10 @@ import com.project.advanced.project.domain.entity.Ocupante
 import com.project.advanced.project.domain.exception.ReglaDominioException
 import com.project.advanced.project.domain.valueobject.CanalOrigen
 import com.project.advanced.project.domain.valueobject.CodigoReserva
+import com.project.advanced.project.domain.valueobject.Dinero
 import com.project.advanced.project.domain.valueobject.EstadoReserva
 import com.project.advanced.project.domain.valueobject.Estancia
+import com.project.advanced.project.domain.valueobject.FechaCreacion
 import com.project.advanced.project.domain.valueobject.HoraLlegada
 import com.project.advanced.project.domain.valueobject.IdExterno
 import com.project.advanced.project.domain.valueobject.VersionPolitica
@@ -21,9 +23,9 @@ class Reserva private constructor(
     val titular: Ocupante,
     val ocupantes: List<Ocupante>,
     val horaLlegada: HoraLlegada,
-    val valor: Double,
+    val valor: Dinero,
     val politica: VersionPolitica,
-    val fechaCreacion: LocalDate,
+    val fechaCreacion: FechaCreacion = FechaCreacion(LocalDate.now()),
     val motivoCancelacion: String,
 ) {
     init {
@@ -35,14 +37,12 @@ class Reserva private constructor(
         if (idExterno == null) throw ReglaDominioException("El idExterno no puede ser nulo")
         if (titular == null) throw ReglaDominioException("El titular no puede ser nulo")
         if (ocupantes == null) throw ReglaDominioException("Los ocupantes no pueden ser nulos")
-        if (ocupantes.size === 0) throw ReglaDominioException("La reserva debe tener minimo 1 ocupante")
+        if (ocupantes.isEmpty()) throw ReglaDominioException("La reserva debe tener minimo 1 ocupante")
         if (horaLlegada == null) throw ReglaDominioException("La horaLlegada no puede ser nula")
-        if (valor < 0) throw ReglaDominioException("El valor no puede ser negativo")
         if (politica == null) throw ReglaDominioException("La politica no puede ser nula")
-        if (fechaCreacion == null) throw ReglaDominioException("La fecha de creacion no puede ser nula")
         if (motivoCancelacion == null) throw ReglaDominioException("El motivo de cancelacion no puede ser nulo")
 
-        val hoy = LocalDate.now()
+        val hoy = fechaCreacion.valor
         if (estancia.periodo.inicio.isBefore(hoy)) {
             throw ReglaDominioException("La fecha de inicio de la estancia no puede ser anterior a la fecha actual")
         }
@@ -63,9 +63,8 @@ class Reserva private constructor(
             titular: Ocupante,
             ocupantes: List<Ocupante>,
             horaLlegada: HoraLlegada,
-            valor: Double,
+            valor: Dinero,
             politica: VersionPolitica,
-            fechaCreacion: LocalDate,
             motivoCancelacion: String,
         ): Reserva =
             Reserva(
@@ -80,7 +79,7 @@ class Reserva private constructor(
                 horaLlegada,
                 valor,
                 politica,
-                fechaCreacion,
+                FechaCreacion(LocalDate.now()),
                 motivoCancelacion,
             )
     }

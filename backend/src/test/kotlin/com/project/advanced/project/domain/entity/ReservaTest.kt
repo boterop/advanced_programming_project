@@ -2,8 +2,10 @@ package com.project.advanced.project.domain.entity
 
 import com.project.advanced.project.domain.exception.ReglaDominioException
 import com.project.advanced.project.domain.valueobject.CanalOrigen
+import com.project.advanced.project.domain.valueobject.Capacidad
 import com.project.advanced.project.domain.valueobject.CodigoReserva
 import com.project.advanced.project.domain.valueobject.CorreoElectronico
+import com.project.advanced.project.domain.valueobject.Dinero
 import com.project.advanced.project.domain.valueobject.DocumentoIdentidad
 import com.project.advanced.project.domain.valueobject.EstadoApartamento
 import com.project.advanced.project.domain.valueobject.EstadoReserva
@@ -29,7 +31,7 @@ class ReservaTest {
             IdApartamento("apt-1"),
             "Apartamento",
             1,
-            10,
+            Capacidad(10),
             EstadoApartamento.PREPARADO,
             true,
             emptyList(),
@@ -55,9 +57,8 @@ class ReservaTest {
         titular,
         listOf(titular),
         HoraLlegada(LocalTime.of(15, 0)),
-        valor,
+        Dinero(valor),
         VersionPolitica(1, LocalDate.now()),
-        LocalDate.now(),
         "",
     )
 
@@ -76,9 +77,9 @@ class ReservaTest {
             assertEquals(titular, reserva.titular)
             assertEquals(listOf(titular), reserva.ocupantes)
             assertEquals(HoraLlegada(LocalTime.of(15, 0)), reserva.horaLlegada)
-            assertEquals(200.0, reserva.valor)
+            assertEquals(Dinero(200.0), reserva.valor)
             assertEquals(VersionPolitica(1, LocalDate.now()), reserva.politica)
-            assertEquals(LocalDate.now(), reserva.fechaCreacion)
+            assertEquals(LocalDate.now(), reserva.fechaCreacion.valor)
             assertEquals("", reserva.motivoCancelacion)
         }
     }
