@@ -25,6 +25,8 @@ data class Dinero(
 
     fun cantidad(): BigDecimal = valor
 
+    fun esCero(): Boolean = valor.compareTo(BigDecimal.ZERO) == 0
+
     private companion object {
         fun parse(valor: Any): BigDecimal =
             when (valor) {
@@ -45,4 +47,8 @@ data class Dinero(
     override fun hashCode(): Int = valor.hashCode()
 
     override fun equals(other: Any?): Boolean = other is Dinero && valor == other.valor
+
+    operator fun plus(otro: Dinero): Dinero = sumar(otro)
+
+    operator fun minus(otro: Dinero): Dinero = restar(otro)
 }
