@@ -5,8 +5,10 @@ import com.project.advanced.project.domain.valueobject.CanalOrigen
 import com.project.advanced.project.domain.valueobject.Capacidad
 import com.project.advanced.project.domain.valueobject.CodigoReserva
 import com.project.advanced.project.domain.valueobject.CorreoElectronico
+import com.project.advanced.project.domain.valueobject.Descripcion
 import com.project.advanced.project.domain.valueobject.Dinero
 import com.project.advanced.project.domain.valueobject.DocumentoIdentidad
+import com.project.advanced.project.domain.valueobject.Dormitorio
 import com.project.advanced.project.domain.valueobject.EstadoApartamento
 import com.project.advanced.project.domain.valueobject.EstadoReserva
 import com.project.advanced.project.domain.valueobject.Estancia
@@ -29,8 +31,8 @@ class ReservaTest {
     private val apartamento =
         Apartamento.crear(
             IdApartamento("apt-1"),
-            "Apartamento",
-            1,
+            Nombre("Apartamento"),
+            listOf(Dormitorio(Nombre("Dormitorio 1"), Descripcion("Dormitorio central"))),
             Capacidad(10),
             EstadoApartamento.PREPARADO,
             true,
