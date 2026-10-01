@@ -4,12 +4,12 @@ import com.project.advanced.project.domain.exception.ReglaDominioException
 import com.project.advanced.project.domain.valueobject.Capacidad
 import com.project.advanced.project.domain.valueobject.Dormitorio
 import com.project.advanced.project.domain.valueobject.EstadoApartamento
-import com.project.advanced.project.domain.valueobject.IdApartamento
+import com.project.advanced.project.domain.valueobject.ID
 import com.project.advanced.project.domain.valueobject.Nombre
 import com.project.advanced.project.domain.valueobject.Tarifa
 
 class Apartamento private constructor(
-    val id: IdApartamento,
+    val id: ID,
     val nombre: Nombre,
     val dormitorios: List<Dormitorio>,
     val capacidad: Capacidad,
@@ -18,7 +18,7 @@ class Apartamento private constructor(
     val tarifas: List<Tarifa>,
 ) {
     init {
-        if (id == null) throw ReglaDominioException("El IdApartamento no puede ser nulo")
+        if (id == null) throw ReglaDominioException("El ID no puede ser nulo")
         if (nombre == null) throw ReglaDominioException("El nombre no puede ser nulo")
         if (capacidad == null) throw ReglaDominioException("La capacidad no puede ser nula")
         if (tarifas == null) throw ReglaDominioException("Las tarifas no pueden ser nulas")
@@ -30,7 +30,7 @@ class Apartamento private constructor(
 
     companion object {
         fun crear(
-            id: IdApartamento,
+            id: ID,
             nombre: Nombre,
             dormitorios: List<Dormitorio>,
             capacidad: Capacidad,

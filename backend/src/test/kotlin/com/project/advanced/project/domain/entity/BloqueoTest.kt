@@ -1,6 +1,6 @@
 package com.project.advanced.project.domain.entity
 
-import com.project.advanced.project.domain.valueobject.IdApartamento
+import com.project.advanced.project.domain.valueobject.ID
 import com.project.advanced.project.domain.valueobject.MotivoBloqueo
 import com.project.advanced.project.domain.valueobject.Periodo
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -9,9 +9,10 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
+import java.util.UUID
 
 class BloqueoTest {
-    private val apartamentoId = IdApartamento("apt-1")
+    private val apartamentoId = ID(UUID.randomUUID().toString())
     private val inicio = LocalDate.of(2030, 6, 10)
     private val periodo = Periodo(inicio, inicio.plusDays(5))
     private val bloqueo = Bloqueo.crear(apartamentoId, periodo, MotivoBloqueo.USO_INTERNO, "Uso interno")
