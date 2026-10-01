@@ -8,6 +8,7 @@ import com.project.advanced.project.domain.valueobject.Dinero
 import com.project.advanced.project.domain.valueobject.EstadoReserva
 import com.project.advanced.project.domain.valueobject.Estancia
 import com.project.advanced.project.domain.valueobject.HoraLlegada
+import com.project.advanced.project.domain.valueobject.ID
 import com.project.advanced.project.domain.valueobject.IdExterno
 import com.project.advanced.project.domain.valueobject.Periodo
 import com.project.advanced.project.fixtures.ApartamentoFixture
@@ -40,6 +41,7 @@ class ReservaTest {
 
             val reserva =
                 Reserva.crear(
+                    ID(id),
                     CodigoReserva(id),
                     apto,
                     Estancia(periodo),
@@ -54,6 +56,7 @@ class ReservaTest {
                     "",
                 )
 
+            assertEquals(ID(id), reserva.id)
             assertEquals(CodigoReserva(id), reserva.codigo)
             assertEquals(apto, reserva.apartamento)
             assertEquals(Estancia(periodo), reserva.estancia)
