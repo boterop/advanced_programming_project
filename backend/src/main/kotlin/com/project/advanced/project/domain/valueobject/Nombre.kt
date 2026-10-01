@@ -6,4 +6,8 @@ data class Nombre(
     init {
         require(valor.isNotBlank()) { "El nombre no puede ser vacío" }
     }
+
+    override fun hashCode(): Int = valor.hashCode()
+
+    override fun equals(other: Any?): Boolean = other is Nombre && valor == other.valor
 }

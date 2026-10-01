@@ -10,7 +10,6 @@ import com.project.advanced.project.domain.valueobject.Estancia
 import com.project.advanced.project.domain.valueobject.FechaCreacion
 import com.project.advanced.project.domain.valueobject.HoraLlegada
 import com.project.advanced.project.domain.valueobject.IdExterno
-import com.project.advanced.project.domain.valueobject.VersionPolitica
 import java.time.LocalDate
 
 class Reserva private constructor(
@@ -24,7 +23,7 @@ class Reserva private constructor(
     val ocupantes: List<Ocupante>,
     val horaLlegada: HoraLlegada,
     val valor: Dinero,
-    val politica: VersionPolitica,
+    val politica: PoliticaCancelacion,
     val fechaCreacion: FechaCreacion = FechaCreacion(LocalDate.now()),
     val motivoCancelacion: String,
 ) {
@@ -64,7 +63,7 @@ class Reserva private constructor(
             ocupantes: List<Ocupante>,
             horaLlegada: HoraLlegada,
             valor: Dinero,
-            politica: VersionPolitica,
+            politica: PoliticaCancelacion,
             motivoCancelacion: String,
         ): Reserva =
             Reserva(

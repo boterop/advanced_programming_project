@@ -1,12 +1,15 @@
 package com.project.advanced.project.domain.entity
 
+import com.project.advanced.project.domain.entity.PoliticaCancelacion
 import com.project.advanced.project.domain.exception.ReglaDominioException
 import com.project.advanced.project.domain.valueobject.CanalOrigen
 import com.project.advanced.project.domain.valueobject.Capacidad
 import com.project.advanced.project.domain.valueobject.CodigoReserva
 import com.project.advanced.project.domain.valueobject.CorreoElectronico
+import com.project.advanced.project.domain.valueobject.Descripcion
 import com.project.advanced.project.domain.valueobject.Dinero
 import com.project.advanced.project.domain.valueobject.DocumentoIdentidad
+import com.project.advanced.project.domain.valueobject.Dormitorio
 import com.project.advanced.project.domain.valueobject.EstadoApartamento
 import com.project.advanced.project.domain.valueobject.EstadoReserva
 import com.project.advanced.project.domain.valueobject.Estancia
@@ -25,12 +28,13 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 class ReservaTest {
+    private val politica = PoliticaCancelacion.crear(VersionPolitica(1, LocalDate.now()), Descripcion("Politica"))
     private val fechaInicio = LocalDate.now().plusDays(10)
     private val apartamento =
         Apartamento.crear(
             IdApartamento("apt-1"),
-            "Apartamento",
-            1,
+            Nombre("Apartamento"),
+            listOf(Dormitorio(Nombre("Dormitorio 1"), Descripcion("Dormitorio central"))),
             Capacidad(10),
             EstadoApartamento.PREPARADO,
             true,
@@ -58,7 +62,7 @@ class ReservaTest {
         listOf(titular),
         HoraLlegada(LocalTime.of(15, 0)),
         Dinero(valor),
-        VersionPolitica(1, LocalDate.now()),
+        politica,
         "",
     )
 
@@ -78,7 +82,7 @@ class ReservaTest {
             assertEquals(listOf(titular), reserva.ocupantes)
             assertEquals(HoraLlegada(LocalTime.of(15, 0)), reserva.horaLlegada)
             assertEquals(Dinero(200.0), reserva.valor)
-            assertEquals(VersionPolitica(1, LocalDate.now()), reserva.politica)
+            assertEquals(politica, reserva.politica)
             assertEquals(LocalDate.now(), reserva.fechaCreacion.valor)
             assertEquals("", reserva.motivoCancelacion)
         }

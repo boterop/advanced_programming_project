@@ -2,14 +2,16 @@ package com.project.advanced.project.domain.entity
 
 import com.project.advanced.project.domain.exception.ReglaDominioException
 import com.project.advanced.project.domain.valueobject.Capacidad
+import com.project.advanced.project.domain.valueobject.Dormitorio
 import com.project.advanced.project.domain.valueobject.EstadoApartamento
 import com.project.advanced.project.domain.valueobject.IdApartamento
+import com.project.advanced.project.domain.valueobject.Nombre
 import com.project.advanced.project.domain.valueobject.Tarifa
 
 class Apartamento private constructor(
     val id: IdApartamento,
-    val nombre: String,
-    val dormitorios: Int,
+    val nombre: Nombre,
+    val dormitorios: List<Dormitorio>,
     val capacidad: Capacidad,
     var estado: EstadoApartamento,
     var activo: Boolean,
@@ -18,9 +20,9 @@ class Apartamento private constructor(
     init {
         if (id == null) throw ReglaDominioException("El IdApartamento no puede ser nulo")
         if (nombre == null) throw ReglaDominioException("El nombre no puede ser nulo")
-        if (dormitorios < 0) throw ReglaDominioException("El dormitorios no puede ser negativo")
         if (capacidad == null) throw ReglaDominioException("La capacidad no puede ser nula")
         if (tarifas == null) throw ReglaDominioException("Las tarifas no pueden ser nulas")
+        if (dormitorios.isEmpty()) throw ReglaDominioException("El apartamento debe tener al menos un dormitorio")
 
         estado = EstadoApartamento.PREPARADO
         activo = true
@@ -29,8 +31,8 @@ class Apartamento private constructor(
     companion object {
         fun crear(
             id: IdApartamento,
-            nombre: String,
-            dormitorios: Int,
+            nombre: Nombre,
+            dormitorios: List<Dormitorio>,
             capacidad: Capacidad,
             estado: EstadoApartamento,
             activo: Boolean,
