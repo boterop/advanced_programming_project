@@ -1,13 +1,13 @@
 package com.project.advanced.project.domain.entity
 
 import com.project.advanced.project.domain.exception.ReglaDominioException
-import com.project.advanced.project.domain.valueobject.IdApartamento
+import com.project.advanced.project.domain.valueobject.ID
 import com.project.advanced.project.domain.valueobject.MotivoBloqueo
 import com.project.advanced.project.domain.valueobject.Periodo
 import java.time.LocalDate
 
 class Bloqueo private constructor(
-    val apartamentoId: IdApartamento,
+    val apartamentoId: ID,
     val periodo: Periodo,
     val motivo: MotivoBloqueo,
     val observacion: String,
@@ -24,7 +24,7 @@ class Bloqueo private constructor(
 
     companion object {
         fun crear(
-            apartamentoId: IdApartamento,
+            apartamentoId: ID,
             periodo: Periodo,
             motivo: MotivoBloqueo,
             observacion: String,

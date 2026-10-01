@@ -5,7 +5,7 @@ import com.project.advanced.project.domain.valueobject.Descripcion
 import com.project.advanced.project.domain.valueobject.Dinero
 import com.project.advanced.project.domain.valueobject.Dormitorio
 import com.project.advanced.project.domain.valueobject.EstadoApartamento
-import com.project.advanced.project.domain.valueobject.IdApartamento
+import com.project.advanced.project.domain.valueobject.ID
 import com.project.advanced.project.domain.valueobject.Nombre
 import com.project.advanced.project.domain.valueobject.Tarifa
 import com.project.advanced.project.domain.valueobject.Temporada
@@ -14,9 +14,10 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import java.util.UUID
 
 class ApartamentoTest {
-    private val id = IdApartamento(" apt-1 ")
+    private val id = ID(UUID.randomUUID().toString())
     private val tarifas = listOf(Tarifa(Temporada.ALTA, Dinero(100.0)), Tarifa(Temporada.BAJA, Dinero(10.0)))
     private val dormitorios =
         listOf(

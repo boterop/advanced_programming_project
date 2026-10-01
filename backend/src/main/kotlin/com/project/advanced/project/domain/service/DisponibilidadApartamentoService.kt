@@ -6,7 +6,7 @@ import com.project.advanced.project.domain.exception.ReglaDominioException
 import com.project.advanced.project.domain.repository.BloqueoRepository
 import com.project.advanced.project.domain.repository.ReservaRepository
 import com.project.advanced.project.domain.valueobject.Estancia
-import com.project.advanced.project.domain.valueobject.IdApartamento
+import com.project.advanced.project.domain.valueobject.ID
 import com.project.advanced.project.domain.valueobject.TiempoPreparacion
 
 class DisponibilidadApartamentoService(
@@ -14,7 +14,7 @@ class DisponibilidadApartamentoService(
     val bloqueoRepository: BloqueoRepository,
 ) {
     fun verificarDisponibilidad(
-        apartamentoId: IdApartamento,
+        apartamentoId: ID,
         estancia: Estancia,
         tiempoPreparacion: TiempoPreparacion,
     ) {
