@@ -44,6 +44,10 @@ data class Periodo(
             return true
         }
 
+        if (inicio.isEqual(this.inicio) && fin.isEqual(this.fin)) {
+            return true
+        }
+
         return false
     }
 

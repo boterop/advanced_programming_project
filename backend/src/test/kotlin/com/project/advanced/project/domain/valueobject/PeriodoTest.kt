@@ -35,6 +35,13 @@ class PeriodoTest {
         }
 
         @Test
+        fun `should overlap with the same periodo`() {
+            val isOverlaping = periodo.solapa(periodo)
+
+            assertTrue(isOverlaping)
+        }
+
+        @Test
         fun `should return true if the end date is overlaping`() {
             val inicio2 = inicio.minusDays(3)
             val fin2 = inicio.plusDays(1)

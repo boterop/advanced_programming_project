@@ -3,10 +3,10 @@ package com.project.advanced.project.domain.valueobject
 import com.project.advanced.project.domain.exception.ReglaDominioException
 
 data class CodigoReserva(
-    var codigo: String,
+    var valor: String,
 ) {
     init {
-        if (codigo.isBlank() || codigo.isEmpty()) throw ReglaDominioException("El codigo no puede ser nulo")
-        codigo = codigo.trim()
+        if (valor.isBlank() || valor.isEmpty()) throw ReglaDominioException("El codigo no puede ser nulo")
+        valor = valor.trim()
     }
 }

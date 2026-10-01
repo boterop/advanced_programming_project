@@ -10,6 +10,7 @@ import com.project.advanced.project.domain.valueobject.Dinero
 import com.project.advanced.project.domain.valueobject.EstadoReserva
 import com.project.advanced.project.domain.valueobject.Estancia
 import com.project.advanced.project.domain.valueobject.HoraLlegada
+import com.project.advanced.project.domain.valueobject.ID
 import com.project.advanced.project.domain.valueobject.IdExterno
 import com.project.advanced.project.domain.valueobject.Periodo
 import java.time.LocalDate
@@ -20,6 +21,7 @@ object ReservaFixture {
     val periodo = Periodo(LocalDate.now(), LocalDate.now().plusDays(3))
 
     operator fun invoke(
+        id: ID = ID(UUID.randomUUID().toString()),
         codigo: CodigoReserva = CodigoReserva(UUID.randomUUID().toString()),
         apartamento: Apartamento = ApartamentoFixture(),
         estancia: Estancia = Estancia(periodo),
@@ -33,6 +35,7 @@ object ReservaFixture {
         politica: PoliticaCancelacion = PoliticaCancelacionFixture(),
         motivoCancelacion: String = "Uso interno",
     ) = Reserva.crear(
+        id,
         codigo,
         apartamento,
         estancia,

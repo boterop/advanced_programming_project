@@ -9,10 +9,12 @@ import com.project.advanced.project.domain.valueobject.EstadoReserva
 import com.project.advanced.project.domain.valueobject.Estancia
 import com.project.advanced.project.domain.valueobject.FechaCreacion
 import com.project.advanced.project.domain.valueobject.HoraLlegada
+import com.project.advanced.project.domain.valueobject.ID
 import com.project.advanced.project.domain.valueobject.IdExterno
 import java.time.LocalDate
 
 class Reserva private constructor(
+    val id: ID,
     val codigo: CodigoReserva,
     val apartamento: Apartamento,
     val estancia: Estancia,
@@ -53,6 +55,7 @@ class Reserva private constructor(
 
     companion object {
         fun crear(
+            id: ID,
             codigo: CodigoReserva,
             apartamento: Apartamento,
             estancia: Estancia,
@@ -67,6 +70,7 @@ class Reserva private constructor(
             motivoCancelacion: String,
         ): Reserva =
             Reserva(
+                id,
                 codigo,
                 apartamento,
                 estancia,
@@ -82,4 +86,8 @@ class Reserva private constructor(
                 motivoCancelacion,
             )
     }
+
+    override fun hashCode(): Int = id.hashCode()
+
+    override fun equals(other: Any?): Boolean = other is Reserva && id == other.id
 }
