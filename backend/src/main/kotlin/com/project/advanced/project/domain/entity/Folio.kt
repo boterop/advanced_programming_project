@@ -3,18 +3,20 @@ package com.project.advanced.project.domain.entity
 import com.project.advanced.project.domain.exception.ReglaDominioException
 import com.project.advanced.project.domain.valueobject.Dinero
 import com.project.advanced.project.domain.valueobject.EstadoFolio
+import com.project.advanced.project.domain.valueobject.ID
 
 class Folio private constructor(
+    val id: ID,
     private val cargos: MutableList<Cargo>,
     private val pagos: MutableList<Pago>,
-    val estado: EstadoFolio,
+    var estado: EstadoFolio,
 ) {
     companion object {
         fun crear(
+            id: ID,
             cargos: MutableList<Cargo>,
             pagos: MutableList<Pago>,
-            estado: EstadoFolio,
-        ): Folio = Folio(cargos, pagos, estado)
+        ): Folio = Folio(id, cargos, pagos, EstadoFolio.ABIERTO)
     }
 
     fun registrarPago(pago: Pago) {
