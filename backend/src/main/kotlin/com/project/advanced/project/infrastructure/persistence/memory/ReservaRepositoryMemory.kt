@@ -2,6 +2,7 @@ package com.project.advanced.project.infrastructure.persistence.memory
 
 import com.project.advanced.project.domain.entity.Reserva
 import com.project.advanced.project.domain.repository.ReservaRepository
+import com.project.advanced.project.domain.valueobject.CodigoReserva
 import com.project.advanced.project.domain.valueobject.ID
 import com.project.advanced.project.domain.valueobject.Periodo
 
@@ -11,6 +12,8 @@ class ReservaRepositoryMemory : ReservaRepository {
     override fun listar(): List<Reserva> = reservas.values.toList()
 
     override fun buscar(id: ID): Reserva? = reservas[id.valor]
+
+    override fun buscarPorCodigo(codigo: CodigoReserva): Reserva? = reservas.values.find { it.codigo.valor == codigo.valor }
 
     override fun buscarActivasPorApartamento(
         apartamentoId: ID,

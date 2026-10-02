@@ -18,7 +18,7 @@ class Reserva private constructor(
     val codigo: CodigoReserva,
     val apartamento: Apartamento,
     val estancia: Estancia,
-    val estado: EstadoReserva,
+    var estado: EstadoReserva,
     val canalOrigen: CanalOrigen,
     val idExterno: IdExterno,
     val titular: Ocupante,
@@ -85,6 +85,12 @@ class Reserva private constructor(
                 FechaCreacion(LocalDate.now()),
                 motivoCancelacion,
             )
+    }
+
+    fun confirmar() {
+        if (estado != EstadoReserva.PENDIENTE) throw ReglaDominioException("Solo se puede confirmar una reserva pendiente")
+
+        estado = EstadoReserva.CONFIRMADA
     }
 
     override fun hashCode(): Int = id.hashCode()
