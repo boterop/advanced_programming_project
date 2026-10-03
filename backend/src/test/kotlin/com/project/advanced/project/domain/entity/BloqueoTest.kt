@@ -15,13 +15,20 @@ class BloqueoTest {
     private val apartamentoId = ID(UUID.randomUUID().toString())
     private val inicio = LocalDate.of(2030, 6, 10)
     private val periodo = Periodo(inicio, inicio.plusDays(5))
-    private val bloqueo = Bloqueo.crear(apartamentoId, periodo, MotivoBloqueo.USO_INTERNO, "Uso interno")
+    private val bloqueo = Bloqueo.crear(ID(UUID.randomUUID().toString()), apartamentoId, periodo, MotivoBloqueo.USO_INTERNO, "Uso interno")
 
     @Nested
     inner class Crear {
         @Test
         fun `should create a vigente bloqueo`() {
-            val bloqueo = Bloqueo.crear(apartamentoId, periodo, MotivoBloqueo.MANTENIMIENTO, "Reparaciones")
+            val bloqueo =
+                Bloqueo.crear(
+                    ID(UUID.randomUUID().toString()),
+                    apartamentoId,
+                    periodo,
+                    MotivoBloqueo.MANTENIMIENTO,
+                    "Reparaciones",
+                )
 
             assertEquals(apartamentoId, bloqueo.apartamentoId)
             assertEquals(periodo, bloqueo.periodo)
