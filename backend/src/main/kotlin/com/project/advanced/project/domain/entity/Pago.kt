@@ -19,4 +19,8 @@ class Pago private constructor(
             valor: Dinero,
         ): Pago = Pago(id, valor, medioPago, FechaCreacion(LocalDate.now()))
     }
+
+    override fun hashCode(): Int = id.hashCode()
+
+    override fun equals(other: Any?): Boolean = other is Pago && id == other.id
 }

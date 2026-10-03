@@ -43,4 +43,8 @@ class Apartamento private constructor(
     fun admite(totalOcupantes: Int): Boolean = totalOcupantes <= capacidad.valor
 
     fun esActivo(): Boolean = activo
+
+    override fun hashCode(): Int = id.hashCode()
+
+    override fun equals(other: Any?): Boolean = other is Apartamento && id == other.id
 }

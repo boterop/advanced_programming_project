@@ -7,6 +7,7 @@ import com.project.advanced.project.domain.valueobject.Periodo
 import java.time.LocalDate
 
 class Bloqueo private constructor(
+    val id: ID,
     val apartamentoId: ID,
     val periodo: Periodo,
     val motivo: MotivoBloqueo,
@@ -24,11 +25,12 @@ class Bloqueo private constructor(
 
     companion object {
         fun crear(
+            id: ID,
             apartamentoId: ID,
             periodo: Periodo,
             motivo: MotivoBloqueo,
             observacion: String,
-        ): Bloqueo = Bloqueo(apartamentoId, periodo, motivo, observacion, true)
+        ): Bloqueo = Bloqueo(id, apartamentoId, periodo, motivo, observacion, true)
     }
 
     fun cubre(noche: LocalDate): Boolean = this.vigente && this.periodo.contiene(noche)
@@ -36,4 +38,8 @@ class Bloqueo private constructor(
     fun levantar() {
         this.vigente = false
     }
+
+    override fun hashCode(): Int = id.hashCode()
+
+    override fun equals(other: Any?): Boolean = other is Bloqueo && id == other.id
 }

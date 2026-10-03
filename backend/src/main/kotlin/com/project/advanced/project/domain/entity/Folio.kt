@@ -36,4 +36,8 @@ class Folio private constructor(
     }
 
     fun puedeCerrarse(): Boolean = estado == EstadoFolio.ABIERTO && saldo().esCero()
+
+    override fun hashCode(): Int = id.hashCode()
+
+    override fun equals(other: Any?): Boolean = other is Folio && id == other.id
 }
