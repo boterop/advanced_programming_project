@@ -4,7 +4,6 @@ import com.project.advanced.project.domain.entity.Pago
 import com.project.advanced.project.domain.repository.FolioRepository
 import com.project.advanced.project.domain.repository.PagoRepository
 import com.project.advanced.project.domain.valueobject.Dinero
-import com.project.advanced.project.domain.valueobject.EstadoFolio
 import com.project.advanced.project.domain.valueobject.ID
 import com.project.advanced.project.domain.valueobject.MedioPago
 import java.util.UUID
@@ -29,7 +28,7 @@ class PagarFolioService(
         folio.registrarPago(pago)
 
         if (folio.puedeCerrarse()) {
-            folio.estado = EstadoFolio.CERRADO
+            folio.cerrar()
         }
 
         folioRepository.guardar(folio)

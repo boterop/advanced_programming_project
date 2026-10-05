@@ -11,9 +11,10 @@ object BloqueoFixture {
     val periodo = Periodo(LocalDate.now(), LocalDate.now().plusDays(3))
 
     operator fun invoke(
+        id: ID = ID(UUID.randomUUID().toString()),
         apartamentoId: ID = ID(UUID.randomUUID().toString()),
         periodo: Periodo = BloqueoFixture.periodo,
         motivo: MotivoBloqueo = MotivoBloqueo.USO_INTERNO,
         observacion: String = "Uso interno",
-    ) = Bloqueo.crear(apartamentoId, periodo, motivo, observacion)
+    ) = Bloqueo.crear(id, apartamentoId, periodo, motivo, observacion)
 }

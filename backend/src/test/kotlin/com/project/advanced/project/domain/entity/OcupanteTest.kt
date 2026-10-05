@@ -4,6 +4,7 @@ import com.project.advanced.project.domain.valueobject.CorreoElectronico
 import com.project.advanced.project.domain.valueobject.DocumentoIdentidad
 import com.project.advanced.project.domain.valueobject.Estancia
 import com.project.advanced.project.domain.valueobject.FechaNacimiento
+import com.project.advanced.project.domain.valueobject.ID
 import com.project.advanced.project.domain.valueobject.Nombre
 import com.project.advanced.project.domain.valueobject.Periodo
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
+import java.util.UUID
 
 class OcupanteTest {
     val documento = DocumentoIdentidad("123456789")
@@ -23,7 +25,7 @@ class OcupanteTest {
     inner class Crear {
         @Test
         fun `should create a new ocupante`() {
-            val ocupante = Ocupante.crear(documento, nombre, correo, fechaNacimiento)
+            val ocupante = Ocupante.crear(ID(UUID.randomUUID().toString()), documento, nombre, correo, fechaNacimiento)
 
             assertEquals(documento, ocupante.documentoIdentidad)
             assertEquals(nombre, ocupante.nombre)
@@ -34,7 +36,7 @@ class OcupanteTest {
 
     @Nested
     inner class EsFacturable {
-        val ocupante = Ocupante.crear(documento, nombre, correo, fechaNacimiento)
+        val ocupante = Ocupante.crear(ID(UUID.randomUUID().toString()), documento, nombre, correo, fechaNacimiento)
 
         @Test
         fun `should return true if the ocupante is facturable`() {

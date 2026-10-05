@@ -9,7 +9,7 @@ class Folio private constructor(
     val id: ID,
     private val cargos: MutableList<Cargo>,
     private val pagos: MutableList<Pago>,
-    var estado: EstadoFolio,
+    private var estado: EstadoFolio,
 ) {
     companion object {
         fun crear(
@@ -36,4 +36,12 @@ class Folio private constructor(
     }
 
     fun puedeCerrarse(): Boolean = estado == EstadoFolio.ABIERTO && saldo().esCero()
+
+    fun cerrar() {
+        estado = EstadoFolio.CERRADO
+    }
+
+    override fun hashCode(): Int = id.hashCode()
+
+    override fun equals(other: Any?): Boolean = other is Folio && id == other.id
 }

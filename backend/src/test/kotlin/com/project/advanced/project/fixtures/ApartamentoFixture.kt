@@ -12,6 +12,7 @@ import java.util.UUID
 
 object ApartamentoFixture {
     operator fun invoke(
+        id: ID = ID(UUID.randomUUID().toString()),
         nombre: Nombre = Nombre("Apartamento 1"),
         dormitorios: List<Dormitorio> = listOf(Dormitorio(Nombre("Dormitorio 1"), Descripcion("Dormitorio central"))),
         capacidad: Capacidad = Capacidad(10),
@@ -19,7 +20,7 @@ object ApartamentoFixture {
         activo: Boolean = true,
         tarifas: List<Tarifa> = emptyList(),
     ) = Apartamento.crear(
-        ID(UUID.randomUUID().toString()),
+        id,
         nombre,
         dormitorios,
         capacidad,
