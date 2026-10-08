@@ -7,12 +7,12 @@ data class CrearReservaRequest(
     val fechaEntrada: LocalDate,
     @field:NotNull(message = "La hora de salida es obligatoria")
     val fechaSalida: LocalDate,
-    @field:NotBlank(message = "El canal de origen es obligatorio")
-    val canalOrigen: String,
+    @field:NotNull(message = "El canal de origen es obligatorio")
+    val canalOrigen: CanalOrigen,
     @field:NotNull(message = "El titular es obligatorio")
-    @Valid
+    @field:Valid
     val titular: OcupanteRequest,
     @field:NotNull(message = "La reserva debe tener al menos 1 ocupante")
-    @Valid
+    @field:Valid
     val ocupantes: List<OcupanteRequest>,
 )
