@@ -5,7 +5,9 @@ import com.project.advanced.project.domain.repository.ReservaRepository
 import com.project.advanced.project.domain.valueobject.CodigoReserva
 import com.project.advanced.project.domain.valueobject.ID
 import com.project.advanced.project.domain.valueobject.Periodo
+import org.springframework.stereotype.Repository
 
+@Repository
 class ReservaRepositoryMemory : ReservaRepository {
     private val reservas: HashMap<String, Reserva> = HashMap()
 

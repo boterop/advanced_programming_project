@@ -87,6 +87,17 @@ class Reserva private constructor(
             )
     }
 
+    //Hacer el metodo Reconstruir()
+    //Reconstruye una serva ya guardada anteriormente. NO hace validaciones de creacion
+    //public static Reserva reconstruir(CodigoReserva codigo,IdApartamento apartamento,
+    //                                  int capacidadApartamento, Estancia estancia, ...
+    //){
+    //  Reserva reserva = new Reserva(codigo, apartamento, estancia, canalOrigen,
+    //                                titular.List.copyOf(ocupantes)m valorCongelado
+    //                                politicaCongelada, fechaCreacion)
+    //  reserva.estado =
+    //}
+
     fun confirmar() {
         if (estado != EstadoReserva.PENDIENTE) throw ReglaDominioException("Solo se puede confirmar una reserva pendiente")
 
