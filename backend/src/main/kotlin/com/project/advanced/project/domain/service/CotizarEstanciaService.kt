@@ -7,12 +7,14 @@ import com.project.advanced.project.domain.valueobject.Dinero
 import com.project.advanced.project.domain.valueobject.Estancia
 import com.project.advanced.project.domain.valueobject.Tarifa
 import com.project.advanced.project.domain.valueobject.Temporada
+import org.springframework.stereotype.Service
 import java.time.LocalDate
 
 /**
  * Liquida una estancia noche por noche con la tarifa de la temporada de cada noche (RN-05).
  * Los ocupantes facturables se determinan a la fecha de entrada (RN-06).
  */
+@Service
 class CotizarEstanciaService {
     fun cotizar(
         apartamento: Apartamento,
