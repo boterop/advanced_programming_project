@@ -74,6 +74,117 @@ class ReservaTest {
     }
 
     @Nested
+    inner class Cancelar {
+        @Test
+        fun `should cancel a pending reservation and record the trimmed reason`() {
+            val reserva = ReservaFixture(estado = EstadoReserva.PENDIENTE)
+
+            reserva.cancelar("  Cambio de planes  ")
+
+            assertEquals(EstadoReserva.CANCELADA, reserva.estado)
+            assertEquals("Cambio de planes", reserva.motivoCancelacion)
+        }
+
+        @Test
+        fun `should cancel a confirmed reservation`() {
+            val reserva = ReservaFixture(estado = EstadoReserva.CONFIRMADA)
+
+            reserva.cancelar("Calamidad")
+
+            assertEquals(EstadoReserva.CANCELADA, reserva.estado)
+        }
+
+        @Test
+        fun `should reject cancelling a reservation that is not pending or confirmed`() {
+            listOf(EstadoReserva.EN_CURSO, EstadoReserva.CANCELADA, EstadoReserva.FINALIZADA, EstadoReserva.NO_SHOW)
+                .forEach { estado ->
+                    val reserva = ReservaFixture(estado = estado)
+
+                    assertThrows(ReglaDominioException::class.java) { reserva.cancelar("Motivo") }
+                    assertEquals(estado, reserva.estado)
+                }
+        }
+
+        @Test
+        fun `should reject a blank reason and leave the reservation untouched`() {
+            val reserva = ReservaFixture(estado = EstadoReserva.PENDIENTE)
+
+            assertThrows(ReglaDominioException::class.java) { reserva.cancelar("   ") }
+
+            assertEquals(EstadoReserva.PENDIENTE, reserva.estado)
+        }
+    }
+
+    @Nested
+    inner class Modificar {
+        private val inicio = LocalDate.now().plusDays(20)
+
+        @Test
+        fun `should replace the editable data and keep identity, state and frozen policy`() {
+            val reserva = ReservaFixture(estado = EstadoReserva.CONFIRMADA)
+            val nuevaEstancia = Estancia(Periodo(inicio, inicio.plusDays(4)))
+            val nuevaHora = HoraLlegada(LocalTime.of(18, 30))
+            val nuevoValor = Dinero(500.0)
+            val id = reserva.id
+            val codigo = reserva.codigo
+            val politica = reserva.politica
+
+            reserva.modificar(reserva.apartamento, nuevaEstancia, reserva.ocupantes, nuevaHora, nuevoValor)
+
+            assertEquals(nuevaEstancia, reserva.estancia)
+            assertEquals(nuevaHora, reserva.horaLlegada)
+            assertEquals(nuevoValor, reserva.valor)
+            assertEquals(id, reserva.id)
+            assertEquals(codigo, reserva.codigo)
+            assertEquals(EstadoReserva.CONFIRMADA, reserva.estado)
+            assertEquals(politica, reserva.politica)
+        }
+
+        @Test
+        fun `should reject a stay that starts before today without changing the reservation`() {
+            val reserva = ReservaFixture()
+            val estanciaOriginal = reserva.estancia
+            val pasada = Estancia(Periodo(LocalDate.now().minusDays(3), LocalDate.now().minusDays(1)))
+
+            assertThrows(ReglaDominioException::class.java) {
+                reserva.modificar(reserva.apartamento, pasada, reserva.ocupantes, reserva.horaLlegada, reserva.valor)
+            }
+
+            assertEquals(estanciaOriginal, reserva.estancia)
+        }
+
+        @Test
+        fun `should reject more occupants than the apartment admits without changing the reservation`() {
+            val reserva = ReservaFixture(apartamento = ApartamentoFixture())
+            val demasiados = List(11) { OcupanteFixture() }
+
+            assertThrows(ReglaDominioException::class.java) {
+                reserva.modificar(reserva.apartamento, reserva.estancia, demasiados, reserva.horaLlegada, reserva.valor)
+            }
+
+            assertEquals(1, reserva.ocupantes.size)
+        }
+
+        @Test
+        fun `should reject modifying a reservation that is not pending or confirmed`() {
+            listOf(EstadoReserva.EN_CURSO, EstadoReserva.CANCELADA, EstadoReserva.FINALIZADA, EstadoReserva.NO_SHOW)
+                .forEach { estado ->
+                    val reserva = ReservaFixture(estado = estado)
+
+                    assertThrows(ReglaDominioException::class.java) {
+                        reserva.modificar(
+                            reserva.apartamento,
+                            reserva.estancia,
+                            reserva.ocupantes,
+                            reserva.horaLlegada,
+                            reserva.valor,
+                        )
+                    }
+                }
+        }
+    }
+
+    @Nested
     inner class ValidarValor {
         @Test
         fun `should reject a negative reservation value`() {
