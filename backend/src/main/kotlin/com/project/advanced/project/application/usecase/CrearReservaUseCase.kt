@@ -19,10 +19,12 @@ import com.project.advanced.project.domain.valueobject.IdExterno
 import com.project.advanced.project.domain.valueobject.Periodo
 import com.project.advanced.project.domain.valueobject.TiempoPreparacion
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
 
 @Service
+@Transactional
 class CrearReservaUseCase(
     private val reservaRepository: ReservaRepository,
     private val apartamentoRepository: ApartamentoRepository,
