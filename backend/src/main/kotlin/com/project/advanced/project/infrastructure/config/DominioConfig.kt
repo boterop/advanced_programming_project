@@ -5,6 +5,8 @@ import com.project.advanced.project.domain.repository.ReservaRepository
 import com.project.advanced.project.domain.service.CotizarEstanciaService
 import com.project.advanced.project.domain.service.DisponibilidadApartamentoService
 import com.project.advanced.project.domain.service.DisponibilidadModificacionService
+import com.project.advanced.project.domain.service.RegistroEstanciaService
+import com.project.advanced.project.domain.service.VencimientoReservaService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -25,4 +27,10 @@ class DominioConfig {
         reservaRepository: ReservaRepository,
         bloqueoRepository: BloqueoRepository,
     ): DisponibilidadModificacionService = DisponibilidadModificacionService(reservaRepository, bloqueoRepository)
+
+    @Bean
+    fun registroEstanciaService(): RegistroEstanciaService = RegistroEstanciaService()
+
+    @Bean
+    fun vencimientoReservaService(): VencimientoReservaService = VencimientoReservaService()
 }

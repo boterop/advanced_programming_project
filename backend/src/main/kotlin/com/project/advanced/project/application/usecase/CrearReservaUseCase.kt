@@ -2,15 +2,19 @@ package com.project.advanced.project.application.usecase
 
 import com.project.advanced.project.application.dto.CrearReservaCommand
 import com.project.advanced.project.application.dto.CrearReservaResult
+import com.project.advanced.project.domain.entity.Cargo
+import com.project.advanced.project.domain.entity.Folio
 import com.project.advanced.project.domain.entity.Reserva
 import com.project.advanced.project.domain.exception.ReglaDominioException
 import com.project.advanced.project.domain.repository.ApartamentoRepository
+import com.project.advanced.project.domain.repository.FolioRepository
 import com.project.advanced.project.domain.repository.PoliticaCancelacionRepository
 import com.project.advanced.project.domain.repository.ReservaRepository
 import com.project.advanced.project.domain.service.CotizarEstanciaService
 import com.project.advanced.project.domain.service.DisponibilidadApartamentoService
 import com.project.advanced.project.domain.valueobject.CanalOrigen
 import com.project.advanced.project.domain.valueobject.CodigoReserva
+import com.project.advanced.project.domain.valueobject.ConceptoCargo
 import com.project.advanced.project.domain.valueobject.EstadoReserva
 import com.project.advanced.project.domain.valueobject.Estancia
 import com.project.advanced.project.domain.valueobject.HoraLlegada
@@ -22,7 +26,6 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
-
 @Service
 @Transactional
 class CrearReservaUseCase(
@@ -31,6 +34,7 @@ class CrearReservaUseCase(
     private val politicaCancelacionRepository: PoliticaCancelacionRepository,
     private val disponibilidadApartamentoService: DisponibilidadApartamentoService,
     private val cotizarEstanciaService: CotizarEstanciaService,
+    private val folioRepository: FolioRepository,
 )  {
     fun ejecutar(comando: CrearReservaCommand): CrearReservaResult {
         val apartamento =
@@ -68,6 +72,7 @@ class CrearReservaUseCase(
             )
 
         reservaRepository.guardar(reserva)
+        folioRepository.guardar(abrirFolio(reserva))
 
         return CrearReservaResult(reserva.id.valor, reserva.codigo.valor, reserva.valor.cantidad())
 
@@ -97,4 +102,13 @@ class CrearReservaUseCase(
         //  DisponibilidadApartamentoService aun no lo usa.
         val TIEMPO_PREPARACION = TiempoPreparacion(0)
     }
+
+    /** El folio se abre al crear la reserva con el cargo de alojamiento
+     *  Comparte el id de la reserva. */
+    private fun abrirFolio(reserva: Reserva): Folio =
+        Folio.crear(
+            reserva.id,
+            mutableListOf(Cargo.crear(ID(UUID.randomUUID().toString()), ConceptoCargo.ALOJAMIENTO, reserva.valor)),
+            mutableListOf(),
+        )
 }
