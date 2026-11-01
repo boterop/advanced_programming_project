@@ -19,5 +19,19 @@ data class Pagina<T>(
     companion object {
         /** Paginacion de 10 resultados por pagina en todos los listados. */
         const val TAMANO = 10
+
+        /** Corta una lista ya filtrada y ordenada en la pagina [numero]. */
+        fun <T> de(
+            elementos: List<T>,
+            numero: Int,
+            tamano: Int = TAMANO,
+        ): Pagina<T> {
+            if (numero < 1) throw ReglaDominioException("El numero de pagina debe ser mayor o igual a 1")
+            if (tamano < 1) throw ReglaDominioException("El tamano de pagina debe ser mayor o igual a 1")
+
+            val salto = ((numero - 1).toLong() * tamano).coerceAtMost(Int.MAX_VALUE.toLong()).toInt()
+
+            return Pagina(elementos.drop(salto).take(tamano), numero, tamano, elementos.size.toLong())
+        }
     }
 }
