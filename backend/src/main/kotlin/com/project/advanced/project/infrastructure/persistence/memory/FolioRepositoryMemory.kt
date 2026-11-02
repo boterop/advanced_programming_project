@@ -3,7 +3,9 @@ package com.project.advanced.project.infrastructure.persistence.memory
 import com.project.advanced.project.domain.entity.Folio
 import com.project.advanced.project.domain.repository.FolioRepository
 import com.project.advanced.project.domain.valueobject.ID
+import org.springframework.stereotype.Repository
 
+@Repository
 class FolioRepositoryMemory : FolioRepository {
     val folios: HashMap<String, Folio> = HashMap()
 
