@@ -41,6 +41,13 @@ class Folio private constructor(
         estado = EstadoFolio.CERRADO
     }
 
+    /**Los movimientos no se editan ni se borran (RN-16). */
+    fun listarCargos(): List<Cargo> = cargos.toList()
+
+    fun listarPagos(): List<Pago> = pagos.toList()
+
+    fun estadoActual(): EstadoFolio = estado
+
     override fun hashCode(): Int = id.hashCode()
 
     override fun equals(other: Any?): Boolean = other is Folio && id == other.id

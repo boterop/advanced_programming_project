@@ -50,6 +50,7 @@ class ReservaRepositoryMemory(
                 .filter { filtro.estado == null || it.estado == filtro.estado }
                 .filter { filtro.canalOrigen == null || it.canalOrigen == filtro.canalOrigen }
                 .filter { filtro.admiteEntrada(it.estancia.periodo.inicio) }
+                .filter { filtro.admiteTitular(it.titular.documentoIdentidad)}
                 .sortedWith(
                     compareByDescending<Reserva> { it.fechaCreacion.valor }
                         .thenByDescending { it.estancia.periodo.inicio },

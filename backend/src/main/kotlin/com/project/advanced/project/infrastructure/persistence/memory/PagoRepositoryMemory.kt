@@ -3,7 +3,9 @@ package com.project.advanced.project.infrastructure.persistence.memory
 import com.project.advanced.project.domain.entity.Pago
 import com.project.advanced.project.domain.repository.PagoRepository
 import com.project.advanced.project.domain.valueobject.ID
+import org.springframework.stereotype.Repository
 
+@Repository
 class PagoRepositoryMemory : PagoRepository {
     private val pagos: HashMap<String, Pago> = HashMap()
 
