@@ -3,10 +3,17 @@ package com.project.advanced.project.infrastructure.persistence.memory
 import com.project.advanced.project.domain.entity.Reserva
 import com.project.advanced.project.domain.repository.ReservaRepository
 import com.project.advanced.project.domain.valueobject.CodigoReserva
+import com.project.advanced.project.domain.valueobject.FiltroReservas
 import com.project.advanced.project.domain.valueobject.ID
+import com.project.advanced.project.domain.valueobject.Pagina
 import com.project.advanced.project.domain.valueobject.Periodo
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Repository
 
-class ReservaRepositoryMemory : ReservaRepository {
+@Repository
+class ReservaRepositoryMemory(
+    @Value("\${sga.reserva.plazo-confirmacion-dias:1}") private val plazo: Long,
+) : ReservaRepository {
     private val reservas: HashMap<String, Reserva> = HashMap()
 
     override fun listar(): List<Reserva> = reservas.values.toList()
@@ -32,4 +39,26 @@ class ReservaRepositoryMemory : ReservaRepository {
     override fun eliminar(reserva: Reserva) {
         reservas.remove(reserva.id.valor)
     }
+
+    override fun buscar(
+        filtro: FiltroReservas,
+        numeroPagina: Int,
+        tamano: Int,
+    ): Pagina<Reserva> {
+        val coincidentes =
+                listar()
+                .filter { filtro.estado == null || it.estado == filtro.estado }
+                .filter { filtro.canalOrigen == null || it.canalOrigen == filtro.canalOrigen }
+                .filter { filtro.admiteEntrada(it.estancia.periodo.inicio) }
+                .sortedWith(
+                    compareByDescending<Reserva> { it.fechaCreacion.valor }
+                        .thenByDescending { it.estancia.periodo.inicio },
+                )
+
+        val contenido = coincidentes.drop((numeroPagina - 1) * tamano).take(tamano)
+
+        return Pagina(contenido, numeroPagina, tamano, coincidentes.size.toLong())
+    }
+
+    override fun plazoConfirmacionDias(): Long = plazo
 }

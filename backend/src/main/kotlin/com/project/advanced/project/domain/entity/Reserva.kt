@@ -16,19 +16,37 @@ import java.time.LocalDate
 class Reserva private constructor(
     val id: ID,
     val codigo: CodigoReserva,
-    val apartamento: Apartamento,
-    val estancia: Estancia,
+    apartamento: Apartamento,
+    estancia: Estancia,
     var estado: EstadoReserva,
     val canalOrigen: CanalOrigen,
     val idExterno: IdExterno,
     val titular: Ocupante,
-    val ocupantes: List<Ocupante>,
-    val horaLlegada: HoraLlegada,
-    val valor: Dinero,
+    ocupantes: List<Ocupante>,
+    horaLlegada: HoraLlegada,
+    valor: Dinero,
     val politica: PoliticaCancelacion,
     val fechaCreacion: FechaCreacion = FechaCreacion(LocalDate.now()),
-    val motivoCancelacion: String,
+    motivoCancelacion: String,
 ) {
+    var apartamento: Apartamento = apartamento
+        private set
+
+    var estancia: Estancia = estancia
+        private set
+
+    var ocupantes: List<Ocupante> = ocupantes
+        private set
+
+    var horaLlegada: HoraLlegada = horaLlegada
+        private set
+
+    var valor: Dinero = valor
+        private set
+
+    var motivoCancelacion: String = motivoCancelacion
+        private set
+
     init {
         if (codigo == null) throw ReglaDominioException("El codigo no puede ser nulo")
         if (apartamento == null) throw ReglaDominioException("El apartamento no puede ser nulo")
@@ -87,11 +105,76 @@ class Reserva private constructor(
             )
     }
 
+    //Hacer el metodo Reconstruir()
+    //Reconstruye una serva ya guardada anteriormente. NO hace validaciones de creacion
+    //public static Reserva reconstruir(CodigoReserva codigo,IdApartamento apartamento,
+    //                                  int capacidadApartamento, Estancia estancia, ...
+    //){
+    //  Reserva reserva = new Reserva(codigo, apartamento, estancia, canalOrigen,
+    //                                titular.List.copyOf(ocupantes)m valorCongelado
+    //                                politicaCongelada, fechaCreacion)
+    //  reserva.estado =
+    //}
+
     fun confirmar() {
         if (estado != EstadoReserva.PENDIENTE) throw ReglaDominioException("Solo se puede confirmar una reserva pendiente")
 
         estado = EstadoReserva.CONFIRMADA
     }
+
+    fun verificarModificable() {
+        if (estado != EstadoReserva.PENDIENTE && estado != EstadoReserva.CONFIRMADA){
+            throw ReglaDominioException("Solo se puede modificar una reserva con estado pendiente o " +
+                    "confirmada")
+        }
+    }
+
+    /**Reemplaza automaticamente apartamento, estancia, ocupantes, horaLlegada y valor.
+     * aplica RN-22*/
+    fun modificar(
+        apartamento: Apartamento,
+        estancia: Estancia,
+        ocupantes: List<Ocupante>,
+        horaLlegada: HoraLlegada,
+        valor: Dinero
+    ){
+        verificarModificable()
+        validarInvariantes(apartamento, estancia, ocupantes, LocalDate.now())
+
+        this.apartamento = apartamento
+        this.estancia = estancia
+        this.ocupantes = ocupantes
+        this.horaLlegada = horaLlegada
+        this.valor = valor
+    }
+
+    fun cancelar(motivo: String){
+        if (estado != EstadoReserva.PENDIENTE && estado != EstadoReserva.CONFIRMADA) {
+            throw ReglaDominioException("Solo se puede cancelar una reserva pendiente o confirmada")
+        }
+        if (motivo.isBlank()) throw ReglaDominioException("El motivo de cancelacion no puede ser vacio")
+
+        estado = EstadoReserva.CANCELADA
+        motivoCancelacion = motivo.trim()
+    }
+
+    private fun validarInvariantes(
+        apartamento: Apartamento,
+        estancia: Estancia,
+        ocupantes: List<Ocupante>,
+        hoy: LocalDate
+    ){
+        if (ocupantes.isEmpty()) throw ReglaDominioException("La reserva debe tener minimo 1 ocupante")
+
+        if (estancia.periodo.inicio.isBefore(hoy)) {
+            throw ReglaDominioException("La fecha de inicio de la estancia no puede ser anterior a la fecha actual")
+        }
+
+        if (!apartamento.admite(ocupantes.size)) {
+            throw ReglaDominioException("El apartamento no admite el numero de ocupantes")
+        }
+    }
+
 
     override fun hashCode(): Int = id.hashCode()
 
