@@ -1,0 +1,399 @@
+package co.edu.uniquindio.sga.domain.entity;
+
+import co.edu.uniquindio.sga.domain.exception.ReglaDominioException;
+import co.edu.uniquindio.sga.domain.valueobject.Dinero;
+import co.edu.uniquindio.sga.domain.valueobject.Dormitorio;
+import co.edu.uniquindio.sga.domain.valueobject.Estancia;
+import co.edu.uniquindio.sga.domain.valueobject.EstadoOperativo;
+import co.edu.uniquindio.sga.domain.valueobject.TipoApartamento;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
+
+/**
+ * F-01 - Unidad vendible. Raíz del agregado que compone Dormitorio, Bloqueo,
+ * Tarifa y Novedad.
+ * <p>
+ * Reserva es una raíz de agregado DISTINTA: Apartamento nunca guarda una
+ * lista de Reserva ni de Estancia reservada -eso viviría en otro agregado-.
+ * Por eso estaDisponible(...) recibe las estancias activas como parámetro
+ * (calculadas por quien sí tiene acceso al repositorio de Reserva) en vez
+ * de mantenerlas internamente.
+ * <p>
+ * Identidad: "identificacion" (ej. "ATK-001") es la clave de negocio única y
+ * estable que exige 7.3 -no se introduce un id sintético aparte, porque ya
+ * existe un identificador natural del dominio-.
+ */
+public final class Apartamento {
+
+    private final String identificacion;
+    private final String nombre;
+    private int capacidad;
+    private final List<Dormitorio> dormitorios;
+    private final TipoApartamento tipo;
+    private final boolean permiteMascotas;
+    private EstadoOperativo estadoOperativo;
+    private final List<Tarifa> tarifas = new ArrayList<>();
+    private final List<Bloqueo> bloqueos = new ArrayList<>();
+    private final List<Novedad> novedades = new ArrayList<>();
+    private boolean activo;
+
+    private Apartamento(String identificacion, String nombre, int capacidad, List<Dormitorio> dormitorios,
+                        TipoApartamento tipo, boolean permiteMascotas, EstadoOperativo estadoOperativo) {
+        this.identificacion = identificacion;
+        this.nombre = nombre;
+        this.capacidad = capacidad;
+        this.dormitorios = new ArrayList<>(dormitorios);
+        this.tipo = tipo;
+        this.permiteMascotas = permiteMascotas;
+        this.estadoOperativo = estadoOperativo;
+        this.activo = true;
+    }
+
+    /** Crea un apartamento sin tipo asignado todavía (el tipo es opcional hasta cargar el inventario de la Ficha). */
+    public static Apartamento crear(String identificacion, String nombre, int capacidad,
+                                    List<Dormitorio> dormitorios, EstadoOperativo estadoOperativoInicial) {
+        return crear(identificacion, nombre, capacidad, dormitorios, null, estadoOperativoInicial);
+    }
+
+    /** @param tipo puede ser null mientras no se haya clasificado el apartamento */
+    public static Apartamento crear(String identificacion, String nombre, int capacidad,
+                                    List<Dormitorio> dormitorios, TipoApartamento tipo,
+                                    EstadoOperativo estadoOperativoInicial) {
+        return crear(identificacion, nombre, capacidad, dormitorios, tipo, false, estadoOperativoInicial);
+    }
+
+    /**
+     * @param tipo            puede ser null mientras no se haya clasificado el apartamento
+     * @param permiteMascotas RN-Propia-03: solo un apartamento que permite mascotas puede recibir una reserva con mascota
+     */
+    public static Apartamento crear(String identificacion, String nombre, int capacidad,
+                                    List<Dormitorio> dormitorios, TipoApartamento tipo, boolean permiteMascotas,
+                                    EstadoOperativo estadoOperativoInicial) {
+        if (identificacion == null || identificacion.isBlank()) {
+            throw new ReglaDominioException("La identificación del apartamento no puede estar vacía");
+        }
+        if (nombre == null || nombre.isBlank()) {
+            throw new ReglaDominioException("El nombre del apartamento no puede estar vacío");
+        }
+        // F-03: la capacidad es un tope rígido, sin excepciones -por eso debe ser positiva desde el inicio-.
+        if (capacidad <= 0) {
+            throw new ReglaDominioException("La capacidad del apartamento debe ser mayor a cero");
+        }
+        Objects.requireNonNull(dormitorios, "La lista de dormitorios no puede ser nula");
+        if (dormitorios.isEmpty()) {
+            throw new ReglaDominioException("Un apartamento debe tener al menos un dormitorio");
+        }
+        Objects.requireNonNull(estadoOperativoInicial, "El estado operativo inicial no puede ser nulo");
+        return new Apartamento(identificacion, nombre, capacidad, dormitorios, tipo, permiteMascotas, estadoOperativoInicial);
+    }
+
+    /**
+     * Reconstruye un Apartamento ya persistido con todo su estado (hijos y bandera de activo).
+     * Es la forma de rehidratarlo desde la persistencia SIN setters ni constructores vacíos:
+     * el estado guardado ya pasó por las validaciones de crear(...) y de los métodos de negocio.
+     */
+    public static Apartamento reconstruir(String identificacion, String nombre, int capacidad,
+                                          List<Dormitorio> dormitorios, TipoApartamento tipo, boolean permiteMascotas,
+                                          EstadoOperativo estadoOperativo, List<Tarifa> tarifas,
+                                          List<Bloqueo> bloqueos, List<Novedad> novedades, boolean activo) {
+        Apartamento apartamento = new Apartamento(identificacion, nombre, capacidad, dormitorios, tipo, permiteMascotas,
+                estadoOperativo);
+        apartamento.tarifas.addAll(tarifas);
+        apartamento.bloqueos.addAll(bloqueos);
+        apartamento.novedades.addAll(novedades);
+        apartamento.activo = activo;
+        return apartamento;
+    }
+
+    // ------------------------------------------------------------------------------------------------------------
+    // 7.6: transiciones del estado operativo. Cada una es una operación de negocio con nombre propio (no hay un
+    // "cambiarEstado" genérico) y la validez de la transición la decide el propio enum EstadoOperativo.
+    // "FUERA_DE_SERVICIO solo por administrador" es una regla de AUTORIZACIÓN (quién puede invocarlo), no de dominio:
+    // el dominio no conoce roles, así que esa verificación vive en la capa de seguridad.
+    // ------------------------------------------------------------------------------------------------------------
+
+    /** Un grupo ocupa el apartamento (check-in): PREPARADO -> OCUPADO. */
+    public void registrarOcupacion() {
+        transitarA(EstadoOperativo.OCUPADO);
+    }
+
+    /** El grupo desocupa el apartamento (check-out): OCUPADO -> PENDIENTE_PREPARACION. */
+    public void registrarDesocupacion() {
+        transitarA(EstadoOperativo.PENDIENTE_PREPARACION);
+    }
+
+    /** El personal de servicio empieza a prepararlo: PENDIENTE_PREPARACION -> EN_PREPARACION. */
+    public void iniciarPreparacion() {
+        transitarA(EstadoOperativo.EN_PREPARACION);
+    }
+
+    /** El personal de servicio lo deja listo para el siguiente grupo: EN_PREPARACION -> PREPARADO. */
+    public void marcarPreparado() {
+        transitarA(EstadoOperativo.PREPARADO);
+    }
+
+    /** Lo saca de servicio. No se puede estando OCUPADO: primero debe desocuparse el grupo. */
+    public void sacarDeServicio() {
+        transitarA(EstadoOperativo.FUERA_DE_SERVICIO);
+    }
+
+    private void transitarA(EstadoOperativo destino) {
+        if (!this.estadoOperativo.puedeTransitarA(destino)) {
+            throw new ReglaDominioException(
+                    "Transición de estado operativo inválida: " + this.estadoOperativo + " -> " + destino);
+        }
+        this.estadoOperativo = destino;
+    }
+
+    /**
+     * RN-02 y RN-Propia-03: todos los ocupantes cuentan para la capacidad; si el grupo trae mascota, el apartamento
+     * debe permitir mascotas y la mascota ocupa un cupo (la capacidad de personas se reduce en 1).
+     */
+    public boolean admiteGrupo(int totalOcupantes, boolean conMascota) {
+        if (conMascota && !permiteMascotas) {
+            return false;
+        }
+        return cuposNecesarios(totalOcupantes, conMascota) <= capacidad;
+    }
+
+    /** Igual que admiteGrupo(...), pero explica con una ReglaDominioException por qué el grupo no cabe. */
+    public void verificarAdmiteGrupo(int totalOcupantes, boolean conMascota) {
+        if (conMascota && !permiteMascotas) {
+            throw new ReglaDominioException("RN-Propia-03: el apartamento " + identificacion + " no permite mascotas");
+        }
+        int cupos = cuposNecesarios(totalOcupantes, conMascota);
+        if (cupos > capacidad) {
+            throw new ReglaDominioException(conMascota
+                    ? "RN-02 / RN-Propia-03: " + totalOcupantes + " ocupantes con mascota necesitan " + cupos
+                    + " cupos y el apartamento " + identificacion + " solo tiene " + capacidad
+                    : "RN-02: " + totalOcupantes + " ocupantes superan la capacidad de " + capacidad
+                    + " del apartamento " + identificacion);
+        }
+    }
+
+    private static int cuposNecesarios(int totalOcupantes, boolean conMascota) {
+        return totalOcupantes + (conMascota ? 1 : 0);
+    }
+
+    /**
+     * RN-01, RN-02, RN-07, RN-20 y RN-Propia-03 combinadas: un apartamento está disponible para una estancia si está
+     * activo, admite al grupo, y la estancia no se solapa con ningún bloqueo propio ni con ninguna reserva activa.
+     * Si el tiempo de preparación no cabe entre la hora de salida y la de entrada (RN-20), tampoco puede empezar el
+     * mismo día en que termina otra reserva, ni terminar el día en que otra empieza.
+     * <p>
+     * Las reservas activas se reciben como parámetro (no se guardan aquí) porque pertenecen al agregado Reserva;
+     * quien llama a este método ya las obtuvo de ReservaRepository.
+     */
+    public boolean estaDisponible(Estancia estanciaSolicitada, int totalOcupantes, boolean conMascota,
+                                  List<Estancia> estanciasReservasActivas, boolean permiteRecambioMismoDia) {
+        Objects.requireNonNull(estanciaSolicitada, "La estancia solicitada no puede ser nula");
+        Objects.requireNonNull(estanciasReservasActivas, "La lista de estancias reservadas no puede ser nula");
+
+        if (!activo) {
+            return false;
+        }
+        if (!admiteGrupo(totalOcupantes, conMascota)) {
+            return false;
+        }
+        boolean bloqueado = bloqueos.stream().anyMatch(b -> b.seSolapaCon(estanciaSolicitada));
+        if (bloqueado) {
+            return false;
+        }
+        return estanciasReservasActivas.stream().noneMatch(e -> e.seSolapaCon(estanciaSolicitada)
+                || (!permiteRecambioMismoDia && e.esContiguaA(estanciaSolicitada)));
+    }
+
+    /**
+     * Autocontenido: valida solo contra los bloqueos ya existentes de este
+     * apartamento. La regla completa (7.3: "no puede registrarse un bloqueo
+     * sobre noches que ya tengan reservas activas") necesita consultar el
+     * agregado Reserva -eso es trabajo de un servicio de dominio, no de
+     * este método-.
+     */
+    public void agregarBloqueo(Bloqueo nuevo) {
+        Objects.requireNonNull(nuevo, "El bloqueo no puede ser nulo");
+        boolean solapaConOtroBloqueo = bloqueos.stream().anyMatch(b -> b.seSolapaCon(nuevo.rango()));
+        if (solapaConOtroBloqueo) {
+            throw new ReglaDominioException("El nuevo bloqueo se solapa con un bloqueo existente de este apartamento");
+        }
+        bloqueos.add(nuevo);
+    }
+
+    /**
+     * 7.4: toda combinación apartamento × temporada debe tener tarifa. No
+     * se valida aquí la unicidad de (temporadaId, vigenteDesde): si se
+     * agregan dos tarifas con la misma vigencia para la misma temporada,
+     * tarifaVigente(...) simplemente toma la más reciente por orden de
+     * inserción entre las empatadas -se documenta como supuesto abierto-.
+     */
+    public void agregarTarifa(Tarifa nueva) {
+        Objects.requireNonNull(nueva, "La tarifa no puede ser nula");
+        tarifas.add(nueva);
+    }
+
+    /**
+     * 7.4: define una nueva tarifa para una temporada. Nunca se edita una tarifa existente: se agrega una versión
+     * nueva y las anteriores quedan como histórico. La nueva debe regir DESPUÉS de la más reciente de la misma
+     * temporada; con la misma fecha habría dos tarifas "vigentes" a la vez y no se sabría cuál cobrar.
+     * Que la temporada exista lo verifica quien invoque este método (Temporada vive en otro agregado).
+     */
+    public Tarifa definirTarifa(java.util.UUID temporadaId, Dinero valorPorNoche, LocalDate vigenteDesde) {
+        Objects.requireNonNull(temporadaId, "El identificador de temporada no puede ser nulo");
+        Objects.requireNonNull(vigenteDesde, "La fecha de vigencia no puede ser nula");
+        boolean noEsPosterior = tarifas.stream()
+                .filter(t -> t.temporadaId().equals(temporadaId))
+                .anyMatch(t -> !vigenteDesde.isAfter(t.vigenteDesde()));
+        if (noEsPosterior) {
+            throw new ReglaDominioException("La nueva tarifa del apartamento " + identificacion
+                    + " debe regir después de la tarifa más reciente de esa temporada");
+        }
+        Tarifa nueva = Tarifa.crear(temporadaId, valorPorNoche, vigenteDesde);
+        tarifas.add(nueva);
+        return nueva;
+    }
+
+    /** 7.4: histórico de tarifas de una temporada, de la más reciente a la más antigua. */
+    public List<Tarifa> historialTarifas(java.util.UUID temporadaId) {
+        Objects.requireNonNull(temporadaId, "El identificador de temporada no puede ser nulo");
+        return tarifas.stream()
+                .filter(t -> t.temporadaId().equals(temporadaId))
+                .sorted(Comparator.comparing(Tarifa::vigenteDesde).reversed())
+                .toList();
+    }
+
+    /** 7.4: histórico completo de tarifas, de la más reciente a la más antigua. */
+    public List<Tarifa> historialTarifas() {
+        return tarifas.stream()
+                .sorted(Comparator.comparing(Tarifa::vigenteDesde).reversed())
+                .toList();
+    }
+
+    /** 7.4: temporadas (de las indicadas) para las que este apartamento todavía no tiene ninguna tarifa. */
+    public List<java.util.UUID> temporadasSinTarifa(Collection<java.util.UUID> temporadaIds) {
+        Objects.requireNonNull(temporadaIds, "Las temporadas no pueden ser nulas");
+        return temporadaIds.stream()
+                .filter(id -> tarifas.stream().noneMatch(t -> t.temporadaId().equals(id)))
+                .toList();
+    }
+
+    public Tarifa tarifaVigente(java.util.UUID temporadaId, LocalDate fecha) {
+        Objects.requireNonNull(temporadaId, "El identificador de temporada no puede ser nulo");
+        Objects.requireNonNull(fecha, "La fecha no puede ser nula");
+        return tarifas.stream()
+                .filter(t -> t.temporadaId().equals(temporadaId))
+                .filter(t -> !t.vigenteDesde().isAfter(fecha))
+                .max(Comparator.comparing(Tarifa::vigenteDesde))
+                .orElseThrow(() -> new ReglaDominioException(
+                        "El apartamento " + identificacion + " no tiene tarifa vigente para la temporada indicada en la fecha " + fecha));
+    }
+
+    /** 7.4: una tarifa concreta del histórico del apartamento. */
+    public Optional<Tarifa> tarifa(UUID idTarifa) {
+        Objects.requireNonNull(idTarifa, "El identificador de la tarifa no puede ser nulo");
+        return tarifas.stream().filter(t -> t.id().equals(idTarifa)).findFirst();
+    }
+
+    /** RN-07: un bloqueo concreto del apartamento. */
+    public Optional<Bloqueo> bloqueo(UUID idBloqueo) {
+        Objects.requireNonNull(idBloqueo, "El identificador del bloqueo no puede ser nulo");
+        return bloqueos.stream().filter(b -> b.id().equals(idBloqueo)).findFirst();
+    }
+
+    /**
+     * 7.3: cambia la capacidad del apartamento. Sigue siendo un tope rígido (RN-02), por eso debe ser positiva. Que
+     * ninguna reserva activa quede por encima de la nueva capacidad necesita el agregado Reserva: lo verifica antes
+     * el servicio de dominio que invoca este método (RegistroApartamentoService).
+     */
+    public void cambiarCapacidad(int nuevaCapacidad) {
+        if (!activo) {
+            throw new ReglaDominioException("El apartamento " + identificacion
+                    + " está retirado de la venta: no se puede cambiar su capacidad");
+        }
+        if (nuevaCapacidad <= 0) {
+            throw new ReglaDominioException("La capacidad del apartamento debe ser mayor a cero");
+        }
+        this.capacidad = nuevaCapacidad;
+    }
+
+    public void registrarNovedad(Novedad novedad) {
+        Objects.requireNonNull(novedad, "La novedad no puede ser nula");
+        novedades.add(novedad);
+    }
+
+    /**
+     * 7.3: un apartamento puede retirarse de la venta solo si no tiene
+     * reservas activas ni futuras. Esa verificación necesita el agregado
+     * Reserva, así que quien invoque este método (un servicio de dominio)
+     * debe haberla hecho antes de llamarlo -Apartamento confía en su
+     * llamador para esta precondición, igual que con agregarBloqueo-.
+     */
+    public void desactivar() {
+        if (!activo) {
+            throw new ReglaDominioException("El apartamento " + identificacion + " ya está retirado de la venta");
+        }
+        this.activo = false;
+    }
+
+    public String identificacion() {
+        return identificacion;
+    }
+
+    public String nombre() {
+        return nombre;
+    }
+
+    public int capacidad() {
+        return capacidad;
+    }
+
+    public List<Dormitorio> dormitorios() {
+        return List.copyOf(dormitorios);
+    }
+
+    public EstadoOperativo estadoOperativo() {
+        return estadoOperativo;
+    }
+
+    public List<Tarifa> tarifas() {
+        return List.copyOf(tarifas);
+    }
+
+    public List<Bloqueo> bloqueos() {
+        return List.copyOf(bloqueos);
+    }
+
+    public List<Novedad> novedades() {
+        return List.copyOf(novedades);
+    }
+
+    public boolean activo() {
+        return activo;
+    }
+
+    public TipoApartamento tipo() {
+        return tipo;
+    }
+
+    public boolean permiteMascotas() {
+        return permiteMascotas;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Apartamento otro)) return false;
+        return this.identificacion.equals(otro.identificacion);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(identificacion);
+    }
+}
