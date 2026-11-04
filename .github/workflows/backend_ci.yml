@@ -21,7 +21,7 @@ jobs:
           cache: maven
 
       - name: Check code style
-        run: ./mvnw ktlint:check
+        run: ./mvnw spotless:check
 
       - name: Verify
         run: ./mvnw verify
