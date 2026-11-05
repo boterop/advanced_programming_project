@@ -1,6 +1,6 @@
 package com.project.advanced.project.application.usecase
 
-import com.project.advanced.project.application.dto.CerrarFolioCommand
+import com.project.advanced.project.application.dto.request.CerrarFolioRequest
 import com.project.advanced.project.application.exception.ReservaNoEncontradaException
 import com.project.advanced.project.domain.exception.ReglaDominioException
 import com.project.advanced.project.domain.repository.FolioRepository
@@ -17,7 +17,7 @@ class CerrarFolioUseCase(
     private val folioRepository: FolioRepository,
     private val gestionFolioService: GestionFolioService
 ) {
-    fun ejecutar(comando: CerrarFolioCommand) {
+    fun ejecutar(comando: CerrarFolioRequest) {
         val codigo = CodigoReserva(comando.codigoReserva)
         val reserva = reservaRepository.buscarPorCodigo(codigo) ?: throw ReservaNoEncontradaException(codigo)
 

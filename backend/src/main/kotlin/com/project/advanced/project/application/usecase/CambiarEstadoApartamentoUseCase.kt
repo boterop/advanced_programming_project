@@ -1,6 +1,6 @@
 package com.project.advanced.project.application.usecase
 
-import com.project.advanced.project.application.dto.CambiarEstadoApartamentoCommand
+import com.project.advanced.project.application.dto.request.CambiarEstadoApartamentoRequest
 import com.project.advanced.project.domain.exception.ReglaDominioException
 import com.project.advanced.project.domain.repository.ApartamentoRepository
 import com.project.advanced.project.domain.service.EstadoOperativoApartamentoService
@@ -14,7 +14,7 @@ class CambiarEstadoApartamentoUseCase(
     private val apartamentoRepository: ApartamentoRepository,
     private val estadoOperativoApartamentoService: EstadoOperativoApartamentoService
 ) {
-    fun ejecutar(comando: CambiarEstadoApartamentoCommand) {
+    fun ejecutar(comando: CambiarEstadoApartamentoRequest) {
         val apartamento =
             apartamentoRepository.buscar(ID(comando.apartamentoId))
                 ?: throw ReglaDominioException("No existe el apartamento con id ${comando.apartamentoId}")

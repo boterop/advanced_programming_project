@@ -1,6 +1,6 @@
 package com.project.advanced.project.application.usecase
 
-import com.project.advanced.project.application.dto.RegistrarLlegadaCommand
+import com.project.advanced.project.application.dto.request.RegistrarLlegadaRequest
 import com.project.advanced.project.application.exception.ReservaNoEncontradaException
 import com.project.advanced.project.domain.exception.ReglaDominioException
 import com.project.advanced.project.domain.repository.ApartamentoRepository
@@ -19,7 +19,7 @@ class RegistrarLlegadaUseCase(
     private val registroEstanciaService: RegistroEstanciaService
 ) {
     fun ejecutar(
-        comando: RegistrarLlegadaCommand,
+        comando: RegistrarLlegadaRequest,
         hoy: LocalDate = LocalDate.now(),
     ) {
         val codigo = CodigoReserva(comando.codigo)

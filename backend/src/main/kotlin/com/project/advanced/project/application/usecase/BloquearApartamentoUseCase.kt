@@ -1,7 +1,7 @@
 package com.project.advanced.project.application.usecase
 
-import com.project.advanced.project.application.dto.BloquearApartamentoCommand
-import com.project.advanced.project.application.dto.BloquearApartamentoResult
+import com.project.advanced.project.application.dto.request.BloquearApartamentoCommand
+import com.project.advanced.project.application.dto.response.BloquearApartamentoResponse
 import com.project.advanced.project.domain.exception.ReglaDominioException
 import com.project.advanced.project.domain.repository.ApartamentoRepository
 import com.project.advanced.project.domain.repository.BloqueoRepository
@@ -19,7 +19,7 @@ class BloquearApartamentoUseCase(
     private val bloqueoRepository: BloqueoRepository,
     private val bloqueoApartamentoService: BloqueoApartamentoService
 ) {
-    fun ejecutar(comando: BloquearApartamentoCommand): BloquearApartamentoResult {
+    fun ejecutar(comando: BloquearApartamentoCommand): BloquearApartamentoResponse {
         val apartamento =
             apartamentoRepository.buscar(ID(comando.apartamentoId))
                 ?: throw ReglaDominioException("No existe el apartamento con id ${comando.apartamentoId}")
@@ -33,6 +33,6 @@ class BloquearApartamentoUseCase(
                 comando.observacion,
             )
         bloqueoRepository.guardar(bloqueo)
-        return BloquearApartamentoResult(bloqueo.id.valor)
+        return BloquearApartamentoResponse(bloqueo.id.valor)
     }
 }

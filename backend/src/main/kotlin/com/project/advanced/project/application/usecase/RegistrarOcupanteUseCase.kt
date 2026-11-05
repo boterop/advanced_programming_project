@@ -1,7 +1,7 @@
 package com.project.advanced.project.application.usecase
 
-import com.project.advanced.project.application.dto.RegistrarOcupanteCommand
-import com.project.advanced.project.application.dto.RegistrarOcupanteResult
+import com.project.advanced.project.application.dto.request.RegistrarOcupanteRequest
+import com.project.advanced.project.application.dto.response.RegistrarOcupanteResponse
 import com.project.advanced.project.application.exception.ReservaNoEncontradaException
 import com.project.advanced.project.domain.exception.ReglaDominioException
 import com.project.advanced.project.domain.repository.FolioRepository
@@ -20,7 +20,7 @@ class RegistrarOcupanteUseCase(
     private val folioRepository: FolioRepository,
     private val registroOcupanteService: RegistroOcupanteService
 ) {
-    fun ejecutar(comando: RegistrarOcupanteCommand): RegistrarOcupanteResult {
+    fun ejecutar(comando: RegistrarOcupanteRequest): RegistrarOcupanteResponse {
         val codigo = CodigoReserva(comando.codigoReserva)
         val reserva = reservaRepository.buscarPorCodigo(codigo) ?: throw ReservaNoEncontradaException(codigo)
 
@@ -36,7 +36,7 @@ class RegistrarOcupanteUseCase(
         reservaRepository.guardar(reserva)
         folioRepository.actualizar(folio)
 
-        return RegistrarOcupanteResult(
+        return RegistrarOcupanteResponse(
             ocupanteId = ocupante.id.valor,
             valorReserva = reserva.valor.cantidad(),
             ajuste = ajuste.cantidad(),

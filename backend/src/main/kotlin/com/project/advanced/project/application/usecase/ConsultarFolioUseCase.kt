@@ -1,8 +1,8 @@
 package com.project.advanced.project.application.usecase
 
-import com.project.advanced.project.application.dto.ConsultarFolioQuery
-import com.project.advanced.project.application.dto.FolioDetalleResult
-import com.project.advanced.project.application.dto.aDetalle
+import com.project.advanced.project.application.dto.request.ConsultarFolioRequest
+import com.project.advanced.project.application.dto.response.FolioDetalleResult
+import com.project.advanced.project.application.dto.response.aDetalle
 import com.project.advanced.project.application.exception.ReservaNoEncontradaException
 import com.project.advanced.project.domain.exception.ReglaDominioException
 import com.project.advanced.project.domain.repository.FolioRepository
@@ -17,7 +17,7 @@ class ConsultarFolioUseCase(
     private val reservaRepository: ReservaRepository,
     private val folioRepository: FolioRepository
 ) {
-    fun ejecutar(consulta: ConsultarFolioQuery): FolioDetalleResult {
+    fun ejecutar(consulta: ConsultarFolioRequest): FolioDetalleResult {
         val codigo = CodigoReserva(consulta.codigoReserva)
         val reserva = reservaRepository.buscarPorCodigo(codigo) ?: throw ReservaNoEncontradaException(codigo)
 

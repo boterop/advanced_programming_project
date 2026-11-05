@@ -1,9 +1,9 @@
 package com.project.advanced.project.application.usecase
 
-import com.project.advanced.project.application.dto.ApartamentoDisponibleResult
-import com.project.advanced.project.application.dto.ConsultarDisponibilidadQuery
-import com.project.advanced.project.application.dto.PaginaResult
-import com.project.advanced.project.application.dto.aDisponible
+import com.project.advanced.project.application.dto.response.ApartamentoDisponibleResult
+import com.project.advanced.project.application.dto.request.ConsultarDisponibilidadRequest
+import com.project.advanced.project.application.dto.response.PaginaResponse
+import com.project.advanced.project.application.dto.response.aDisponible
 import com.project.advanced.project.domain.service.BusquedaDisponibilidadService
 import com.project.advanced.project.domain.valueobject.Estancia
 import com.project.advanced.project.domain.valueobject.Pagina
@@ -18,7 +18,7 @@ import kotlin.collections.map
 class ConsultarDisponibilidadUseCase(
     private val busquedaDisponibilidadService: BusquedaDisponibilidadService
 ) {
-    fun ejecutar(consulta: ConsultarDisponibilidadQuery): PaginaResult<ApartamentoDisponibleResult> {
+    fun ejecutar(consulta: ConsultarDisponibilidadRequest): PaginaResponse<ApartamentoDisponibleResult> {
         val estancia = Estancia(Periodo(consulta.fechaEntrada, consulta.fechaSalida))
 
         val disponibles =
@@ -26,7 +26,7 @@ class ConsultarDisponibilidadUseCase(
 
         val pagina = Pagina.de(disponibles, consulta.pagina)
 
-        return PaginaResult(
+        return PaginaResponse(
             contenido = pagina.contenido.map { it.aDisponible() },
             pagina = pagina.numero,
             tamano = pagina.tamano,

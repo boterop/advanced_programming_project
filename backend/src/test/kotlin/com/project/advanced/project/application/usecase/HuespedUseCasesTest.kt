@@ -1,8 +1,8 @@
 package com.project.advanced.project.application.usecase
 
-import com.project.advanced.project.application.dto.ConsultarHistorialHuespedQuery
-import com.project.advanced.project.application.dto.OcupanteCommand
-import com.project.advanced.project.application.dto.RegistrarOcupanteCommand
+import com.project.advanced.project.application.dto.request.ConsultarHistorialHuespedRequest
+import com.project.advanced.project.application.dto.request.OcupanteRequest
+import com.project.advanced.project.application.dto.request.RegistrarOcupanteRequest
 import com.project.advanced.project.application.exception.ReservaNoEncontradaException
 import com.project.advanced.project.domain.entity.Cargo
 import com.project.advanced.project.domain.entity.Folio
@@ -19,11 +19,8 @@ import com.project.advanced.project.domain.valueobject.Periodo
 import com.project.advanced.project.domain.valueobject.Tarifa
 import com.project.advanced.project.domain.valueobject.Temporada
 import com.project.advanced.project.fixtures.ApartamentoFixture
-import com.project.advanced.project.fixtures.ApartamentoFixture.invoke
 import com.project.advanced.project.fixtures.OcupanteFixture
-import com.project.advanced.project.fixtures.OcupanteFixture.invoke
 import com.project.advanced.project.fixtures.ReservaFixture
-import com.project.advanced.project.fixtures.ReservaFixture.invoke
 import com.project.advanced.project.infrastructure.persistence.memory.FolioRepositoryMemory
 import com.project.advanced.project.infrastructure.persistence.memory.ReservaRepositoryMemory
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -67,7 +64,7 @@ class HuespedUseCasesTest {private val reservas = ReservaRepositoryMemory(1L)
     }
 
     private fun ocupanteCommand(documento: String = "ACOMP001") =
-        OcupanteCommand(
+        OcupanteRequest(
             documento,
             "Ana Perez",
             "ana@correo.com",
@@ -80,7 +77,7 @@ class HuespedUseCasesTest {private val reservas = ReservaRepositoryMemory(1L)
         conFolio(reserva)
 
         val resultado = registrarOcupante.ejecutar(
-            RegistrarOcupanteCommand(reserva.codigo.valor, ocupanteCommand())
+            RegistrarOcupanteRequest(reserva.codigo.valor, ocupanteCommand())
         )
 
         assertEquals(2, resultado.totalOcupantes)
@@ -93,7 +90,7 @@ class HuespedUseCasesTest {private val reservas = ReservaRepositoryMemory(1L)
     @Test
     fun `should fail when the reservation does not exist`() {
         assertThrows(ReservaNoEncontradaException::class.java) {
-            registrarOcupante.ejecutar(RegistrarOcupanteCommand(
+            registrarOcupante.ejecutar(RegistrarOcupanteRequest(
                 UUID.randomUUID().toString(), ocupanteCommand())
             )
         }
@@ -104,7 +101,7 @@ class HuespedUseCasesTest {private val reservas = ReservaRepositoryMemory(1L)
         val reserva = reservaDe("111")
 
         assertThrows(ReglaDominioException::class.java) {
-            registrarOcupante.ejecutar(RegistrarOcupanteCommand(
+            registrarOcupante.ejecutar(RegistrarOcupanteRequest(
                 reserva.codigo.valor, ocupanteCommand())
             )
         }
@@ -117,7 +114,7 @@ class HuespedUseCasesTest {private val reservas = ReservaRepositoryMemory(1L)
         val cancelada = reservaDe("111", diasDesdeHoy = 20, estado = EstadoReserva.CANCELADA)
         reservaDe("222")
 
-        val pagina = historial.ejecutar(ConsultarHistorialHuespedQuery("111"))
+        val pagina = historial.ejecutar(ConsultarHistorialHuespedRequest("111"))
 
         assertEquals(
             listOf(lejana.codigo.valor, cancelada.codigo.valor, proxima.codigo.valor),
@@ -138,15 +135,15 @@ class HuespedUseCasesTest {private val reservas = ReservaRepositoryMemory(1L)
             ),
         )
 
-        assertTrue(historial.ejecutar(ConsultarHistorialHuespedQuery("111")).contenido.isEmpty())
+        assertTrue(historial.ejecutar(ConsultarHistorialHuespedRequest("111")).contenido.isEmpty())
     }
 
     @Test
     fun `should paginate the history in blocks of ten`() {
         repeat(12) { reservaDe("111", diasDesdeHoy = 5L + it) }
 
-        val primera = historial.ejecutar(ConsultarHistorialHuespedQuery("111", pagina = 1))
-        val segunda = historial.ejecutar(ConsultarHistorialHuespedQuery("111", pagina = 2))
+        val primera = historial.ejecutar(ConsultarHistorialHuespedRequest("111", pagina = 1))
+        val segunda = historial.ejecutar(ConsultarHistorialHuespedRequest("111", pagina = 2))
 
         assertEquals(10, primera.contenido.size)
         assertEquals(2, segunda.contenido.size)
@@ -156,7 +153,7 @@ class HuespedUseCasesTest {private val reservas = ReservaRepositoryMemory(1L)
 
     @Test
     fun `should return an empty page for a document without reservations`() {
-        val pagina = historial.ejecutar(ConsultarHistorialHuespedQuery("999"))
+        val pagina = historial.ejecutar(ConsultarHistorialHuespedRequest("999"))
 
         assertTrue(pagina.contenido.isEmpty())
         assertEquals(0L, pagina.totalElementos)
@@ -165,7 +162,7 @@ class HuespedUseCasesTest {private val reservas = ReservaRepositoryMemory(1L)
     @Test
     fun `should reject a page number below one`() {
         assertThrows(ReglaDominioException::class.java) {
-            historial.ejecutar(ConsultarHistorialHuespedQuery("111", pagina = 0))
+            historial.ejecutar(ConsultarHistorialHuespedRequest("111", pagina = 0))
         }
     }
 }

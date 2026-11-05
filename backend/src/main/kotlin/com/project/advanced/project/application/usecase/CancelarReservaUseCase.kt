@@ -1,6 +1,6 @@
 package com.project.advanced.project.application.usecase
 
-import com.project.advanced.project.application.dto.CancelarReservaCommand
+import com.project.advanced.project.application.dto.request.CancelarReservaRequest
 import com.project.advanced.project.application.exception.ReservaNoEncontradaException
 import com.project.advanced.project.domain.repository.ReservaRepository
 import com.project.advanced.project.domain.valueobject.CodigoReserva
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional
 class CancelarReservaUseCase(
     private val reservaRepository: ReservaRepository,
 ) {
-    fun ejecutar(comando: CancelarReservaCommand) {
+    fun ejecutar(comando: CancelarReservaRequest) {
         val codigo = CodigoReserva(comando.codigo)
         val reserva = reservaRepository.buscarPorCodigo(codigo) ?: throw ReservaNoEncontradaException(codigo)
 

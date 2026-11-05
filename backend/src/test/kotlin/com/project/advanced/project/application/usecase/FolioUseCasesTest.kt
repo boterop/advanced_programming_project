@@ -1,9 +1,9 @@
 package com.project.advanced.project.application.usecase
 
-import com.project.advanced.project.application.dto.CerrarFolioCommand
-import com.project.advanced.project.application.dto.ConsultarFolioQuery
-import com.project.advanced.project.application.dto.RegistrarCargoFolioCommand
-import com.project.advanced.project.application.dto.RegistrarPagoFolioCommand
+import com.project.advanced.project.application.dto.request.CerrarFolioRequest
+import com.project.advanced.project.application.dto.request.ConsultarFolioRequest
+import com.project.advanced.project.application.dto.request.RegistrarCargoFolioRequest
+import com.project.advanced.project.application.dto.request.RegistrarPagoFolioRequest
 import com.project.advanced.project.application.exception.ReservaNoEncontradaException
 import com.project.advanced.project.domain.entity.Cargo
 import com.project.advanced.project.domain.entity.Folio
@@ -16,7 +16,6 @@ import com.project.advanced.project.domain.valueobject.EstadoFolio
 import com.project.advanced.project.domain.valueobject.ID
 import com.project.advanced.project.domain.valueobject.MedioPago
 import com.project.advanced.project.fixtures.ReservaFixture
-import com.project.advanced.project.fixtures.ReservaFixture.invoke
 import com.project.advanced.project.infrastructure.persistence.memory.FolioRepositoryMemory
 import com.project.advanced.project.infrastructure.persistence.memory.PagoRepositoryMemory
 import com.project.advanced.project.infrastructure.persistence.memory.ReservaRepositoryMemory
@@ -59,10 +58,10 @@ class FolioUseCasesTest {
 
     @Test
     fun `should detail charges, payments and the pending balance`() {
-        registrarCargo.ejecutar(RegistrarCargoFolioCommand(codigo, ConceptoCargo.SERVICIO, monto(30.0)))
-        registrarPago.ejecutar(RegistrarPagoFolioCommand(codigo, MedioPago.EFECTIVO, monto(50.0)))
+        registrarCargo.ejecutar(RegistrarCargoFolioRequest(codigo, ConceptoCargo.SERVICIO, monto(30.0)))
+        registrarPago.ejecutar(RegistrarPagoFolioRequest(codigo, MedioPago.EFECTIVO, monto(50.0)))
 
-        val folio = consultar.ejecutar(ConsultarFolioQuery(codigo))
+        val folio = consultar.ejecutar(ConsultarFolioRequest(codigo))
 
         assertEquals(EstadoFolio.ABIERTO, folio.estado)
         assertEquals(2, folio.cargos.size)
@@ -74,7 +73,7 @@ class FolioUseCasesTest {
 
     @Test
     fun `should keep the folio open after a partial payment`() {
-        val resultado = registrarPago.ejecutar(RegistrarPagoFolioCommand(
+        val resultado = registrarPago.ejecutar(RegistrarPagoFolioRequest(
             codigo, MedioPago.PSE, monto(50.0))
         )
 
@@ -84,7 +83,7 @@ class FolioUseCasesTest {
 
     @Test
     fun `should close the folio when a payment settles the balance`() {
-        val resultado = registrarPago.ejecutar(RegistrarPagoFolioCommand(
+        val resultado = registrarPago.ejecutar(RegistrarPagoFolioRequest(
             codigo, MedioPago.VISA, monto(200.0))
         )
 
@@ -95,28 +94,28 @@ class FolioUseCasesTest {
     @Test
     fun `should reject a payment above the balance and leave the folio untouched`() {
         assertThrows(ReglaDominioException::class.java) {
-            registrarPago.ejecutar(RegistrarPagoFolioCommand(codigo,
+            registrarPago.ejecutar(RegistrarPagoFolioRequest(codigo,
                 MedioPago.VISA, monto(500.0)))
         }
 
-        assertMonto(200.0, consultar.ejecutar(ConsultarFolioQuery(codigo)).saldoPendiente)
+        assertMonto(200.0, consultar.ejecutar(ConsultarFolioRequest(codigo)).saldoPendiente)
     }
 
     @Test
     fun `should refuse to close a folio with an outstanding balance`() {
         assertThrows(ReglaDominioException::class.java) {
-            cerrar.ejecutar(CerrarFolioCommand(codigo))
+            cerrar.ejecutar(CerrarFolioRequest(codigo))
         }
 
         assertEquals(EstadoFolio.ABIERTO, consultar.ejecutar(
-            ConsultarFolioQuery(codigo)).estado
+            ConsultarFolioRequest(codigo)).estado
         )
     }
 
     @Test
     fun `should fail with a clear error when the reservation does not exist`() {
         assertThrows(ReservaNoEncontradaException::class.java) {
-            consultar.ejecutar(ConsultarFolioQuery(UUID.randomUUID().toString()))
+            consultar.ejecutar(ConsultarFolioRequest(UUID.randomUUID().toString()))
         }
     }
 
@@ -125,7 +124,7 @@ class FolioUseCasesTest {
         val sinFolio = ReservaFixture()
         reservas.guardar(sinFolio)
         assertThrows(ReglaDominioException::class.java) {
-            consultar.ejecutar(ConsultarFolioQuery(sinFolio.codigo.valor))
+            consultar.ejecutar(ConsultarFolioRequest(sinFolio.codigo.valor))
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.project.advanced.project.application.usecase
 
-import com.project.advanced.project.application.dto.DesbloquearApartamentoCommand
+import com.project.advanced.project.application.dto.request.DesbloquearApartamentoRequest
 import com.project.advanced.project.domain.exception.ReglaDominioException
 import com.project.advanced.project.domain.repository.BloqueoRepository
 import com.project.advanced.project.domain.service.BloqueoApartamentoService
@@ -14,7 +14,7 @@ class DesbloquearApartamentoUseCase(
     private val bloqueoRepository: BloqueoRepository,
     private val bloqueoApartamentoService: BloqueoApartamentoService
 ) {
-    fun ejecutar(comando: DesbloquearApartamentoCommand) {
+    fun ejecutar(comando: DesbloquearApartamentoRequest) {
         val bloqueo =
             bloqueoRepository.buscar(ID(comando.bloqueoId))
                 ?: throw ReglaDominioException("No existe el bloqueo con id ${comando.bloqueoId}")

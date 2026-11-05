@@ -1,7 +1,7 @@
 package com.project.advanced.project.application.usecase
 
-import com.project.advanced.project.application.dto.RegistrarCargoFolioCommand
-import com.project.advanced.project.application.dto.RegistrarCargoFolioResult
+import com.project.advanced.project.application.dto.request.RegistrarCargoFolioRequest
+import com.project.advanced.project.application.dto.response.RegistrarCargoFolioResponse
 import com.project.advanced.project.application.exception.ReservaNoEncontradaException
 import com.project.advanced.project.domain.exception.ReglaDominioException
 import com.project.advanced.project.domain.repository.FolioRepository
@@ -21,7 +21,7 @@ class RegistrarCargoFolioUseCase(
     private val folioRepository: FolioRepository,
     private val gestionFolioService: GestionFolioService
 ) {
-    fun ejecutar(comando: RegistrarCargoFolioCommand): RegistrarCargoFolioResult {
+    fun ejecutar(comando: RegistrarCargoFolioRequest): RegistrarCargoFolioResponse {
         val codigo = CodigoReserva(comando.codigoReserva)
         val reserva = reservaRepository.buscarPorCodigo(codigo) ?: throw ReservaNoEncontradaException(codigo)
 
@@ -38,6 +38,6 @@ class RegistrarCargoFolioUseCase(
             )
 
         folioRepository.guardar(folio)
-        return RegistrarCargoFolioResult(cargo.id.valor, folio.saldo().cantidad())
+        return RegistrarCargoFolioResponse(cargo.id.valor, folio.saldo().cantidad())
     }
 }

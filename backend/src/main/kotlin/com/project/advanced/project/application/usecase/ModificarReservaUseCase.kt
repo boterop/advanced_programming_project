@@ -1,6 +1,6 @@
 package com.project.advanced.project.application.usecase
 
-import com.project.advanced.project.application.dto.ModificarReservaCommand
+import com.project.advanced.project.application.dto.request.ModificarReservaRequest
 import com.project.advanced.project.application.exception.ReservaNoEncontradaException
 import com.project.advanced.project.domain.entity.Apartamento
 import com.project.advanced.project.domain.entity.Ocupante
@@ -27,7 +27,7 @@ class ModificarReservaUseCase(
     private val disponibilidadModificacionService: DisponibilidadModificacionService,
     private val cotizarEstanciaService: CotizarEstanciaService,
 ) {
-    fun ejecutar(comando: ModificarReservaCommand) {
+    fun ejecutar(comando: ModificarReservaRequest) {
         val codigo = CodigoReserva(comando.codigo)
         val reserva = reservaRepository.buscarPorCodigo(codigo) ?: throw ReservaNoEncontradaException(codigo)
 
@@ -55,7 +55,7 @@ class ModificarReservaUseCase(
     }
 
     private fun resolverApartamento(
-        comando: ModificarReservaCommand,
+        comando: ModificarReservaRequest,
         reserva: Reserva,
     ): Apartamento{
         val nuevoId = comando.apartamentoId?.let { ID(it) }
@@ -67,7 +67,7 @@ class ModificarReservaUseCase(
     }
 
     private fun resolverEstancia(
-        comando: ModificarReservaCommand,
+        comando: ModificarReservaRequest,
         reserva: Reserva,
     ): Estancia {
         val actual = reserva.estancia.periodo
@@ -76,7 +76,7 @@ class ModificarReservaUseCase(
     }
 
     private fun resolverOcupantes(
-        comando: ModificarReservaCommand,
+        comando: ModificarReservaRequest,
         reserva: Reserva,
     ): List<Ocupante> =
         comando.otrosOcupantes

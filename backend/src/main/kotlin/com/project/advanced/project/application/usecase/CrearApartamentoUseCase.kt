@@ -1,7 +1,7 @@
 package com.project.advanced.project.application.usecase
 
-import com.project.advanced.project.application.dto.CrearApartamentoCommand
-import com.project.advanced.project.application.dto.CrearApartamentoResult
+import com.project.advanced.project.application.dto.request.CrearApartamentoCommand
+import com.project.advanced.project.application.dto.response.CrearApartamentoResponse
 import com.project.advanced.project.domain.repository.ApartamentoRepository
 import com.project.advanced.project.domain.service.CatalogoApartamentoService
 import com.project.advanced.project.domain.valueobject.Capacidad
@@ -17,7 +17,7 @@ class CrearApartamentoUseCase(
     private val apartamentoRepository: ApartamentoRepository,
     private val catalogoApartamentoService: CatalogoApartamentoService
 ) {
-    fun ejecutar(comando: CrearApartamentoCommand): CrearApartamentoResult {
+    fun ejecutar(comando: CrearApartamentoCommand): CrearApartamentoResponse {
         val apartamento =
             catalogoApartamentoService.crear(
                 ID(UUID.randomUUID().toString()),
@@ -27,6 +27,6 @@ class CrearApartamentoUseCase(
                 comando.tarifas.map { it.aDominio() },
             )
         apartamentoRepository.guardar(apartamento)
-        return CrearApartamentoResult(apartamento.id.valor)
+        return CrearApartamentoResponse(apartamento.id.valor)
     }
 }

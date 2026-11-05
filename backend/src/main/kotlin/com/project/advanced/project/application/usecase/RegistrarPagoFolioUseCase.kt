@@ -1,7 +1,7 @@
 package com.project.advanced.project.application.usecase
 
-import com.project.advanced.project.application.dto.RegistrarPagoFolioCommand
-import com.project.advanced.project.application.dto.RegistrarPagoFolioResult
+import com.project.advanced.project.application.dto.request.RegistrarPagoFolioRequest
+import com.project.advanced.project.application.dto.response.RegistrarPagoFolioResponse
 import com.project.advanced.project.application.exception.ReservaNoEncontradaException
 import com.project.advanced.project.domain.exception.ReglaDominioException
 import com.project.advanced.project.domain.repository.FolioRepository
@@ -22,7 +22,7 @@ class RegistrarPagoFolioUseCase(
     private val gestionFolioService: GestionFolioService,
     private val pagarFolioService: PagarFolioService
 ) {
-    fun ejecutar(comando: RegistrarPagoFolioCommand): RegistrarPagoFolioResult {
+    fun ejecutar(comando: RegistrarPagoFolioRequest): RegistrarPagoFolioResponse {
         val codigo = CodigoReserva(comando.codigoReserva)
         val reserva = reservaRepository.buscarPorCodigo(codigo) ?: throw ReservaNoEncontradaException(codigo)
 
@@ -38,7 +38,7 @@ class RegistrarPagoFolioUseCase(
 
         val actualizado = folioRepository.buscar(reserva.id) ?: folio
 
-        return RegistrarPagoFolioResult(
+        return RegistrarPagoFolioResponse(
             saldoPendiente = actualizado.saldo().cantidad(),
             folioCerrado = actualizado.estadoActual() == EstadoFolio.CERRADO
         )

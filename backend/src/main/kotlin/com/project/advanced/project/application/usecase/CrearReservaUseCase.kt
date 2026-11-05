@@ -1,7 +1,7 @@
 package com.project.advanced.project.application.usecase
 
-import com.project.advanced.project.application.dto.CrearReservaCommand
-import com.project.advanced.project.application.dto.CrearReservaResult
+import com.project.advanced.project.application.dto.request.CrearReservaRequest
+import com.project.advanced.project.application.dto.response.CrearReservaResponse
 import com.project.advanced.project.domain.entity.Cargo
 import com.project.advanced.project.domain.entity.Folio
 import com.project.advanced.project.domain.entity.Reserva
@@ -36,7 +36,7 @@ class CrearReservaUseCase(
     private val cotizarEstanciaService: CotizarEstanciaService,
     private val folioRepository: FolioRepository,
 )  {
-    fun ejecutar(comando: CrearReservaCommand): CrearReservaResult {
+    fun ejecutar(comando: CrearReservaRequest): CrearReservaResponse {
         val apartamento =
             apartamentoRepository.buscar(ID(comando.apartamentoId))
                 ?: throw ReglaDominioException("No existe el apartamento con id ${comando.apartamentoId}")
@@ -74,12 +74,12 @@ class CrearReservaUseCase(
         reservaRepository.guardar(reserva)
         folioRepository.guardar(abrirFolio(reserva))
 
-        return CrearReservaResult(reserva.id.valor, reserva.codigo.valor, reserva.valor.cantidad())
+        return CrearReservaResponse(reserva.id.valor, reserva.codigo.valor, reserva.valor.cantidad())
 
     }
 
     private fun construirIdExterno(
-        comando: CrearReservaCommand,
+        comando: CrearReservaRequest,
         id: ID,
     ): IdExterno {
         val valor =

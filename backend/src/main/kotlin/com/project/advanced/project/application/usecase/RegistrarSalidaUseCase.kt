@@ -1,6 +1,6 @@
 package com.project.advanced.project.application.usecase
 
-import com.project.advanced.project.application.dto.RegistrarSalidaCommand
+import com.project.advanced.project.application.dto.request.RegistrarSalidaRequest
 import com.project.advanced.project.application.exception.ReservaNoEncontradaException
 import com.project.advanced.project.domain.exception.ReglaDominioException
 import com.project.advanced.project.domain.repository.ApartamentoRepository
@@ -19,7 +19,7 @@ class RegistrarSalidaUseCase(
     private val folioRepository: FolioRepository,
     private val registroEstanciaService: RegistroEstanciaService
 ) {
-    fun ejecutar(comando: RegistrarSalidaCommand) {
+    fun ejecutar(comando: RegistrarSalidaRequest) {
         val codigo = CodigoReserva(comando.codigo)
         val reserva = reservaRepository.buscarPorCodigo(codigo) ?: throw ReservaNoEncontradaException(codigo)
 
