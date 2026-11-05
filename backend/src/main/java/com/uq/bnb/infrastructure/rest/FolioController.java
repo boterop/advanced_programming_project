@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
-@RequestMapping("/api/reservas/{codigo}/folio")
+@RequestMapping("/reservas/{codigo}/folio")
 public class FolioController {
   private final ConsultarFolioUseCase consultarFolioUseCase;
   private final RegistrarPagoUseCase registrarPagoUseCase;
@@ -50,7 +50,7 @@ public class FolioController {
             request.referencia());
     URI location =
         ServletUriComponentsBuilder.fromCurrentContextPath()
-            .path("/api/reservas/{codigo}/folio")
+            .path("/reservas/{codigo}/folio")
             .buildAndExpand(codigo)
             .toUri();
     return ResponseEntity.created(location).body(mapper.toResponse(codigo, folio));

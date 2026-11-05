@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/cotizaciones")
+@RequestMapping("/cotizaciones")
 public class CotizacionController {
   private final CotizarEstanciaUseCase cotizarEstanciaUseCase;
   private final CotizacionMapper mapper;

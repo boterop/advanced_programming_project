@@ -45,7 +45,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
-@RequestMapping("/api/apartamentos")
+@RequestMapping("/apartamentos")
 public class ApartamentoController {
   private final CrearApartamentoUseCase crearApartamentoUseCase;
   private final ConsultarApartamentoUseCase consultarApartamentoUseCase;
@@ -150,7 +150,7 @@ public class ApartamentoController {
     Bloqueo creado = bloquearApartamentoUseCase.ejecutar(identificacion, mapper.toBloqueo(request));
     URI location =
         ServletUriComponentsBuilder.fromCurrentContextPath()
-            .path("/api/apartamentos/{identificacion}/bloqueos/{id}")
+            .path("/apartamentos/{identificacion}/bloqueos/{id}")
             .buildAndExpand(identificacion, creado.id().valor())
             .toUri();
     return ResponseEntity.created(location).body(mapper.toBloqueoResponse(identificacion, creado));

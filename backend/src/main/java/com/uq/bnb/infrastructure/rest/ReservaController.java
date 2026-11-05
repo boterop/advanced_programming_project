@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
-@RequestMapping("/api/reservas")
+@RequestMapping("/reservas")
 public class ReservaController {
   private final CrearReservaUseCase crearReservaUseCase;
   private final ConsultarReservaUseCase consultarReservaUseCase;
