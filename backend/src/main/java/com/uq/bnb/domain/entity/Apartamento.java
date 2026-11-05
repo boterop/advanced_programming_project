@@ -240,6 +240,10 @@ public final class Apartamento {
     bloqueos.add(nuevo);
   }
 
+  public boolean eliminarBloqueo(ID idBloqueo) {
+    return bloqueos.removeIf(bloqueo -> bloqueo.id().equals(idBloqueo));
+  }
+
   public void agregarTarifa(Tarifa nueva) {
     Objects.requireNonNull(nueva, "La tarifa no puede ser nula");
     tarifas.add(nueva);
