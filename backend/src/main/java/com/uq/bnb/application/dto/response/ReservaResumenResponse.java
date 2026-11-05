@@ -1,10 +1,6 @@
 package com.uq.bnb.application.dto.response;
-
 import com.uq.bnb.domain.valueobject.EstadoReserva;
-
 import java.time.LocalDate;
-
-/** Cada elemento del listado paginado de GET /api/reservas. */
 public record ReservaResumenResponse(
         String codigo,
         EstadoReserva estado,
@@ -14,6 +10,5 @@ public record ReservaResumenResponse(
         String nombreTitular,
         int totalOcupantes,
         long valorTotal
-
 ) {
 }

@@ -1,17 +1,11 @@
 package com.uq.bnb.application.usecase;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-
 import java.util.List;
-
-/** Arma la página pedida a partir de una lista ya filtrada y ordenada (los listados son de 10 por página). */
 final class Paginacion {
-
     private Paginacion() {
     }
-
     static <T> Page<T> paginar(List<T> elementos, Pageable pageable) {
         if (pageable.isUnpaged()) {
             return new PageImpl<>(elementos);

@@ -1,5 +1,4 @@
 package com.uq.bnb.application.usecase;
-
 import com.uq.bnb.application.exception.AlojamientoNoEncontradoException;
 import com.uq.bnb.domain.entity.Alojamiento;
 import com.uq.bnb.domain.entity.Apartamento;
@@ -10,23 +9,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-/**
- * Caso de uso: buscar apartamentos disponibles por fechas y composición del grupo (7.5). Orquesta; las reglas
- * (RN-01, RN-02, RN-07, RN-20 y RN-Propia-03) viven en DisponibilidadApartamentoService y en Apartamento.
- */
 @Service
 public class BuscarApartamentosDisponiblesUseCase {
-
     private final AlojamientoRepository alojamientoRepository;
     private final DisponibilidadApartamentoService disponibilidadService;
-
     public BuscarApartamentosDisponiblesUseCase(AlojamientoRepository alojamientoRepository,
                                                 DisponibilidadApartamentoService disponibilidadService) {
         this.alojamientoRepository = alojamientoRepository;
         this.disponibilidadService = disponibilidadService;
     }
-
     @Transactional(readOnly = true)
     public Page<Apartamento> ejecutar(Estancia estancia, int totalOcupantes, boolean conMascota, Pageable pageable) {
         Alojamiento alojamiento = alojamientoRepository.obtener().orElseThrow(AlojamientoNoEncontradoException::new);

@@ -1,5 +1,8 @@
 package com.uq.bnb.domain.entity;
 
+import com.uq.bnb.domain.valueobject.ID;
+
+import lombok.Getter;
 import com.uq.bnb.domain.exception.ReglaDominioException;
 import com.uq.bnb.domain.valueobject.ParametrosAlojamiento;
 import com.uq.bnb.domain.valueobject.TramoAntelacion;
@@ -11,36 +14,27 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
-/**
- * F-13: el sistema administra un único alojamiento. Raíz del agregado que compone el historial de Temporada y de
- * PoliticaCancelacion, y "tiene" los parámetros de la Ficha (ParametrosAlojamiento), que le llegan ya armados:
- * el dominio no sabe que hoy vienen de application.properties.
- * <p>
- * Apartamento es una raíz de agregado DISTINTA: Alojamiento no la contiene ni la referencia por objeto.
- */
+
+@Getter
 public final class Alojamiento {
 
-    private final UUID id;
+    private final ID id;
     private final String nombre;
     private final String ciudad;
     private final ParametrosAlojamiento parametros;
     private final List<Temporada> temporadas = new ArrayList<>();
     private final List<PoliticaCancelacion> historialPoliticas = new ArrayList<>();
 
-    private Alojamiento(UUID id, String nombre, String ciudad, ParametrosAlojamiento parametros) {
+    private Alojamiento(ID id, String nombre, String ciudad, ParametrosAlojamiento parametros) {
         this.id = id;
         this.nombre = nombre;
         this.ciudad = ciudad;
         this.parametros = parametros;
     }
 
-    /**
-     * F-07 y 7.4 exigen que exista, desde el primer momento, una política de cancelación vigente y una temporada
-     * base: por eso son obligatorias al crear, no algo que se agregue después "si acaso".
-     */
-    public static Alojamiento crear(String nombre, String ciudad, ParametrosAlojamiento parametros,
+
+    public static Alojamiento crear(ID id, ID idPoliticaBase, String nombre, String ciudad, ParametrosAlojamiento parametros,
                                     Temporada temporadaBase, List<TramoAntelacion> tramosPoliticaInicial,
                                     LocalDate vigenteDesde) {
         validarIdentidad(nombre, ciudad);
@@ -49,17 +43,14 @@ public final class Alojamiento {
         if (!temporadaBase.esBase()) {
             throw new ReglaDominioException("La temporada inicial del alojamiento debe ser la temporada base");
         }
-        Alojamiento alojamiento = new Alojamiento(UUID.randomUUID(), nombre.trim(), ciudad.trim(), parametros);
+        Alojamiento alojamiento = new Alojamiento(id, nombre.trim(), ciudad.trim(), parametros);
         alojamiento.temporadas.add(temporadaBase);
-        alojamiento.historialPoliticas.add(PoliticaCancelacion.crear(1, vigenteDesde, tramosPoliticaInicial));
+        alojamiento.historialPoliticas.add(PoliticaCancelacion.crear(idPoliticaBase, 1, vigenteDesde, tramosPoliticaInicial));
         return alojamiento;
     }
 
-    /**
-     * Reconstruye el Alojamiento ya persistido. Solo para rehidratar desde la persistencia: el estado guardado ya
-     * pasó por crear(...) y por los métodos de negocio.
-     */
-    public static Alojamiento reconstruir(UUID id, String nombre, String ciudad, ParametrosAlojamiento parametros,
+
+    public static Alojamiento reconstruir(ID id, String nombre, String ciudad, ParametrosAlojamiento parametros,
                                           List<Temporada> temporadas, List<PoliticaCancelacion> politicas) {
         Alojamiento alojamiento = new Alojamiento(id, nombre, ciudad, parametros);
         alojamiento.temporadas.addAll(temporadas);
@@ -76,7 +67,7 @@ public final class Alojamiento {
         }
     }
 
-    /** 7.4: las temporadas no pueden solaparse entre sí; solo puede existir una temporada base. */
+
     public void agregarTemporada(Temporada nueva) {
         Objects.requireNonNull(nueva, "La temporada no puede ser nula");
         if (nueva.esBase()) {
@@ -89,10 +80,7 @@ public final class Alojamiento {
         temporadas.add(nueva);
     }
 
-    /**
-     * 7.4: ninguna fecha reservable queda sin temporada. Se busca primero entre las temporadas específicas; si
-     * ninguna cubre la fecha, se usa la base como respaldo.
-     */
+
     public Temporada temporadaVigente(LocalDate fecha) {
         Objects.requireNonNull(fecha, "La fecha no puede ser nula");
         return temporadas.stream()
@@ -105,27 +93,23 @@ public final class Alojamiento {
                         .orElseThrow(() -> new ReglaDominioException("El alojamiento no tiene temporada base configurada")));
     }
 
-    public Optional<Temporada> temporada(UUID idTemporada) {
+    public Optional<Temporada> temporada(ID idTemporada) {
         return temporadas.stream().filter(t -> t.id().equals(idTemporada)).findFirst();
     }
 
-    /**
-     * 7.4 / F-07: al actualizarla se conserva la versión anterior; nunca se edita una PoliticaCancelacion existente,
-     * siempre se agrega una nueva. La nueva debe regir DESPUÉS de la más reciente: con la misma fecha habría dos
-     * versiones "vigentes" a la vez y no se sabría cuál congelar en una reserva (RN-13).
-     */
-    public PoliticaCancelacion definirNuevaPolitica(List<TramoAntelacion> tramos, LocalDate vigenteDesde) {
+
+    public PoliticaCancelacion definirNuevaPolitica(ID idPolitica, List<TramoAntelacion> tramos, LocalDate vigenteDesde) {
         Objects.requireNonNull(vigenteDesde, "La fecha de vigencia no puede ser nula");
         boolean noEsPosterior = historialPoliticas.stream().anyMatch(p -> !vigenteDesde.isAfter(p.vigenteDesde()));
         if (noEsPosterior) {
             throw new ReglaDominioException("La nueva política debe regir después de la versión más reciente");
         }
-        PoliticaCancelacion nueva = PoliticaCancelacion.crear(historialPoliticas.size() + 1, vigenteDesde, tramos);
+        PoliticaCancelacion nueva = PoliticaCancelacion.crear(idPolitica, historialPoliticas.size() + 1, vigenteDesde, tramos);
         historialPoliticas.add(nueva);
         return nueva;
     }
 
-    /** 3.5: la reserva congela la versión vigente al momento de crearse. */
+
     public PoliticaCancelacion politicaVigente(LocalDate fecha) {
         Objects.requireNonNull(fecha, "La fecha no puede ser nula");
         return historialPoliticas.stream()
@@ -134,50 +118,23 @@ public final class Alojamiento {
                 .orElseThrow(() -> new ReglaDominioException("No hay una política de cancelación vigente para la fecha " + fecha));
     }
 
-    /** 7.4: consulta una versión de la política por su número (1, 2, 3...). */
+
     public Optional<PoliticaCancelacion> politicaPorNumero(int numero) {
         return historialPoliticas.stream().filter(p -> p.numeroVersion().numero() == numero).findFirst();
     }
 
-    /** RN-13: la retención se calcula con la versión congelada en la reserva, no con la vigente al momento del hecho. */
+
     public Optional<PoliticaCancelacion> politicaDeVersion(VersionPolitica version) {
         Objects.requireNonNull(version, "La versión no puede ser nula");
         return historialPoliticas.stream().filter(p -> p.numeroVersion().equals(version)).findFirst();
     }
-
-    public UUID id() {
-        return id;
-    }
-
-    public String nombre() {
-        return nombre;
-    }
-
-    public String ciudad() {
-        return ciudad;
-    }
-
-    public ParametrosAlojamiento parametros() {
-        return parametros;
-    }
-
-    public List<Temporada> temporadas() {
-        return List.copyOf(temporadas);
-    }
-
-    public List<PoliticaCancelacion> historialPoliticas() {
-        return List.copyOf(historialPoliticas);
-    }
-
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Alojamiento otro)) return false;
-        return this.id.equals(otro.id);
+    public boolean equals(Object other) {
+        return other instanceof Alojamiento entity && id.equals(entity.id());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return id.hashCode();
     }
 }

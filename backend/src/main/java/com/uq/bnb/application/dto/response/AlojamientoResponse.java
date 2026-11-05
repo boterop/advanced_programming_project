@@ -1,8 +1,5 @@
 package com.uq.bnb.application.dto.response;
-
 import java.util.List;
-
-/** GET /api/alojamiento. */
 public record AlojamientoResponse(
         String nombre,
         String ciudad,

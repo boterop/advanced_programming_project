@@ -1,27 +1,27 @@
 package com.uq.bnb.domain.entity;
 
+import com.uq.bnb.domain.valueobject.ID;
+
+import lombok.Getter;
 import com.uq.bnb.domain.exception.ReglaDominioException;
 import com.uq.bnb.domain.valueobject.CodigoReserva;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
-import java.util.UUID;
 
-/**
- * Registro (check-in) de un grupo. Referencia a la reserva, al apartamento y al titular solo por su identificador:
- * son otros agregados (o parte de ellos), y un agregado nunca guarda a otro.
- */
+
+@Getter
 public final class Registro {
 
-    private final UUID id;
+    private final ID id;
     private final LocalDate fechaEntrada;
     private final LocalTime horaEntrada;
     private final CodigoReserva codigoReserva;
     private final String apartamentoId;
     private final String documentoTitular;
 
-    private Registro(UUID id, LocalDate fechaEntrada, LocalTime horaEntrada, CodigoReserva codigoReserva,
+    private Registro(ID id, LocalDate fechaEntrada, LocalTime horaEntrada, CodigoReserva codigoReserva,
                      String apartamentoId, String documentoTitular) {
         this.id = id;
         this.fechaEntrada = fechaEntrada;
@@ -31,7 +31,7 @@ public final class Registro {
         this.documentoTitular = documentoTitular;
     }
 
-    public static Registro crear(LocalDate fechaEntrada, LocalTime horaEntrada, CodigoReserva codigoReserva,
+    public static Registro crear(ID id, LocalDate fechaEntrada, LocalTime horaEntrada, CodigoReserva codigoReserva,
                                  String apartamentoId, String documentoTitular) {
         if (fechaEntrada == null) {
             throw new ReglaDominioException("La fecha de entrada no puede ser vacia");
@@ -48,42 +48,15 @@ public final class Registro {
         if (documentoTitular == null || documentoTitular.isBlank()) {
             throw new ReglaDominioException("El titular no puede ser vacio");
         }
-        return new Registro(UUID.randomUUID(), fechaEntrada, horaEntrada, codigoReserva, apartamentoId, documentoTitular);
+        return new Registro(id, fechaEntrada, horaEntrada, codigoReserva, apartamentoId, documentoTitular);
     }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public LocalDate getFechaEntrada() {
-        return fechaEntrada;
-    }
-
-    public LocalTime getHoraEntrada() {
-        return horaEntrada;
-    }
-
-    public CodigoReserva getCodigoReserva() {
-        return codigoReserva;
-    }
-
-    public String getApartamentoId() {
-        return apartamentoId;
-    }
-
-    public String getDocumentoTitular() {
-        return documentoTitular;
-    }
-
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Registro registro)) return false;
-        return Objects.equals(id, registro.id);
+    public boolean equals(Object other) {
+        return other instanceof Registro entity && id.equals(entity.id());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return id.hashCode();
     }
 }

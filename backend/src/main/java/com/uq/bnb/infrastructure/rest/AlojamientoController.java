@@ -1,5 +1,4 @@
 package com.uq.bnb.infrastructure.rest;
-
 import com.uq.bnb.application.dto.request.DefinirPoliticaCancelacionRequest;
 import com.uq.bnb.application.dto.request.RegistrarTemporadaRequest;
 import com.uq.bnb.application.dto.response.AlojamientoResponse;
@@ -26,15 +25,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.net.URI;
 import java.util.UUID;
-
-/** Controller delgado del recurso alojamiento: valida, traduce con el mapper y delega en el caso de uso. */
 @RestController
 @RequestMapping("/api/alojamiento")
 public class AlojamientoController {
-
     private final ConsultarAlojamientoUseCase consultarAlojamientoUseCase;
     private final RegistrarTemporadaUseCase registrarTemporadaUseCase;
     private final ConsultarTemporadaUseCase consultarTemporadaUseCase;
@@ -42,7 +37,6 @@ public class AlojamientoController {
     private final ListarPoliticasCancelacionUseCase listarPoliticasCancelacionUseCase;
     private final ConsultarPoliticaCancelacionUseCase consultarPoliticaCancelacionUseCase;
     private final AlojamientoMapper mapper;
-
     public AlojamientoController(ConsultarAlojamientoUseCase consultarAlojamientoUseCase,
                                  RegistrarTemporadaUseCase registrarTemporadaUseCase,
                                  ConsultarTemporadaUseCase consultarTemporadaUseCase,
@@ -58,28 +52,23 @@ public class AlojamientoController {
         this.consultarPoliticaCancelacionUseCase = consultarPoliticaCancelacionUseCase;
         this.mapper = mapper;
     }
-
     @GetMapping
     public AlojamientoResponse consultar() {
         return mapper.toResponse(consultarAlojamientoUseCase.ejecutar());
     }
-
     @PostMapping("/temporadas")
     public ResponseEntity<TemporadaResponse> registrarTemporada(@Valid @RequestBody RegistrarTemporadaRequest request) {
         Temporada creada = registrarTemporadaUseCase.ejecutar(mapper.toDomain(request));
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(creada.id())
+                .buildAndExpand(creada.id().valor())
                 .toUri();
         return ResponseEntity.created(location).body(mapper.toTemporadaResponse(creada));
     }
-
     @GetMapping("/temporadas/{id}")
     public TemporadaResponse consultarTemporada(@PathVariable UUID id) {
         return mapper.toTemporadaResponse(consultarTemporadaUseCase.ejecutar(id));
     }
-
-    /** F-07, 7.4: define una nueva versión de la política de cancelación; las anteriores se conservan. */
     @PostMapping("/politica-cancelacion")
     public ResponseEntity<PoliticaCancelacionResponse> definirPolitica(@Valid @RequestBody DefinirPoliticaCancelacionRequest request) {
         PoliticaCancelacion creada = definirPoliticaCancelacionUseCase.ejecutar(
@@ -90,13 +79,10 @@ public class AlojamientoController {
                 .toUri();
         return ResponseEntity.created(location).body(mapper.toPoliticaResponse(creada));
     }
-
-    /** 7.4: todas las versiones de la política, de la primera a la más reciente, 10 por página. */
     @GetMapping("/politica-cancelacion")
     public Page<PoliticaCancelacionResponse> listarPoliticas(@PageableDefault(size = 10) Pageable pageable) {
         return listarPoliticasCancelacionUseCase.ejecutar(pageable).map(mapper::toPoliticaResponse);
     }
-
     @GetMapping("/politica-cancelacion/{version}")
     public PoliticaCancelacionResponse consultarPolitica(@PathVariable int version) {
         return mapper.toPoliticaResponse(consultarPoliticaCancelacionUseCase.ejecutar(version));

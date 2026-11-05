@@ -2,78 +2,105 @@ package com.uq.bnb.domain.valueobject;
 
 import com.uq.bnb.domain.exception.ReglaDominioException;
 
+import lombok.Getter;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Objects;
 
-/**
- * Value Object que representa un monto en pesos colombianos (COP).
- */
-public record Dinero(BigDecimal monto) {
+@Getter
+public class Dinero {
 
-    private static final String MONEDA = "COP";
+  private final BigDecimal monto;
+  private final Moneda moneda;
 
-    public Dinero {
-        Objects.requireNonNull(monto, "El monto no puede ser nulo");
-        if (monto.compareTo(BigDecimal.ZERO) < 0) {
-            throw new ReglaDominioException("El monto de dinero no puede ser negativo");
-        }
-        // 3.4: redondeo al peso más cercano, sin decimales.
-        monto = monto.setScale(0, RoundingMode.HALF_UP);
+  public Dinero(BigDecimal valor, Moneda moneda) {
+    if (valor.compareTo(BigDecimal.ZERO) < 0) {
+      throw new ReglaDominioException("El valor no puede ser negativo");
     }
 
-    public static Dinero of(long monto) {
-        return new Dinero(BigDecimal.valueOf(monto));
+    this.monto = valor;
+    this.moneda = moneda;
+  }
+
+  public Dinero(Object valor, Moneda moneda) {
+    this(parse(valor), moneda);
+  }
+
+  public Dinero(Object valor) {
+    this(parse(valor), Moneda.COP);
+  }
+
+  public Dinero multiplicar(Object factor) {
+    return new Dinero(monto.multiply(parse(factor)));
+  }
+
+  public Dinero dividir(BigDecimal divisor) {
+    return new Dinero(
+        monto.divide(parse(divisor), RoundingMode.HALF_UP));
+  }
+
+  public Dinero sumar(Dinero otro) {
+    return new Dinero(monto.add(otro.monto));
+  }
+
+  public Dinero restar(Dinero otro) {
+    return new Dinero(monto.subtract(otro.monto));
+  }
+
+  public BigDecimal cantidad() {
+    return monto;
+  }
+
+  public boolean esCero() {
+    return monto.compareTo(BigDecimal.ZERO) == 0;
+  }
+
+  private static BigDecimal parse(Object valor) {
+    if (valor instanceof BigDecimal) {
+      return (BigDecimal) valor;
     }
 
-    public static Dinero de(BigDecimal monto) {
-        return new Dinero(monto);
+    if (valor instanceof Integer) {
+      return BigDecimal.valueOf((Integer) valor);
     }
 
-    public static Dinero de(long monto) {
-        return new Dinero(BigDecimal.valueOf(monto));
+    if (valor instanceof Long) {
+      return BigDecimal.valueOf((Long) valor);
     }
 
-    public static Dinero cero() {
-        return new Dinero(BigDecimal.ZERO);
+    if (valor instanceof Double) {
+      return BigDecimal.valueOf((Double) valor);
     }
 
-    public Dinero sumar(Dinero otro) {
-        Objects.requireNonNull(otro, "El dinero a sumar no puede ser nulo");
-        return new Dinero(this.monto.add(otro.monto));
-    }
+    throw new ReglaDominioException(
+        "Tipo de valor no soportado: " +
+            (valor == null ? "null" : valor.getClass().getSimpleName()));
+  }
 
-    public Dinero restar(Dinero otro) {
-        Objects.requireNonNull(otro, "El dinero a restar no puede ser nulo");
-        return new Dinero(this.monto.subtract(otro.monto));
-    }
+  public boolean esMayorQue(Dinero otro) {
+    return this.monto.compareTo(otro.monto) > 0;
+  }
 
-    public Dinero multiplicar(int factor) {
-        if (factor < 0) {
-            throw new ReglaDominioException("No se puede multiplicar un Dinero por un factor negativo");
-        }
-        return new Dinero(this.monto.multiply(BigDecimal.valueOf(factor)));
-    }
+  public static Dinero cero() {
+    return new Dinero(BigDecimal.ZERO);
+  }
 
-    public Dinero multiplicar(BigDecimal factor) {
-        Objects.requireNonNull(factor, "El factor no puede ser nulo");
-        return new Dinero(this.monto.multiply(factor));
-    }
+  public static Dinero de(Object valor) {
+    return new Dinero(valor);
+  }
 
-    public boolean esMayorQue(Dinero otro) {
-        Objects.requireNonNull(otro, "El dinero a comparar no puede ser nulo");
-        return this.monto.compareTo(otro.monto) > 0;
-    }
+  public boolean esNegativo() {
+    return monto.compareTo(BigDecimal.ZERO) < 0;
+  }
 
-    public boolean esCero() {
-        return this.monto.compareTo(BigDecimal.ZERO) == 0;
-    }
+  @Override
+  public int hashCode() {
+    return monto.hashCode();
+  }
 
-    public boolean esNegativo() {
-        return this.monto.compareTo(BigDecimal.ZERO) < 0;
-    }
-
-    public String moneda() {
-        return MONEDA;
-    }
+  @Override
+  public boolean equals(Object other) {
+    return other instanceof Dinero d
+        && monto.equals(d.monto) && moneda == d.moneda;
+  }
 }

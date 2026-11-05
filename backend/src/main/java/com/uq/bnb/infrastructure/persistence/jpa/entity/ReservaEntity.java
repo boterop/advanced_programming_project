@@ -1,5 +1,4 @@
 package com.uq.bnb.infrastructure.persistence.jpa.entity;
-
 import com.uq.bnb.domain.valueobject.CanalOrigen;
 import com.uq.bnb.domain.valueobject.EstadoReserva;
 import jakarta.persistence.AttributeOverride;
@@ -15,7 +14,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,98 +21,73 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-/**
- * Persistencia del agregado Reserva (con su folio, ocupantes y novedades). Es una clase de infraestructura separada
- * del dominio: el dominio no sabe que existe. El apartamento se guarda solo por su identificador (referencia entre
- * agregados, sin llave foránea a su entidad) y la cotización queda congelada como copia de valores (RN-22).
- */
 @Entity
 @Table(name = "reserva")
 public class ReservaEntity {
-
     @Id
     private UUID id;
-
     @Column(name = "codigo", nullable = false, unique = true, length = 30)
     private String codigo;
-
     @Column(name = "apartamento_id", nullable = false, length = 40)
     private String apartamentoId;
-
     @Embedded
     @AttributeOverrides({
+            @AttributeOverride(name = "id", column = @Column(name = "titular_id", nullable = false)),
             @AttributeOverride(name = "documento", column = @Column(name = "titular_documento", nullable = false)),
             @AttributeOverride(name = "nombre", column = @Column(name = "titular_nombre", nullable = false)),
             @AttributeOverride(name = "fechaNacimiento", column = @Column(name = "titular_fecha_nacimiento", nullable = false))
     })
     private OcupanteEmbeddable titular;
-
     @Embedded
     private EstanciaEmbeddable estancia;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "canal_origen", nullable = false)
     private CanalOrigen canalOrigen;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false)
     private EstadoReserva estado;
-
     @Column(name = "version_politica_numero", nullable = false)
     private int versionPoliticaNumero;
-
     @Column(name = "version_politica_vigente_desde", nullable = false)
     private LocalDate versionPoliticaVigenteDesde;
-
     @Column(name = "fecha_creacion", nullable = false)
     private LocalDateTime fechaCreacion;
-
     @Column(name = "con_mascota", nullable = false)
     private boolean conMascota;
-
     @Column(name = "hora_estimada_llegada")
     private LocalTime horaEstimadaLlegada;
-
     @Column(name = "motivo_cancelacion", length = 300)
     private String motivoCancelacion;
-
     @Column(name = "fecha_cancelacion")
     private LocalDateTime fechaCancelacion;
-
     @Column(name = "monto_retenido", precision = 19, scale = 0)
     private BigDecimal montoRetenido;
-
     @Column(name = "monto_devuelto", precision = 19, scale = 0)
     private BigDecimal montoDevuelto;
-
     @Column(name = "folio_id", nullable = false)
     private UUID folioId;
-
     @ElementCollection
     @CollectionTable(name = "reserva_detalle_noche", joinColumns = @JoinColumn(name = "reserva_id"))
     @OrderBy("fecha ASC")
     private List<DetalleNocheEmbeddable> detalleNoches = new ArrayList<>();
-
     @ElementCollection
     @CollectionTable(name = "reserva_ocupante", joinColumns = @JoinColumn(name = "reserva_id"))
+    @AttributeOverride(name = "id", column = @Column(name = "ocupante_id", nullable = false))
     private List<OcupanteEmbeddable> ocupantes = new ArrayList<>();
-
     @ElementCollection
     @CollectionTable(name = "reserva_cargo", joinColumns = @JoinColumn(name = "reserva_id"))
+    @AttributeOverride(name = "id", column = @Column(name = "cargo_id", nullable = false))
     private List<CargoEmbeddable> cargos = new ArrayList<>();
-
     @ElementCollection
     @CollectionTable(name = "reserva_pago", joinColumns = @JoinColumn(name = "reserva_id"))
+    @AttributeOverride(name = "id", column = @Column(name = "pago_id", nullable = false))
     private List<PagoEmbeddable> pagos = new ArrayList<>();
-
     @ElementCollection
     @CollectionTable(name = "reserva_novedad", joinColumns = @JoinColumn(name = "reserva_id"))
+    @AttributeOverride(name = "id", column = @Column(name = "novedad_id", nullable = false))
     private List<NovedadReservaEmbeddable> novedades = new ArrayList<>();
-
     protected ReservaEntity() {
     }
-
     public ReservaEntity(UUID id, String codigo, String apartamentoId, OcupanteEmbeddable titular, EstanciaEmbeddable estancia,
                          CanalOrigen canalOrigen, EstadoReserva estado, int versionPoliticaNumero,
                          LocalDate versionPoliticaVigenteDesde, LocalDateTime fechaCreacion, boolean conMascota,
@@ -133,15 +106,12 @@ public class ReservaEntity {
         this.horaEstimadaLlegada = horaEstimadaLlegada;
         this.folioId = folioId;
     }
-
-    /** Las cuatro columnas quedan vacías mientras la reserva no se cancele. */
     public void asignarCancelacion(String motivo, LocalDateTime fecha, BigDecimal retenido, BigDecimal devuelto) {
         this.motivoCancelacion = motivo;
         this.fechaCancelacion = fecha;
         this.montoRetenido = retenido;
         this.montoDevuelto = devuelto;
     }
-
     public UUID getId() { return id; }
     public String getCodigo() { return codigo; }
     public String getApartamentoId() { return apartamentoId; }

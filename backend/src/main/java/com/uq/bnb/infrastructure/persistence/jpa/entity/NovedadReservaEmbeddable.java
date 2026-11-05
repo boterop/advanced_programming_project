@@ -1,15 +1,11 @@
 package com.uq.bnb.infrastructure.persistence.jpa.entity;
-
 import com.uq.bnb.domain.valueobject.Gravedad;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-
 import java.time.LocalDate;
 import java.util.UUID;
-
-/** Una novedad registrada durante la estancia de la reserva. */
 @Embeddable
 public record NovedadReservaEmbeddable(
         UUID id,

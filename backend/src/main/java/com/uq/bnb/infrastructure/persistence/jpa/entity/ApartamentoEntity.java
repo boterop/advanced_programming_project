@@ -1,5 +1,4 @@
 package com.uq.bnb.infrastructure.persistence.jpa.entity;
-
 import com.uq.bnb.domain.valueobject.EstadoOperativo;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
@@ -9,70 +8,52 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import java.util.UUID;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * Entidad JPA del agregado Apartamento. Vive solo en infraestructura: el dominio no sabe que existe.
- * La clave primaria es la identificación de negocio (ej. "ATK-001"), sin id sintético.
- * La eliminación es lógica: la columna "activo" nunca se borra.
- */
 @Entity
 @Table(name = "apartamento")
 public class ApartamentoEntity {
-
     @Id
     @Column(name = "identificacion", length = 40)
     private String identificacion;
-
+    @Column(name = "uuid", nullable = false, unique = true)
+    private UUID uuid;
     @Column(name = "nombre", nullable = false)
     private String nombre;
-
     @Column(name = "capacidad", nullable = false)
     private int capacidad;
-
     @Column(name = "tipo_nombre")
     private String tipoNombre;
-
     @ElementCollection
     @CollectionTable(name = "apartamento_tipo_caracteristica", joinColumns = @JoinColumn(name = "apartamento_id"))
     @Column(name = "caracteristica")
     private List<String> tipoCaracteristicas = new ArrayList<>();
-
     @ElementCollection
     @CollectionTable(name = "apartamento_dormitorio", joinColumns = @JoinColumn(name = "apartamento_id"))
     private List<DormitorioEmbeddable> dormitorios = new ArrayList<>();
-
     @Enumerated(EnumType.STRING)
     @Column(name = "estado_operativo", nullable = false)
     private EstadoOperativo estadoOperativo;
-
     @Column(name = "permite_mascotas", nullable = false)
     private boolean permiteMascotas;
-
     @Column(name = "activo", nullable = false)
     private boolean activo;
-
     @OneToMany(mappedBy = "apartamento", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TarifaEntity> tarifas = new ArrayList<>();
-
     @OneToMany(mappedBy = "apartamento", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BloqueoEntity> bloqueos = new ArrayList<>();
-
     @OneToMany(mappedBy = "apartamento", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<NovedadEntity> novedades = new ArrayList<>();
-
-    /** Requerido por JPA. */
     protected ApartamentoEntity() {
     }
-
-    public ApartamentoEntity(String identificacion, String nombre, int capacidad, String tipoNombre,
+    public ApartamentoEntity(UUID uuid, String identificacion, String nombre, int capacidad, String tipoNombre,
                              List<String> tipoCaracteristicas, boolean permiteMascotas, EstadoOperativo estadoOperativo,
                              boolean activo) {
+        this.uuid = uuid;
         this.identificacion = identificacion;
         this.nombre = nombre;
         this.capacidad = capacidad;
@@ -82,23 +63,20 @@ public class ApartamentoEntity {
         this.estadoOperativo = estadoOperativo;
         this.activo = activo;
     }
-
     public void agregarTarifa(TarifaEntity tarifa) {
         tarifa.asignarApartamento(this);
         tarifas.add(tarifa);
     }
-
     public void agregarBloqueo(BloqueoEntity bloqueo) {
         bloqueo.asignarApartamento(this);
         bloqueos.add(bloqueo);
     }
-
     public void agregarNovedad(NovedadEntity novedad) {
         novedad.asignarApartamento(this);
         novedades.add(novedad);
     }
-
     public String getIdentificacion() { return identificacion; }
+    public UUID getUuid() { return uuid; }
     public String getNombre() { return nombre; }
     public int getCapacidad() { return capacidad; }
     public String getTipoNombre() { return tipoNombre; }

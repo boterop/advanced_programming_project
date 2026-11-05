@@ -1,11 +1,5 @@
 package com.uq.bnb.domain.valueobject;
-
 import java.util.Objects;
-
-/**
- * Parámetros de la Ficha (sección 6 / A.4) agrupados en un solo objeto inmutable. El dominio no sabe de dónde
- * vienen (hoy, application.properties): quien lo construye es la capa de infraestructura.
- */
 public record ParametrosAlojamiento(
         UmbralEdadFacturable umbralEdadFacturable,
         HorarioAlojamiento horario,
@@ -13,7 +7,6 @@ public record ParametrosAlojamiento(
         PlazoConfirmacion plazoConfirmacion,
         HoraLimiteNoShow horaLimiteNoShow,
         PoliticaAnticipo politicaAnticipo) {
-
     public ParametrosAlojamiento {
         Objects.requireNonNull(umbralEdadFacturable, "El umbral de edad facturable no puede ser nulo");
         Objects.requireNonNull(horario, "El horario no puede ser nulo");

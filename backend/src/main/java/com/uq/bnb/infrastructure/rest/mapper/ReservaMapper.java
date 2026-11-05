@@ -1,11 +1,11 @@
 package com.uq.bnb.infrastructure.rest.mapper;
-
 import com.uq.bnb.application.dto.request.ConfirmarReservaRequest;
 import com.uq.bnb.application.dto.request.CrearReservaRequest;
 import com.uq.bnb.application.dto.request.OcupanteRequest;
 import com.uq.bnb.application.dto.response.OcupanteResponse;
 import com.uq.bnb.application.dto.response.ReservaDetalleResponse;
 import com.uq.bnb.application.dto.response.ReservaResumenResponse;
+import com.uq.bnb.application.port.IDProvider;
 import com.uq.bnb.application.exception.ReservaNoEncontradaException;
 import com.uq.bnb.domain.entity.Ocupante;
 import com.uq.bnb.domain.entity.Reserva;
@@ -17,19 +17,16 @@ import com.uq.bnb.domain.valueobject.Estancia;
 import com.uq.bnb.domain.valueobject.MedioPago;
 import com.uq.bnb.domain.valueobject.SolicitudReserva;
 import org.mapstruct.Mapper;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalTime;
 import java.util.List;
-
-/**
- * DTO <-> dominio sin lógica de negocio. La entrada pasa por los constructores y fábricas del dominio (Estancia,
- * Titular.crear, Ocupante.crear): el request no puede saltarse sus validaciones. Se escribe con métodos por defecto
- * porque Titular es un Ocupante y MapStruct no sabría cuál de los dos métodos usar para una lista.
- */
+import java.util.Optional;
 @Mapper(componentModel = "spring")
-public interface ReservaMapper {
+public abstract class ReservaMapper {
+    @Autowired
+    protected IDProvider idProvider;
 
-    default SolicitudReserva toSolicitud(CrearReservaRequest request) {
+    public SolicitudReserva toSolicitud(CrearReservaRequest request) {
         return new SolicitudReserva(
                 toTitular(request.titular()),
                 toAcompanantes(request.ocupantes()),
@@ -38,76 +35,65 @@ public interface ReservaMapper {
                 Boolean.TRUE.equals(request.conMascota()),
                 request.horaEstimadaLlegada());
     }
-
-    default Titular toTitular(OcupanteRequest request) {
-        return Titular.crear(request.documento(), request.nombre(), request.fechaNacimiento());
+    public Titular toTitular(OcupanteRequest request) {
+        return Titular.crear(idProvider.obtener(), request.documento(), request.nombre(), request.fechaNacimiento());
     }
-
-    default List<Ocupante> toAcompanantes(List<OcupanteRequest> requests) {
+    public List<Ocupante> toAcompanantes(List<OcupanteRequest> requests) {
         return requests.stream()
-                .map(r -> Ocupante.crear(r.documento(), r.nombre(), r.fechaNacimiento()))
+                .map(r -> Ocupante.crear(idProvider.obtener(), r.documento(), r.nombre(), r.fechaNacimiento()))
                 .toList();
     }
-
-    /** Un código con formato inválido tampoco corresponde a ninguna reserva: se trata como no encontrada (404). */
-    default CodigoReserva toCodigo(String valor) {
+    public CodigoReserva toCodigo(String valor) {
         try {
             return new CodigoReserva(valor);
         } catch (ReglaDominioException e) {
             throw new ReservaNoEncontradaException(valor);
         }
     }
-
-    /** El cuerpo de confirmar es opcional: sin cuerpo no hay medio de pago. */
-    default MedioPago toMedioPago(ConfirmarReservaRequest request) {
+    public MedioPago toMedioPago(ConfirmarReservaRequest request) {
         return request == null ? null : request.medioPago();
     }
-
-    default LocalTime toHoraEstimadaLlegada(ConfirmarReservaRequest request) {
+    public LocalTime toHoraEstimadaLlegada(ConfirmarReservaRequest request) {
         return request == null ? null : request.horaEstimadaLlegada();
     }
-
-    default String toReferencia(ConfirmarReservaRequest request) {
+    public String toReferencia(ConfirmarReservaRequest request) {
         return request == null ? null : request.referencia();
     }
-
-    default OcupanteResponse toOcupanteResponse(Ocupante ocupante) {
+    public OcupanteResponse toOcupanteResponse(Ocupante ocupante) {
         return new OcupanteResponse(ocupante.documento(), ocupante.nombre(), ocupante.fechaNacimiento());
     }
-
-    default ReservaResumenResponse toResumenResponse(Reserva reserva) {
+    public ReservaResumenResponse toResumenResponse(Reserva reserva) {
         return new ReservaResumenResponse(
-                reserva.getCodigo().valor(),
-                reserva.getEstado(),
-                reserva.getApartamentoId(),
-                reserva.getEstancia().entrada(),
-                reserva.getEstancia().salida(),
-                reserva.getTitular().nombre(),
-                reserva.getOcupantes().size(),
-                reserva.getCotizacion().valorTotal().monto().longValueExact());
+                reserva.codigo().valor(),
+                reserva.estado(),
+                reserva.apartamentoId(),
+                reserva.estancia().entrada(),
+                reserva.estancia().salida(),
+                reserva.titular().nombre(),
+                reserva.ocupantes().size(),
+                reserva.cotizacion().valorTotal().monto().longValueExact());
     }
-
-    default ReservaDetalleResponse toDetalleResponse(Reserva reserva) {
+    public ReservaDetalleResponse toDetalleResponse(Reserva reserva) {
         return new ReservaDetalleResponse(
-                reserva.getCodigo().valor(),
-                reserva.getEstado(),
-                reserva.getCanalOrigen(),
-                reserva.getApartamentoId(),
-                reserva.getEstancia().entrada(),
-                reserva.getEstancia().salida(),
-                (int) reserva.getEstancia().noches(),
-                reserva.getHoraEstimadaLlegada(),
-                reserva.isConMascota(),
-                toOcupanteResponse(reserva.getTitular()),
-                reserva.getOcupantes().stream().map(this::toOcupanteResponse).toList(),
-                reserva.getOcupantes().size(),
-                reserva.getCotizacion().valorTotal().monto().longValueExact(),
-                reserva.getFolio().calcularTotalCargos().monto().longValueExact(),
-                reserva.getCotizacion().valorTotal().moneda(),
-                "v" + reserva.getVersionPolitica().numero(),
-                reserva.getFechaCreacion().toLocalDate(),
-                reserva.getCancelacion().map(Cancelacion::motivo).orElse(null),
-                reserva.getCancelacion().map(c -> c.retenido().monto().longValueExact()).orElse(null),
-                reserva.getCancelacion().map(c -> c.devuelto().monto().longValueExact()).orElse(null));
+                reserva.codigo().valor(),
+                reserva.estado(),
+                reserva.canalOrigen(),
+                reserva.apartamentoId(),
+                reserva.estancia().entrada(),
+                reserva.estancia().salida(),
+                (int) reserva.estancia().noches(),
+                reserva.horaEstimadaLlegada(),
+                reserva.conMascota(),
+                toOcupanteResponse(reserva.titular()),
+                reserva.ocupantes().stream().map(this::toOcupanteResponse).toList(),
+                reserva.ocupantes().size(),
+                reserva.cotizacion().valorTotal().monto().longValueExact(),
+                reserva.folio().calcularTotalCargos().monto().longValueExact(),
+                reserva.cotizacion().valorTotal().moneda().name(),
+                "v" + reserva.versionPolitica().numero(),
+                reserva.fechaCreacion().toLocalDate(),
+                Optional.ofNullable(reserva.cancelacion()).map(Cancelacion::motivo).orElse(null),
+                Optional.ofNullable(reserva.cancelacion()).map(c -> c.retenido().monto().longValueExact()).orElse(null),
+                Optional.ofNullable(reserva.cancelacion()).map(c -> c.devuelto().monto().longValueExact()).orElse(null));
     }
 }

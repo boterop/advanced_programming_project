@@ -1,5 +1,4 @@
 package com.uq.bnb.infrastructure.rest.mapper;
-
 import com.uq.bnb.application.dto.request.BloquearApartamentoRequest;
 import com.uq.bnb.application.dto.request.BuscarDisponibilidadRequest;
 import com.uq.bnb.application.dto.request.CrearApartamentoRequest;
@@ -8,6 +7,7 @@ import com.uq.bnb.application.dto.response.ApartamentoResponse;
 import com.uq.bnb.application.dto.response.BloqueoResponse;
 import com.uq.bnb.application.dto.response.DormitorioResponse;
 import com.uq.bnb.application.dto.response.TarifaResponse;
+import com.uq.bnb.application.port.IDProvider;
 import com.uq.bnb.domain.entity.Apartamento;
 import com.uq.bnb.domain.entity.Bloqueo;
 import com.uq.bnb.domain.entity.Tarifa;
@@ -16,20 +16,17 @@ import com.uq.bnb.domain.valueobject.Dormitorio;
 import com.uq.bnb.domain.valueobject.Estancia;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import java.math.BigDecimal;
 import java.util.List;
-
-/**
- * DTO <-> dominio sin lógica de negocio. El dominio expone accesores "fluidos" (identificacion(), no getIdentificacion()),
- * que MapStruct no reconoce como propiedades, por eso los campos de Apartamento se indican con expression.
- * La creación pasa por Apartamento.crear(...), así que el request no puede saltarse las validaciones del dominio.
- */
 @Mapper(componentModel = "spring")
-public interface ApartamentoMapper {
+public abstract class ApartamentoMapper {
+    @Autowired
+    protected IDProvider idProvider;
 
-    default Apartamento toDomain(CrearApartamentoRequest request) {
+    public Apartamento toDomain(CrearApartamentoRequest request) {
         return Apartamento.crear(
+                idProvider.obtener(),
                 request.identificacion(),
                 request.nombre(),
                 request.capacidad(),
@@ -38,33 +35,23 @@ public interface ApartamentoMapper {
                 Boolean.TRUE.equals(request.permiteMascotas()),
                 request.estadoOperativoInicial());
     }
-
-    /** RN-07: el rango del bloqueo es semiabierto [fechaInicio, fechaFin), igual que una estancia. */
-    default Bloqueo toBloqueo(BloquearApartamentoRequest request) {
-        return Bloqueo.crear(new Estancia(request.fechaInicio(), request.fechaFin()), request.motivo());
+    public Bloqueo toBloqueo(BloquearApartamentoRequest request) {
+        return Bloqueo.crear(idProvider.obtener(), new Estancia(request.fechaInicio(), request.fechaFin()), request.motivo());
     }
-
-    default Estancia toEstancia(BuscarDisponibilidadRequest request) {
+    public Estancia toEstancia(BuscarDisponibilidadRequest request) {
         return new Estancia(request.fechaEntrada(), request.fechaSalida());
     }
-
-    /** Todos los ocupantes (adultos y niños) cuentan para la capacidad. Sin niños indicados se asume 0. */
-    default int toTotalOcupantes(BuscarDisponibilidadRequest request) {
+    public int toTotalOcupantes(BuscarDisponibilidadRequest request) {
         return request.adultos() + (request.ninos() == null ? 0 : request.ninos());
     }
-
-    default boolean toConMascota(BuscarDisponibilidadRequest request) {
+    public boolean toConMascota(BuscarDisponibilidadRequest request) {
         return Boolean.TRUE.equals(request.conMascota());
     }
-
-    default Dinero toDinero(BigDecimal valor) {
+    public Dinero toDinero(BigDecimal valor) {
         return Dinero.de(valor);
     }
-
-    List<Dormitorio> toDormitorios(List<DormitorioRequest> requests);
-
-    Dormitorio toDormitorio(DormitorioRequest request);
-
+    public abstract List<Dormitorio> toDormitorios(List<DormitorioRequest> requests);
+    public abstract Dormitorio toDormitorio(DormitorioRequest request);
     @Mapping(target = "identificacion", expression = "java(apartamento.identificacion())")
     @Mapping(target = "nombre", expression = "java(apartamento.nombre())")
     @Mapping(target = "capacidad", expression = "java(apartamento.capacidad())")
@@ -72,20 +59,15 @@ public interface ApartamentoMapper {
     @Mapping(target = "permiteMascotas", expression = "java(apartamento.permiteMascotas())")
     @Mapping(target = "estadoOperativo", expression = "java(apartamento.estadoOperativo())")
     @Mapping(target = "activo", expression = "java(apartamento.activo())")
-    ApartamentoResponse toResponse(Apartamento apartamento);
-
-    List<DormitorioResponse> toDormitorioResponses(List<Dormitorio> dormitorios);
-
-    DormitorioResponse toDormitorioResponse(Dormitorio dormitorio);
-
-    default TarifaResponse toTarifaResponse(Tarifa tarifa) {
-        return new TarifaResponse(tarifa.id(), tarifa.temporadaId(), tarifa.valorPorNoche().monto(), tarifa.vigenteDesde());
+    public abstract ApartamentoResponse toResponse(Apartamento apartamento);
+    public abstract List<DormitorioResponse> toDormitorioResponses(List<Dormitorio> dormitorios);
+    public abstract DormitorioResponse toDormitorioResponse(Dormitorio dormitorio);
+    public TarifaResponse toTarifaResponse(Tarifa tarifa) {
+        return new TarifaResponse(java.util.UUID.fromString(tarifa.id().valor()), java.util.UUID.fromString(tarifa.temporadaId().valor()), tarifa.valorPorNoche().monto(), tarifa.vigenteDesde());
     }
-
-    List<TarifaResponse> toTarifaResponses(List<Tarifa> tarifas);
-
-    default BloqueoResponse toBloqueoResponse(String identificacionApartamento, Bloqueo bloqueo) {
-        return new BloqueoResponse(bloqueo.id(), identificacionApartamento, bloqueo.rango().entrada(),
+    public abstract List<TarifaResponse> toTarifaResponses(List<Tarifa> tarifas);
+    public BloqueoResponse toBloqueoResponse(String identificacionApartamento, Bloqueo bloqueo) {
+        return new BloqueoResponse(java.util.UUID.fromString(bloqueo.id().valor()), identificacionApartamento, bloqueo.rango().entrada(),
                 bloqueo.rango().salida(), bloqueo.motivo());
     }
 }

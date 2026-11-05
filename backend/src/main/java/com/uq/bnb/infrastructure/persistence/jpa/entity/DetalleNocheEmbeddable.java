@@ -1,12 +1,8 @@
 package com.uq.bnb.infrastructure.persistence.jpa.entity;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
-/** Una noche del desglose de la cotización congelada en la reserva (RN-22): copia de valores, sin referencias vivas. */
 @Embeddable
 public record DetalleNocheEmbeddable(
         LocalDate fecha,

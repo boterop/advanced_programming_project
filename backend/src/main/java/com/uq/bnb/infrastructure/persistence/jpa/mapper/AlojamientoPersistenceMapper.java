@@ -1,5 +1,4 @@
 package com.uq.bnb.infrastructure.persistence.jpa.mapper;
-
 import com.uq.bnb.domain.entity.Alojamiento;
 import com.uq.bnb.domain.entity.PoliticaCancelacion;
 import com.uq.bnb.domain.entity.Temporada;
@@ -11,25 +10,16 @@ import com.uq.bnb.infrastructure.persistence.jpa.entity.PoliticaCancelacionEntit
 import com.uq.bnb.infrastructure.persistence.jpa.entity.TemporadaEntity;
 import com.uq.bnb.infrastructure.persistence.jpa.entity.TramoEmbeddable;
 import org.springframework.stereotype.Component;
-
-import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
 import java.util.List;
-import java.util.UUID;
-
-/**
- * Traduce persistencia <-> dominio. Al volver al dominio recibe los parámetros ya armados (vienen de la
- * configuración, no de la base) y usa las fábricas reconstruir(...), así el dominio no necesita setters.
- */
 @Component
 public class AlojamientoPersistenceMapper {
-
     public AlojamientoEntity toEntity(Alojamiento alojamiento) {
-        AlojamientoEntity entity = new AlojamientoEntity(alojamiento.id(), alojamiento.nombre(), alojamiento.ciudad());
+        AlojamientoEntity entity = new AlojamientoEntity(java.util.UUID.fromString(alojamiento.id().valor()), alojamiento.nombre(), alojamiento.ciudad());
         alojamiento.temporadas().forEach(t -> entity.agregarTemporada(
-                new TemporadaEntity(t.id(), t.nombre(), t.fechaInicio(), t.fechaFin(), t.esBase())));
+                new TemporadaEntity(java.util.UUID.fromString(t.id().valor()), t.nombre(), t.fechaInicio(), t.fechaFin(), t.esBase())));
         alojamiento.historialPoliticas().forEach(p -> entity.agregarPolitica(new PoliticaCancelacionEntity(
-                idDePolitica(alojamiento.id(), p.numeroVersion().numero()),
+                java.util.UUID.fromString(p.id().valor()),
                 p.numeroVersion().numero(),
                 p.vigenteDesde(),
                 p.tramos().stream()
@@ -37,27 +27,19 @@ public class AlojamientoPersistenceMapper {
                         .toList())));
         return entity;
     }
-
     public Alojamiento toDomain(AlojamientoEntity entity, ParametrosAlojamiento parametros) {
         List<Temporada> temporadas = entity.getTemporadas().stream()
-                .map(t -> Temporada.reconstruir(t.getId(), t.getNombre(), t.getFechaInicio(), t.getFechaFin(), t.isEsBase()))
+                .map(t -> Temporada.reconstruir(new com.uq.bnb.domain.valueobject.ID(t.getId().toString()), t.getNombre(), t.getFechaInicio(), t.getFechaFin(), t.isEsBase()))
                 .toList();
         List<PoliticaCancelacion> politicas = entity.getPoliticas().stream()
                 .sorted(Comparator.comparingInt(PoliticaCancelacionEntity::getNumeroVersion))
                 .map(p -> PoliticaCancelacion.reconstruir(
+                        new com.uq.bnb.domain.valueobject.ID(p.getId().toString()),
                         new VersionPolitica(p.getNumeroVersion(), p.getVigenteDesde()),
                         p.getTramos().stream()
                                 .map(t -> new TramoAntelacion(t.antelacionMinimaHoras(), t.porcentajeRetencion()))
                                 .toList()))
                 .toList();
-        return Alojamiento.reconstruir(entity.getId(), entity.getNombre(), entity.getCiudad(), parametros, temporadas, politicas);
-    }
-
-    /**
-     * El dominio identifica cada política por su versión, no por un UUID. Para que guardar varias veces no recree
-     * filas, el id de la fila se deriva siempre igual a partir de (alojamiento, versión).
-     */
-    private static UUID idDePolitica(UUID alojamientoId, int numeroVersion) {
-        return UUID.nameUUIDFromBytes(("politica:" + alojamientoId + ":" + numeroVersion).getBytes(StandardCharsets.UTF_8));
+        return Alojamiento.reconstruir(new com.uq.bnb.domain.valueobject.ID(entity.getId().toString()), entity.getNombre(), entity.getCiudad(), parametros, temporadas, politicas);
     }
 }

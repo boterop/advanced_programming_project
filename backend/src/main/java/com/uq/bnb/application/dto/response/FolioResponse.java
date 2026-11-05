@@ -1,8 +1,5 @@
 package com.uq.bnb.application.dto.response;
-
 import java.util.List;
-
-/** El folio de una reserva. saldoPendiente = totalCargos - totalPagos (RN-15) y nunca es negativo. */
 public record FolioResponse(
         String codigoReserva,
         List<CargoResponse> cargos,

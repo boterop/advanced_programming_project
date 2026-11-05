@@ -1,27 +1,27 @@
 package com.uq.bnb.domain.entity;
 
+import com.uq.bnb.domain.valueobject.ID;
+
+import lombok.Getter;
 import com.uq.bnb.domain.exception.ReglaDominioException;
 import com.uq.bnb.domain.valueobject.CodigoReserva;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
-import java.util.UUID;
 
-/**
- * Salida (check-out) de un grupo. Referencia a la reserva, al apartamento y al titular solo por su identificador:
- * son otros agregados (o parte de ellos), y un agregado nunca guarda a otro.
- */
+
+@Getter
 public final class Salida {
 
-    private final UUID id;
+    private final ID id;
     private final LocalDate fechaSalida;
     private final LocalTime horaSalida;
     private final CodigoReserva codigoReserva;
     private final String apartamentoId;
     private final String documentoTitular;
 
-    private Salida(UUID id, LocalDate fechaSalida, LocalTime horaSalida, CodigoReserva codigoReserva,
+    private Salida(ID id, LocalDate fechaSalida, LocalTime horaSalida, CodigoReserva codigoReserva,
                    String apartamentoId, String documentoTitular) {
         this.id = id;
         this.fechaSalida = fechaSalida;
@@ -31,7 +31,7 @@ public final class Salida {
         this.documentoTitular = documentoTitular;
     }
 
-    public static Salida crear(LocalDate fechaSalida, LocalTime horaSalida, CodigoReserva codigoReserva,
+    public static Salida crear(ID id, LocalDate fechaSalida, LocalTime horaSalida, CodigoReserva codigoReserva,
                                String apartamentoId, String documentoTitular) {
         if (fechaSalida == null) {
             throw new ReglaDominioException("La fecha de salida no puede ser vacia");
@@ -48,42 +48,15 @@ public final class Salida {
         if (documentoTitular == null || documentoTitular.isBlank()) {
             throw new ReglaDominioException("El titular no puede ser vacio");
         }
-        return new Salida(UUID.randomUUID(), fechaSalida, horaSalida, codigoReserva, apartamentoId, documentoTitular);
+        return new Salida(id, fechaSalida, horaSalida, codigoReserva, apartamentoId, documentoTitular);
     }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public LocalDate getFechaSalida() {
-        return fechaSalida;
-    }
-
-    public LocalTime getHoraSalida() {
-        return horaSalida;
-    }
-
-    public CodigoReserva getCodigoReserva() {
-        return codigoReserva;
-    }
-
-    public String getApartamentoId() {
-        return apartamentoId;
-    }
-
-    public String getDocumentoTitular() {
-        return documentoTitular;
-    }
-
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Salida salida)) return false;
-        return Objects.equals(id, salida.id);
+    public boolean equals(Object other) {
+        return other instanceof Salida entity && id.equals(entity.id());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return id.hashCode();
     }
 }

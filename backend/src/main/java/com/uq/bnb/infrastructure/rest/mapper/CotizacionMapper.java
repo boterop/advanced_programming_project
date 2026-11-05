@@ -1,43 +1,35 @@
 package com.uq.bnb.infrastructure.rest.mapper;
-
 import com.uq.bnb.application.dto.request.CotizarEstanciaRequest;
 import com.uq.bnb.application.dto.request.OcupanteRequest;
 import com.uq.bnb.application.dto.response.CotizacionResponse;
 import com.uq.bnb.application.dto.response.DetalleNocheResponse;
+import com.uq.bnb.application.port.IDProvider;
 import com.uq.bnb.domain.entity.Ocupante;
 import com.uq.bnb.domain.valueobject.Cotizacion;
 import com.uq.bnb.domain.valueobject.DetalleNoche;
 import com.uq.bnb.domain.valueobject.Estancia;
 import org.mapstruct.Mapper;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
-
-/**
- * DTO <-> dominio sin lógica de negocio. La entrada pasa por Estancia y Ocupante.crear(...): el request no puede
- * saltarse las validaciones del dominio.
- */
 @Mapper(componentModel = "spring")
-public interface CotizacionMapper {
+public abstract class CotizacionMapper {
+    @Autowired
+    protected IDProvider idProvider;
 
-    default Estancia toEstancia(CotizarEstanciaRequest request) {
+    public Estancia toEstancia(CotizarEstanciaRequest request) {
         return new Estancia(request.fechaEntrada(), request.fechaSalida());
     }
-
-    default Ocupante toOcupante(OcupanteRequest request) {
-        return Ocupante.crear(request.documento(), request.nombre(), request.fechaNacimiento());
+    public Ocupante toOcupante(OcupanteRequest request) {
+        return Ocupante.crear(idProvider.obtener(), request.documento(), request.nombre(), request.fechaNacimiento());
     }
-
-    List<Ocupante> toOcupantes(List<OcupanteRequest> requests);
-
-    default DetalleNocheResponse toDetalleResponse(DetalleNoche detalle) {
+    public abstract List<Ocupante> toOcupantes(List<OcupanteRequest> requests);
+    public DetalleNocheResponse toDetalleResponse(DetalleNoche detalle) {
         return new DetalleNocheResponse(detalle.fecha(), detalle.nombreTemporada(),
                 detalle.tarifaAplicada().monto().longValueExact(), detalle.ocupantesFacturables(),
                 detalle.subtotal().monto().longValueExact());
     }
-
-    List<DetalleNocheResponse> toDetalleResponses(List<DetalleNoche> detalles);
-
-    default CotizacionResponse toResponse(String identificacionApartamento, Estancia estancia, Cotizacion cotizacion) {
+    public abstract List<DetalleNocheResponse> toDetalleResponses(List<DetalleNoche> detalles);
+    public CotizacionResponse toResponse(String identificacionApartamento, Estancia estancia, Cotizacion cotizacion) {
         return new CotizacionResponse(
                 identificacionApartamento,
                 estancia.entrada(),
@@ -46,6 +38,6 @@ public interface CotizacionMapper {
                 cotizacion.desglosePorNoche().get(0).ocupantesFacturables(),
                 toDetalleResponses(cotizacion.desglosePorNoche()),
                 cotizacion.valorTotal().monto().longValueExact(),
-                cotizacion.valorTotal().moneda());
+                cotizacion.valorTotal().moneda().name());
     }
 }
