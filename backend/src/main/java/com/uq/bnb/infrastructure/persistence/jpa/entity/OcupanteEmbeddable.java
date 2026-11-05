@@ -5,5 +5,5 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Embeddable
-public record OcupanteEmbeddable(UUID id, String documento, String nombre, LocalDate fechaNacimiento) {
-}
+public record OcupanteEmbeddable(
+    UUID id, String documento, String nombre, LocalDate fechaNacimiento) {}

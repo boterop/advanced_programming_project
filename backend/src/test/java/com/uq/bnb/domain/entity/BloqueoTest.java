@@ -9,12 +9,12 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 
 class BloqueoTest {
-    @Test
-    void detectaSolapamientoConElRangoBloqueado() {
-        Bloqueo bloqueo = BloqueoFixture.crear();
-        LocalDate inicio = bloqueo.rango().entrada();
+  @Test
+  void detectaSolapamientoConElRangoBloqueado() {
+    Bloqueo bloqueo = BloqueoFixture.crear();
+    LocalDate inicio = bloqueo.rango().entrada();
 
-        assertTrue(bloqueo.seSolapaCon(new Estancia(inicio.plusDays(1), inicio.plusDays(2))));
-        assertFalse(bloqueo.seSolapaCon(new Estancia(inicio.plusDays(3), inicio.plusDays(5))));
-    }
+    assertTrue(bloqueo.seSolapaCon(new Estancia(inicio.plusDays(1), inicio.plusDays(2))));
+    assertFalse(bloqueo.seSolapaCon(new Estancia(inicio.plusDays(3), inicio.plusDays(5))));
+  }
 }

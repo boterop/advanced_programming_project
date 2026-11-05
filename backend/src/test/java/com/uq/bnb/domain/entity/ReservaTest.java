@@ -9,29 +9,29 @@ import com.uq.bnb.fixtures.ReservaFixture;
 import org.junit.jupiter.api.Test;
 
 class ReservaTest {
-    @Test
-    void inicializaPendienteConCargosDeHospedaje() {
-        Reserva reserva = ReservaFixture.crear();
+  @Test
+  void inicializaPendienteConCargosDeHospedaje() {
+    Reserva reserva = ReservaFixture.crear();
 
-        assertEquals(EstadoReserva.PENDIENTE, reserva.estado());
-        assertEquals(1, reserva.folio().cargos().size());
-        assertEquals(1, reserva.cuposNecesarios());
-    }
+    assertEquals(EstadoReserva.PENDIENTE, reserva.estado());
+    assertEquals(1, reserva.folio().cargos().size());
+    assertEquals(1, reserva.cuposNecesarios());
+  }
 
-    @Test
-    void permiteConfirmarUnaReservaPendiente() {
-        Reserva reserva = ReservaFixture.crear();
+  @Test
+  void permiteConfirmarUnaReservaPendiente() {
+    Reserva reserva = ReservaFixture.crear();
 
-        reserva.confirmar();
+    reserva.confirmar();
 
-        assertEquals(EstadoReserva.CONFIRMADA, reserva.estado());
-    }
+    assertEquals(EstadoReserva.CONFIRMADA, reserva.estado());
+  }
 
-    @Test
-    void noPermiteConfirmarUnaReservaMasDeUnaVez() {
-        Reserva reserva = ReservaFixture.crear();
-        reserva.confirmar();
+  @Test
+  void noPermiteConfirmarUnaReservaMasDeUnaVez() {
+    Reserva reserva = ReservaFixture.crear();
+    reserva.confirmar();
 
-        assertThrows(ReglaDominioException.class, reserva::confirmar);
-    }
+    assertThrows(ReglaDominioException.class, reserva::confirmar);
+  }
 }

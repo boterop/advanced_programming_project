@@ -1,11 +1,9 @@
 package com.uq.bnb.domain.valueobject;
 
 import com.uq.bnb.domain.exception.ReglaDominioException;
-
-import lombok.Getter;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import lombok.Getter;
 
 @Getter
 public class Dinero {
@@ -35,8 +33,7 @@ public class Dinero {
   }
 
   public Dinero dividir(BigDecimal divisor) {
-    return new Dinero(
-        monto.divide(parse(divisor), RoundingMode.HALF_UP));
+    return new Dinero(monto.divide(parse(divisor), RoundingMode.HALF_UP));
   }
 
   public Dinero sumar(Dinero otro) {
@@ -73,8 +70,8 @@ public class Dinero {
     }
 
     throw new ReglaDominioException(
-        "Tipo de valor no soportado: " +
-            (valor == null ? "null" : valor.getClass().getSimpleName()));
+        "Tipo de valor no soportado: "
+            + (valor == null ? "null" : valor.getClass().getSimpleName()));
   }
 
   public boolean esMayorQue(Dinero otro) {
@@ -100,7 +97,6 @@ public class Dinero {
 
   @Override
   public boolean equals(Object other) {
-    return other instanceof Dinero d
-        && monto.equals(d.monto) && moneda == d.moneda;
+    return other instanceof Dinero d && monto.equals(d.monto) && moneda == d.moneda;
   }
 }

@@ -2,10 +2,9 @@ package com.uq.bnb.domain.entity;
 
 import com.uq.bnb.domain.exception.ReglaDominioException;
 import com.uq.bnb.domain.valueobject.ID;
-import lombok.Getter;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Objects;
+import lombok.Getter;
 
 @Getter
 public class Ocupante {
@@ -25,8 +24,7 @@ public class Ocupante {
       throw new ReglaDominioException("El nombre del ocupante no puede estar vacío");
     }
     if (fechaNacimiento == null) {
-      throw new ReglaDominioException(
-          "La fecha de nacimiento no puede ser nula");
+      throw new ReglaDominioException("La fecha de nacimiento no puede ser nula");
     }
     this.id = id;
     this.documento = documento;
@@ -37,7 +35,6 @@ public class Ocupante {
   public static Ocupante crear(ID id, String documento, String nombre, LocalDate fechaNacimiento) {
     return new Ocupante(id, documento, nombre, fechaNacimiento);
   }
-
 
   public boolean esFacturable(LocalDate fecha, int edadFacturable) {
     return edad(fecha) >= edadFacturable;
@@ -53,12 +50,11 @@ public class Ocupante {
 
   @Override
   public int hashCode() {
-        return id.hashCode();
-    }
+    return id.hashCode();
+  }
 
   @Override
   public boolean equals(Object other) {
     return other instanceof Ocupante o && id.equals(o.id());
   }
-
 }

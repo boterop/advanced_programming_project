@@ -1,3 +1,3 @@
 package com.uq.bnb.domain.valueobject;
-public enum ConceptoCargo {
-}
+
+public enum ConceptoCargo {}

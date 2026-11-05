@@ -7,15 +7,18 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DatabaseIDProvider implements IDProvider {
-    private final EntityManager entityManager;
+  private final EntityManager entityManager;
 
-    public DatabaseIDProvider(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+  public DatabaseIDProvider(EntityManager entityManager) {
+    this.entityManager = entityManager;
+  }
 
-    @Override
-    public ID obtener() {
-        Object id = entityManager.createNativeQuery("select cast(random_uuid() as varchar(36))").getSingleResult();
-        return new ID(id.toString());
-    }
+  @Override
+  public ID obtener() {
+    Object id =
+        entityManager
+            .createNativeQuery("select cast(random_uuid() as varchar(36))")
+            .getSingleResult();
+    return new ID(id.toString());
+  }
 }

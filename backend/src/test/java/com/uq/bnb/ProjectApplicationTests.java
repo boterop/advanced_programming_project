@@ -10,16 +10,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class ProjectApplicationTests {
-    @Autowired
-    private IDProvider idProvider;
+  @Autowired private IDProvider idProvider;
 
-    @Test
-    void obtieneIdentificadoresUnicosDesdeLaBaseDeDatos() {
-        String primero = idProvider.obtener().valor();
-        String segundo = idProvider.obtener().valor();
+  @Test
+  void obtieneIdentificadoresUnicosDesdeLaBaseDeDatos() {
+    String primero = idProvider.obtener().valor();
+    String segundo = idProvider.obtener().valor();
 
-        assertNotEquals(primero, segundo);
-        assertTrue(primero.matches("[0-9a-fA-F-]{36}"));
-        assertTrue(segundo.matches("[0-9a-fA-F-]{36}"));
-    }
+    assertNotEquals(primero, segundo);
+    assertTrue(primero.matches("[0-9a-fA-F-]{36}"));
+    assertTrue(segundo.matches("[0-9a-fA-F-]{36}"));
+  }
 }

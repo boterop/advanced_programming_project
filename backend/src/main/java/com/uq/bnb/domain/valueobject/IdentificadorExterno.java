@@ -1,3 +1,3 @@
 package com.uq.bnb.domain.valueobject;
-public record IdentificadorExterno() {
-}
+
+public record IdentificadorExterno() {}
