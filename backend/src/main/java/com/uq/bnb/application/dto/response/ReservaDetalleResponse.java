@@ -1,7 +1,7 @@
-package co.edu.uniquindio.sga.application.dto.response;
+package com.uq.bnb.application.dto.response;
 
-import co.edu.uniquindio.sga.domain.valueobject.CanalOrigen;
-import co.edu.uniquindio.sga.domain.valueobject.EstadoReserva;
+import com.uq.bnb.domain.valueobject.CanalOrigen;
+import com.uq.bnb.domain.valueobject.EstadoReserva;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

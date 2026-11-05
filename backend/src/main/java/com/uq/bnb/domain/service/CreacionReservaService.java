@@ -1,16 +1,16 @@
-package co.edu.uniquindio.sga.domain.service;
+package com.uq.bnb.domain.service;
 
-import co.edu.uniquindio.sga.domain.entity.Alojamiento;
-import co.edu.uniquindio.sga.domain.entity.Apartamento;
-import co.edu.uniquindio.sga.domain.entity.Ocupante;
-import co.edu.uniquindio.sga.domain.entity.Reserva;
-import co.edu.uniquindio.sga.domain.exception.ReglaDominioException;
-import co.edu.uniquindio.sga.domain.repository.GeneradorCodigoReserva;
-import co.edu.uniquindio.sga.domain.valueobject.Cotizacion;
-import co.edu.uniquindio.sga.domain.valueobject.Estancia;
-import co.edu.uniquindio.sga.domain.valueobject.RecargoLlegadaNocturna;
-import co.edu.uniquindio.sga.domain.valueobject.SolicitudReserva;
-import co.edu.uniquindio.sga.domain.valueobject.VersionPolitica;
+import com.uq.bnb.domain.entity.Alojamiento;
+import com.uq.bnb.domain.entity.Apartamento;
+import com.uq.bnb.domain.entity.Ocupante;
+import com.uq.bnb.domain.entity.Reserva;
+import com.uq.bnb.domain.exception.ReglaDominioException;
+import com.uq.bnb.domain.repository.GeneradorCodigoReserva;
+import com.uq.bnb.domain.valueobject.Cotizacion;
+import com.uq.bnb.domain.valueobject.Estancia;
+import com.uq.bnb.domain.valueobject.RecargoLlegadaNocturna;
+import com.uq.bnb.domain.valueobject.SolicitudReserva;
+import com.uq.bnb.domain.valueobject.VersionPolitica;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

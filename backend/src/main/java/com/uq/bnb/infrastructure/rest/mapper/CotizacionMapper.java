@@ -1,13 +1,13 @@
-package co.edu.uniquindio.sga.infrastructure.rest.mapper;
+package com.uq.bnb.infrastructure.rest.mapper;
 
-import co.edu.uniquindio.sga.application.dto.request.CotizarEstanciaRequest;
-import co.edu.uniquindio.sga.application.dto.request.OcupanteRequest;
-import co.edu.uniquindio.sga.application.dto.response.CotizacionResponse;
-import co.edu.uniquindio.sga.application.dto.response.DetalleNocheResponse;
-import co.edu.uniquindio.sga.domain.entity.Ocupante;
-import co.edu.uniquindio.sga.domain.valueobject.Cotizacion;
-import co.edu.uniquindio.sga.domain.valueobject.DetalleNoche;
-import co.edu.uniquindio.sga.domain.valueobject.Estancia;
+import com.uq.bnb.application.dto.request.CotizarEstanciaRequest;
+import com.uq.bnb.application.dto.request.OcupanteRequest;
+import com.uq.bnb.application.dto.response.CotizacionResponse;
+import com.uq.bnb.application.dto.response.DetalleNocheResponse;
+import com.uq.bnb.domain.entity.Ocupante;
+import com.uq.bnb.domain.valueobject.Cotizacion;
+import com.uq.bnb.domain.valueobject.DetalleNoche;
+import com.uq.bnb.domain.valueobject.Estancia;
 import org.mapstruct.Mapper;
 
 import java.util.List;

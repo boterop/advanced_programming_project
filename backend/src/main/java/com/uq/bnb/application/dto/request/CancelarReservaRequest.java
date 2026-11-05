@@ -1,4 +1,4 @@
-package co.edu.uniquindio.sga.application.dto.request;
+package com.uq.bnb.application.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

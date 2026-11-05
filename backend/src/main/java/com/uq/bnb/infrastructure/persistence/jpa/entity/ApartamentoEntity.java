@@ -1,6 +1,6 @@
-package co.edu.uniquindio.sga.infrastructure.persistence.jpa.entity;
+package com.uq.bnb.infrastructure.persistence.jpa.entity;
 
-import co.edu.uniquindio.sga.domain.valueobject.EstadoOperativo;
+import com.uq.bnb.domain.valueobject.EstadoOperativo;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;

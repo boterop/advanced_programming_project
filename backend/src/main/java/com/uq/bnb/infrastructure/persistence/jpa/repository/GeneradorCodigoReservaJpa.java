@@ -1,7 +1,7 @@
-package co.edu.uniquindio.sga.infrastructure.persistence.jpa.repository;
+package com.uq.bnb.infrastructure.persistence.jpa.repository;
 
-import co.edu.uniquindio.sga.domain.repository.GeneradorCodigoReserva;
-import co.edu.uniquindio.sga.domain.valueobject.CodigoReserva;
+import com.uq.bnb.domain.repository.GeneradorCodigoReserva;
+import com.uq.bnb.domain.valueobject.CodigoReserva;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 

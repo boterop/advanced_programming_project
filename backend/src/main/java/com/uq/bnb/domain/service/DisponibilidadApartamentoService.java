@@ -1,11 +1,11 @@
-package co.edu.uniquindio.sga.domain.service;
+package com.uq.bnb.domain.service;
 
-import co.edu.uniquindio.sga.domain.entity.Apartamento;
-import co.edu.uniquindio.sga.domain.entity.Reserva;
-import co.edu.uniquindio.sga.domain.repository.ApartamentoRepository;
-import co.edu.uniquindio.sga.domain.repository.ReservaRepository;
-import co.edu.uniquindio.sga.domain.valueobject.Estancia;
-import co.edu.uniquindio.sga.domain.valueobject.ParametrosAlojamiento;
+import com.uq.bnb.domain.entity.Apartamento;
+import com.uq.bnb.domain.entity.Reserva;
+import com.uq.bnb.domain.repository.ApartamentoRepository;
+import com.uq.bnb.domain.repository.ReservaRepository;
+import com.uq.bnb.domain.valueobject.Estancia;
+import com.uq.bnb.domain.valueobject.ParametrosAlojamiento;
 
 import java.util.Comparator;
 import java.util.List;

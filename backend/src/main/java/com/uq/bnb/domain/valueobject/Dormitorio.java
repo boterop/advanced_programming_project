@@ -1,6 +1,6 @@
-package co.edu.uniquindio.sga.domain.valueobject;
+package com.uq.bnb.domain.valueobject;
 
-import co.edu.uniquindio.sga.domain.exception.ReglaDominioException;
+import com.uq.bnb.domain.exception.ReglaDominioException;
 
 /**
  * "Espacio para dormir dentro de un apartamento. Atributo descriptivo,

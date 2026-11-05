@@ -1,7 +1,7 @@
-package co.edu.uniquindio.sga.infrastructure.persistence.jpa.entity;
+package com.uq.bnb.infrastructure.persistence.jpa.entity;
 
-import co.edu.uniquindio.sga.domain.valueobject.CanalOrigen;
-import co.edu.uniquindio.sga.domain.valueobject.EstadoReserva;
+import com.uq.bnb.domain.valueobject.CanalOrigen;
+import com.uq.bnb.domain.valueobject.EstadoReserva;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.CollectionTable;

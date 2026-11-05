@@ -1,9 +1,9 @@
-package co.edu.uniquindio.sga.infrastructure.persistence.jpa.repository;
+package com.uq.bnb.infrastructure.persistence.jpa.repository;
 
-import co.edu.uniquindio.sga.domain.entity.Alojamiento;
-import co.edu.uniquindio.sga.domain.repository.AlojamientoRepository;
-import co.edu.uniquindio.sga.domain.valueobject.ParametrosAlojamiento;
-import co.edu.uniquindio.sga.infrastructure.persistence.jpa.mapper.AlojamientoPersistenceMapper;
+import com.uq.bnb.domain.entity.Alojamiento;
+import com.uq.bnb.domain.repository.AlojamientoRepository;
+import com.uq.bnb.domain.valueobject.ParametrosAlojamiento;
+import com.uq.bnb.infrastructure.persistence.jpa.mapper.AlojamientoPersistenceMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,19 +1,19 @@
-package co.edu.uniquindio.sga.infrastructure.persistence.jpa.mapper;
+package com.uq.bnb.infrastructure.persistence.jpa.mapper;
 
-import co.edu.uniquindio.sga.domain.entity.Apartamento;
-import co.edu.uniquindio.sga.domain.entity.Bloqueo;
-import co.edu.uniquindio.sga.domain.entity.Novedad;
-import co.edu.uniquindio.sga.domain.entity.Tarifa;
-import co.edu.uniquindio.sga.domain.valueobject.Dinero;
-import co.edu.uniquindio.sga.domain.valueobject.Dormitorio;
-import co.edu.uniquindio.sga.domain.valueobject.Estancia;
-import co.edu.uniquindio.sga.domain.valueobject.TipoApartamento;
-import co.edu.uniquindio.sga.infrastructure.persistence.jpa.entity.ApartamentoEntity;
-import co.edu.uniquindio.sga.infrastructure.persistence.jpa.entity.BloqueoEntity;
-import co.edu.uniquindio.sga.infrastructure.persistence.jpa.entity.DormitorioEmbeddable;
-import co.edu.uniquindio.sga.infrastructure.persistence.jpa.entity.EstanciaEmbeddable;
-import co.edu.uniquindio.sga.infrastructure.persistence.jpa.entity.NovedadEntity;
-import co.edu.uniquindio.sga.infrastructure.persistence.jpa.entity.TarifaEntity;
+import com.uq.bnb.domain.entity.Apartamento;
+import com.uq.bnb.domain.entity.Bloqueo;
+import com.uq.bnb.domain.entity.Novedad;
+import com.uq.bnb.domain.entity.Tarifa;
+import com.uq.bnb.domain.valueobject.Dinero;
+import com.uq.bnb.domain.valueobject.Dormitorio;
+import com.uq.bnb.domain.valueobject.Estancia;
+import com.uq.bnb.domain.valueobject.TipoApartamento;
+import com.uq.bnb.infrastructure.persistence.jpa.entity.ApartamentoEntity;
+import com.uq.bnb.infrastructure.persistence.jpa.entity.BloqueoEntity;
+import com.uq.bnb.infrastructure.persistence.jpa.entity.DormitorioEmbeddable;
+import com.uq.bnb.infrastructure.persistence.jpa.entity.EstanciaEmbeddable;
+import com.uq.bnb.infrastructure.persistence.jpa.entity.NovedadEntity;
+import com.uq.bnb.infrastructure.persistence.jpa.entity.TarifaEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

@@ -1,19 +1,19 @@
-package co.edu.uniquindio.sga.infrastructure.rest.mapper;
+package com.uq.bnb.infrastructure.rest.mapper;
 
-import co.edu.uniquindio.sga.application.dto.request.BloquearApartamentoRequest;
-import co.edu.uniquindio.sga.application.dto.request.BuscarDisponibilidadRequest;
-import co.edu.uniquindio.sga.application.dto.request.CrearApartamentoRequest;
-import co.edu.uniquindio.sga.application.dto.request.DormitorioRequest;
-import co.edu.uniquindio.sga.application.dto.response.ApartamentoResponse;
-import co.edu.uniquindio.sga.application.dto.response.BloqueoResponse;
-import co.edu.uniquindio.sga.application.dto.response.DormitorioResponse;
-import co.edu.uniquindio.sga.application.dto.response.TarifaResponse;
-import co.edu.uniquindio.sga.domain.entity.Apartamento;
-import co.edu.uniquindio.sga.domain.entity.Bloqueo;
-import co.edu.uniquindio.sga.domain.entity.Tarifa;
-import co.edu.uniquindio.sga.domain.valueobject.Dinero;
-import co.edu.uniquindio.sga.domain.valueobject.Dormitorio;
-import co.edu.uniquindio.sga.domain.valueobject.Estancia;
+import com.uq.bnb.application.dto.request.BloquearApartamentoRequest;
+import com.uq.bnb.application.dto.request.BuscarDisponibilidadRequest;
+import com.uq.bnb.application.dto.request.CrearApartamentoRequest;
+import com.uq.bnb.application.dto.request.DormitorioRequest;
+import com.uq.bnb.application.dto.response.ApartamentoResponse;
+import com.uq.bnb.application.dto.response.BloqueoResponse;
+import com.uq.bnb.application.dto.response.DormitorioResponse;
+import com.uq.bnb.application.dto.response.TarifaResponse;
+import com.uq.bnb.domain.entity.Apartamento;
+import com.uq.bnb.domain.entity.Bloqueo;
+import com.uq.bnb.domain.entity.Tarifa;
+import com.uq.bnb.domain.valueobject.Dinero;
+import com.uq.bnb.domain.valueobject.Dormitorio;
+import com.uq.bnb.domain.valueobject.Estancia;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

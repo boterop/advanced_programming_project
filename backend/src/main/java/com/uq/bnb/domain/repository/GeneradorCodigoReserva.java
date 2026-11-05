@@ -1,6 +1,6 @@
-package co.edu.uniquindio.sga.domain.repository;
+package com.uq.bnb.domain.repository;
 
-import co.edu.uniquindio.sga.domain.valueobject.CodigoReserva;
+import com.uq.bnb.domain.valueobject.CodigoReserva;
 
 // Puerto del mismo tipo que un repositorio, aunque no calce en el molde obtener/guardar
 public interface GeneradorCodigoReserva {

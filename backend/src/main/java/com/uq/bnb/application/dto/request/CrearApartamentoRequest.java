@@ -1,6 +1,6 @@
-package co.edu.uniquindio.sga.application.dto.request;
+package com.uq.bnb.application.dto.request;
 
-import co.edu.uniquindio.sga.domain.valueobject.EstadoOperativo;
+import com.uq.bnb.domain.valueobject.EstadoOperativo;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

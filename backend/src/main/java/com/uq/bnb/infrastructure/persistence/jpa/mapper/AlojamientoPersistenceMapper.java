@@ -1,15 +1,15 @@
-package co.edu.uniquindio.sga.infrastructure.persistence.jpa.mapper;
+package com.uq.bnb.infrastructure.persistence.jpa.mapper;
 
-import co.edu.uniquindio.sga.domain.entity.Alojamiento;
-import co.edu.uniquindio.sga.domain.entity.PoliticaCancelacion;
-import co.edu.uniquindio.sga.domain.entity.Temporada;
-import co.edu.uniquindio.sga.domain.valueobject.ParametrosAlojamiento;
-import co.edu.uniquindio.sga.domain.valueobject.TramoAntelacion;
-import co.edu.uniquindio.sga.domain.valueobject.VersionPolitica;
-import co.edu.uniquindio.sga.infrastructure.persistence.jpa.entity.AlojamientoEntity;
-import co.edu.uniquindio.sga.infrastructure.persistence.jpa.entity.PoliticaCancelacionEntity;
-import co.edu.uniquindio.sga.infrastructure.persistence.jpa.entity.TemporadaEntity;
-import co.edu.uniquindio.sga.infrastructure.persistence.jpa.entity.TramoEmbeddable;
+import com.uq.bnb.domain.entity.Alojamiento;
+import com.uq.bnb.domain.entity.PoliticaCancelacion;
+import com.uq.bnb.domain.entity.Temporada;
+import com.uq.bnb.domain.valueobject.ParametrosAlojamiento;
+import com.uq.bnb.domain.valueobject.TramoAntelacion;
+import com.uq.bnb.domain.valueobject.VersionPolitica;
+import com.uq.bnb.infrastructure.persistence.jpa.entity.AlojamientoEntity;
+import com.uq.bnb.infrastructure.persistence.jpa.entity.PoliticaCancelacionEntity;
+import com.uq.bnb.infrastructure.persistence.jpa.entity.TemporadaEntity;
+import com.uq.bnb.infrastructure.persistence.jpa.entity.TramoEmbeddable;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;

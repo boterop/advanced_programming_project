@@ -1,12 +1,12 @@
-package co.edu.uniquindio.sga.infrastructure.persistence.jpa.repository;
+package com.uq.bnb.infrastructure.persistence.jpa.repository;
 
-import co.edu.uniquindio.sga.domain.entity.Reserva;
-import co.edu.uniquindio.sga.domain.repository.ReservaRepository;
-import co.edu.uniquindio.sga.domain.valueobject.CodigoReserva;
-import co.edu.uniquindio.sga.domain.valueobject.EstadoReserva;
-import co.edu.uniquindio.sga.domain.valueobject.Estancia;
-import co.edu.uniquindio.sga.infrastructure.persistence.jpa.entity.ReservaEntity;
-import co.edu.uniquindio.sga.infrastructure.persistence.jpa.mapper.ReservaPersistenceMapper;
+import com.uq.bnb.domain.entity.Reserva;
+import com.uq.bnb.domain.repository.ReservaRepository;
+import com.uq.bnb.domain.valueobject.CodigoReserva;
+import com.uq.bnb.domain.valueobject.EstadoReserva;
+import com.uq.bnb.domain.valueobject.Estancia;
+import com.uq.bnb.infrastructure.persistence.jpa.entity.ReservaEntity;
+import com.uq.bnb.infrastructure.persistence.jpa.mapper.ReservaPersistenceMapper;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;

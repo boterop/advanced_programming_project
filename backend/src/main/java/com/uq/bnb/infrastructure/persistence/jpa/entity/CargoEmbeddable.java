@@ -1,6 +1,6 @@
-package co.edu.uniquindio.sga.infrastructure.persistence.jpa.entity;
+package com.uq.bnb.infrastructure.persistence.jpa.entity;
 
-import co.edu.uniquindio.sga.domain.valueobject.TipoCargo;
+import com.uq.bnb.domain.valueobject.TipoCargo;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;

@@ -1,11 +1,11 @@
-package co.edu.uniquindio.sga.infrastructure.rest;
+package com.uq.bnb.infrastructure.rest;
 
-import co.edu.uniquindio.sga.application.dto.request.RegistrarPagoRequest;
-import co.edu.uniquindio.sga.application.dto.response.FolioResponse;
-import co.edu.uniquindio.sga.application.usecase.ConsultarFolioUseCase;
-import co.edu.uniquindio.sga.application.usecase.RegistrarPagoUseCase;
-import co.edu.uniquindio.sga.domain.entity.Folio;
-import co.edu.uniquindio.sga.infrastructure.rest.mapper.FolioMapper;
+import com.uq.bnb.application.dto.request.RegistrarPagoRequest;
+import com.uq.bnb.application.dto.response.FolioResponse;
+import com.uq.bnb.application.usecase.ConsultarFolioUseCase;
+import com.uq.bnb.application.usecase.RegistrarPagoUseCase;
+import com.uq.bnb.domain.entity.Folio;
+import com.uq.bnb.infrastructure.rest.mapper.FolioMapper;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

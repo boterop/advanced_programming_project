@@ -1,11 +1,11 @@
-package co.edu.uniquindio.sga.infrastructure.rest;
+package com.uq.bnb.infrastructure.rest;
 
-import co.edu.uniquindio.sga.application.dto.request.CotizarEstanciaRequest;
-import co.edu.uniquindio.sga.application.dto.response.CotizacionResponse;
-import co.edu.uniquindio.sga.application.usecase.CotizarEstanciaUseCase;
-import co.edu.uniquindio.sga.domain.valueobject.Cotizacion;
-import co.edu.uniquindio.sga.domain.valueobject.Estancia;
-import co.edu.uniquindio.sga.infrastructure.rest.mapper.CotizacionMapper;
+import com.uq.bnb.application.dto.request.CotizarEstanciaRequest;
+import com.uq.bnb.application.dto.response.CotizacionResponse;
+import com.uq.bnb.application.usecase.CotizarEstanciaUseCase;
+import com.uq.bnb.domain.valueobject.Cotizacion;
+import com.uq.bnb.domain.valueobject.Estancia;
+import com.uq.bnb.infrastructure.rest.mapper.CotizacionMapper;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

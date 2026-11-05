@@ -1,4 +1,4 @@
-package co.edu.uniquindio.sga.domain.valueobject;
+package com.uq.bnb.domain.valueobject;
 
 /**
  * L-18 - Medios de pago aceptados por el alojamiento. No estaba en el

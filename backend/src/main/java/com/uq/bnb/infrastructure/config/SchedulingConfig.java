@@ -1,4 +1,4 @@
-package co.edu.uniquindio.sga.infrastructure.config;
+package com.uq.bnb.infrastructure.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;

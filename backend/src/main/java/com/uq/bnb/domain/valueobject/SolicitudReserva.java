@@ -1,7 +1,7 @@
-package co.edu.uniquindio.sga.domain.valueobject;
+package com.uq.bnb.domain.valueobject;
 
-import co.edu.uniquindio.sga.domain.entity.Ocupante;
-import co.edu.uniquindio.sga.domain.entity.Titular;
+import com.uq.bnb.domain.entity.Ocupante;
+import com.uq.bnb.domain.entity.Titular;
 
 import java.time.LocalTime;
 import java.util.List;

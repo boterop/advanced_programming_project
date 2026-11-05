@@ -1,6 +1,6 @@
-package co.edu.uniquindio.sga.application.exception;
+package com.uq.bnb.application.exception;
 
-import co.edu.uniquindio.sga.domain.valueobject.CodigoReserva;
+import com.uq.bnb.domain.valueobject.CodigoReserva;
 
 /** No existe una reserva con ese código (404). */
 public class ReservaNoEncontradaException extends RuntimeException {

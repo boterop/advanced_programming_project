@@ -1,9 +1,9 @@
-package co.edu.uniquindio.sga.application.usecase;
+package com.uq.bnb.application.usecase;
 
-import co.edu.uniquindio.sga.application.exception.ReservaNoEncontradaException;
-import co.edu.uniquindio.sga.domain.entity.Reserva;
-import co.edu.uniquindio.sga.domain.repository.ReservaRepository;
-import co.edu.uniquindio.sga.domain.valueobject.CodigoReserva;
+import com.uq.bnb.application.exception.ReservaNoEncontradaException;
+import com.uq.bnb.domain.entity.Reserva;
+import com.uq.bnb.domain.repository.ReservaRepository;
+import com.uq.bnb.domain.valueobject.CodigoReserva;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

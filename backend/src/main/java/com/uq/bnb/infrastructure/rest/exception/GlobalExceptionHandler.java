@@ -1,14 +1,14 @@
-package co.edu.uniquindio.sga.infrastructure.rest.exception;
+package com.uq.bnb.infrastructure.rest.exception;
 
-import co.edu.uniquindio.sga.application.exception.AlojamientoNoEncontradoException;
-import co.edu.uniquindio.sga.application.exception.ApartamentoNoEncontradoException;
-import co.edu.uniquindio.sga.application.exception.BloqueoNoEncontradoException;
-import co.edu.uniquindio.sga.application.exception.FolioNoEncontradoException;
-import co.edu.uniquindio.sga.application.exception.PoliticaCancelacionNoEncontradaException;
-import co.edu.uniquindio.sga.application.exception.ReservaNoEncontradaException;
-import co.edu.uniquindio.sga.application.exception.TarifaNoEncontradaException;
-import co.edu.uniquindio.sga.application.exception.TemporadaNoEncontradaException;
-import co.edu.uniquindio.sga.domain.exception.ReglaDominioException;
+import com.uq.bnb.application.exception.AlojamientoNoEncontradoException;
+import com.uq.bnb.application.exception.ApartamentoNoEncontradoException;
+import com.uq.bnb.application.exception.BloqueoNoEncontradoException;
+import com.uq.bnb.application.exception.FolioNoEncontradoException;
+import com.uq.bnb.application.exception.PoliticaCancelacionNoEncontradaException;
+import com.uq.bnb.application.exception.ReservaNoEncontradaException;
+import com.uq.bnb.application.exception.TarifaNoEncontradaException;
+import com.uq.bnb.application.exception.TemporadaNoEncontradaException;
+import com.uq.bnb.domain.exception.ReglaDominioException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

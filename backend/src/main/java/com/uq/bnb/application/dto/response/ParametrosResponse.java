@@ -1,4 +1,4 @@
-package co.edu.uniquindio.sga.application.dto.response;
+package com.uq.bnb.application.dto.response;
 
 import java.math.BigDecimal;
 import java.time.LocalTime;

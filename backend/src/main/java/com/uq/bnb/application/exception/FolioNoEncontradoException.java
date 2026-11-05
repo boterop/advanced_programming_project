@@ -1,6 +1,6 @@
-package co.edu.uniquindio.sga.application.exception;
+package com.uq.bnb.application.exception;
 
-import co.edu.uniquindio.sga.domain.valueobject.CodigoReserva;
+import com.uq.bnb.domain.valueobject.CodigoReserva;
 
 public class FolioNoEncontradoException extends RuntimeException {
     public FolioNoEncontradoException(CodigoReserva reserva) {

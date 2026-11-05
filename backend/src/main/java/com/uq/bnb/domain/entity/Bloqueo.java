@@ -1,7 +1,7 @@
-package co.edu.uniquindio.sga.domain.entity;
+package com.uq.bnb.domain.entity;
 
-import co.edu.uniquindio.sga.domain.exception.ReglaDominioException;
-import co.edu.uniquindio.sga.domain.valueobject.Estancia;
+import com.uq.bnb.domain.exception.ReglaDominioException;
+import com.uq.bnb.domain.valueobject.Estancia;
 
 import java.util.Objects;
 import java.util.UUID;

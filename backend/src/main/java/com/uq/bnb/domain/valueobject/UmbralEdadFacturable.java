@@ -1,6 +1,6 @@
-package co.edu.uniquindio.sga.domain.valueobject;
+package com.uq.bnb.domain.valueobject;
 
-import co.edu.uniquindio.sga.domain.exception.ReglaDominioException;
+import com.uq.bnb.domain.exception.ReglaDominioException;
 
 /**
  * L-09 / RN-06: edad a partir de la cual un ocupante genera cargo. El valor lo define cada alojamiento

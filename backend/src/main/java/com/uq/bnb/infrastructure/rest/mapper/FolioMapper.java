@@ -1,15 +1,15 @@
-package co.edu.uniquindio.sga.infrastructure.rest.mapper;
+package com.uq.bnb.infrastructure.rest.mapper;
 
-import co.edu.uniquindio.sga.application.dto.response.CargoResponse;
-import co.edu.uniquindio.sga.application.dto.response.FolioResponse;
-import co.edu.uniquindio.sga.application.dto.response.PagoResponse;
-import co.edu.uniquindio.sga.application.exception.ReservaNoEncontradaException;
-import co.edu.uniquindio.sga.domain.entity.Cargo;
-import co.edu.uniquindio.sga.domain.entity.Folio;
-import co.edu.uniquindio.sga.domain.entity.Pago;
-import co.edu.uniquindio.sga.domain.exception.ReglaDominioException;
-import co.edu.uniquindio.sga.domain.valueobject.CodigoReserva;
-import co.edu.uniquindio.sga.domain.valueobject.Dinero;
+import com.uq.bnb.application.dto.response.CargoResponse;
+import com.uq.bnb.application.dto.response.FolioResponse;
+import com.uq.bnb.application.dto.response.PagoResponse;
+import com.uq.bnb.application.exception.ReservaNoEncontradaException;
+import com.uq.bnb.domain.entity.Cargo;
+import com.uq.bnb.domain.entity.Folio;
+import com.uq.bnb.domain.entity.Pago;
+import com.uq.bnb.domain.exception.ReglaDominioException;
+import com.uq.bnb.domain.valueobject.CodigoReserva;
+import com.uq.bnb.domain.valueobject.Dinero;
 import org.mapstruct.Mapper;
 
 import java.math.BigDecimal;

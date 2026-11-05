@@ -1,4 +1,4 @@
-package co.edu.uniquindio.sga.domain.exception;
+package com.uq.bnb.domain.exception;
 
 public class ReglaDominioException extends RuntimeException {
 

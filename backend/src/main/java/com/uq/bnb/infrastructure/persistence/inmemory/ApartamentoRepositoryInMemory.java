@@ -1,7 +1,7 @@
-package co.edu.uniquindio.sga.infrastructure.persistence.inmemory;
+package com.uq.bnb.infrastructure.persistence.inmemory;
 
-import co.edu.uniquindio.sga.domain.entity.Apartamento;
-import co.edu.uniquindio.sga.domain.repository.ApartamentoRepository;
+import com.uq.bnb.domain.entity.Apartamento;
+import com.uq.bnb.domain.repository.ApartamentoRepository;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 

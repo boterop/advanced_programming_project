@@ -1,4 +1,4 @@
-package co.edu.uniquindio.sga.domain.entity;
+package com.uq.bnb.domain.entity;
 
 import java.time.LocalDate;
 

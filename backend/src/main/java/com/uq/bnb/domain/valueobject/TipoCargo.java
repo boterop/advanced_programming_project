@@ -1,4 +1,4 @@
-package co.edu.uniquindio.sga.domain.valueobject;
+package com.uq.bnb.domain.valueobject;
 
 /**
  * 7.7 - Tipos de cargo que puede acumular un Folio: alojamiento, servicio

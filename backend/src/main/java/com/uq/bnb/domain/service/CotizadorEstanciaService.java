@@ -1,15 +1,15 @@
-package co.edu.uniquindio.sga.domain.service;
+package com.uq.bnb.domain.service;
 
-import co.edu.uniquindio.sga.domain.entity.Alojamiento;
-import co.edu.uniquindio.sga.domain.entity.Apartamento;
-import co.edu.uniquindio.sga.domain.entity.Ocupante;
-import co.edu.uniquindio.sga.domain.entity.Temporada;
-import co.edu.uniquindio.sga.domain.exception.ReglaDominioException;
-import co.edu.uniquindio.sga.domain.valueobject.Cotizacion;
-import co.edu.uniquindio.sga.domain.valueobject.DescuentoEstanciaProlongada;
-import co.edu.uniquindio.sga.domain.valueobject.DetalleNoche;
-import co.edu.uniquindio.sga.domain.valueobject.Dinero;
-import co.edu.uniquindio.sga.domain.valueobject.Estancia;
+import com.uq.bnb.domain.entity.Alojamiento;
+import com.uq.bnb.domain.entity.Apartamento;
+import com.uq.bnb.domain.entity.Ocupante;
+import com.uq.bnb.domain.entity.Temporada;
+import com.uq.bnb.domain.exception.ReglaDominioException;
+import com.uq.bnb.domain.valueobject.Cotizacion;
+import com.uq.bnb.domain.valueobject.DescuentoEstanciaProlongada;
+import com.uq.bnb.domain.valueobject.DetalleNoche;
+import com.uq.bnb.domain.valueobject.Dinero;
+import com.uq.bnb.domain.valueobject.Estancia;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

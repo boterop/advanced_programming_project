@@ -1,6 +1,6 @@
-package co.edu.uniquindio.sga.infrastructure.scheduling;
+package com.uq.bnb.infrastructure.scheduling;
 
-import co.edu.uniquindio.sga.application.usecase.DeclararNoShowsVencidosUseCase;
+import com.uq.bnb.application.usecase.DeclararNoShowsVencidosUseCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;

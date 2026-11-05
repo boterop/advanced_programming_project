@@ -1,7 +1,7 @@
-package co.edu.uniquindio.sga.infrastructure.persistence.jpa.repository;
+package com.uq.bnb.infrastructure.persistence.jpa.repository;
 
-import co.edu.uniquindio.sga.domain.valueobject.EstadoReserva;
-import co.edu.uniquindio.sga.infrastructure.persistence.jpa.entity.ReservaEntity;
+import com.uq.bnb.domain.valueobject.EstadoReserva;
+import com.uq.bnb.infrastructure.persistence.jpa.entity.ReservaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;

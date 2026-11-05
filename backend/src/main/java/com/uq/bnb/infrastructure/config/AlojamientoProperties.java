@@ -1,4 +1,4 @@
-package co.edu.uniquindio.sga.infrastructure.config;
+package com.uq.bnb.infrastructure.config;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

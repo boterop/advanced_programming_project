@@ -1,7 +1,7 @@
-package co.edu.uniquindio.sga.domain.entity;
+package com.uq.bnb.domain.entity;
 
-import co.edu.uniquindio.sga.domain.exception.ReglaDominioException;
-import co.edu.uniquindio.sga.domain.valueobject.CodigoReserva;
+import com.uq.bnb.domain.exception.ReglaDominioException;
+import com.uq.bnb.domain.valueobject.CodigoReserva;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

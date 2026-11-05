@@ -1,9 +1,9 @@
-package co.edu.uniquindio.sga.domain.service;
+package com.uq.bnb.domain.service;
 
-import co.edu.uniquindio.sga.domain.entity.Apartamento;
-import co.edu.uniquindio.sga.domain.entity.Reserva;
-import co.edu.uniquindio.sga.domain.exception.ReglaDominioException;
-import co.edu.uniquindio.sga.domain.valueobject.EstadoReserva;
+import com.uq.bnb.domain.entity.Apartamento;
+import com.uq.bnb.domain.entity.Reserva;
+import com.uq.bnb.domain.exception.ReglaDominioException;
+import com.uq.bnb.domain.valueobject.EstadoReserva;
 
 import java.time.LocalDate;
 import java.util.Objects;

@@ -1,8 +1,8 @@
-package co.edu.uniquindio.sga.application.usecase;
+package com.uq.bnb.application.usecase;
 
-import co.edu.uniquindio.sga.domain.entity.Reserva;
-import co.edu.uniquindio.sga.domain.repository.ReservaRepository;
-import co.edu.uniquindio.sga.domain.valueobject.EstadoReserva;
+import com.uq.bnb.domain.entity.Reserva;
+import com.uq.bnb.domain.repository.ReservaRepository;
+import com.uq.bnb.domain.valueobject.EstadoReserva;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
-package co.edu.uniquindio.sga.application.usecase;
+package com.uq.bnb.application.usecase;
 
-import co.edu.uniquindio.sga.domain.entity.Apartamento;
-import co.edu.uniquindio.sga.domain.repository.ApartamentoRepository;
+import com.uq.bnb.domain.entity.Apartamento;
+import com.uq.bnb.domain.repository.ApartamentoRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package co.edu.uniquindio.sga.application.usecase;
+package com.uq.bnb.application.usecase;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

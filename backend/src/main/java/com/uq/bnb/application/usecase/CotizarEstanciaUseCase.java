@@ -1,15 +1,15 @@
-package co.edu.uniquindio.sga.application.usecase;
+package com.uq.bnb.application.usecase;
 
-import co.edu.uniquindio.sga.application.exception.AlojamientoNoEncontradoException;
-import co.edu.uniquindio.sga.application.exception.ApartamentoNoEncontradoException;
-import co.edu.uniquindio.sga.domain.entity.Alojamiento;
-import co.edu.uniquindio.sga.domain.entity.Apartamento;
-import co.edu.uniquindio.sga.domain.entity.Ocupante;
-import co.edu.uniquindio.sga.domain.repository.AlojamientoRepository;
-import co.edu.uniquindio.sga.domain.repository.ApartamentoRepository;
-import co.edu.uniquindio.sga.domain.service.CotizadorEstanciaService;
-import co.edu.uniquindio.sga.domain.valueobject.Cotizacion;
-import co.edu.uniquindio.sga.domain.valueobject.Estancia;
+import com.uq.bnb.application.exception.AlojamientoNoEncontradoException;
+import com.uq.bnb.application.exception.ApartamentoNoEncontradoException;
+import com.uq.bnb.domain.entity.Alojamiento;
+import com.uq.bnb.domain.entity.Apartamento;
+import com.uq.bnb.domain.entity.Ocupante;
+import com.uq.bnb.domain.repository.AlojamientoRepository;
+import com.uq.bnb.domain.repository.ApartamentoRepository;
+import com.uq.bnb.domain.service.CotizadorEstanciaService;
+import com.uq.bnb.domain.valueobject.Cotizacion;
+import com.uq.bnb.domain.valueobject.Estancia;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

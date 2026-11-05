@@ -1,4 +1,4 @@
-package co.edu.uniquindio.sga.domain.valueobject;
+package com.uq.bnb.domain.valueobject;
 
 import java.util.Map;
 import java.util.Set;

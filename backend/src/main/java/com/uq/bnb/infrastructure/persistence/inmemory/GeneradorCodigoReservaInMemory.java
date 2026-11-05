@@ -1,7 +1,7 @@
-package co.edu.uniquindio.sga.infrastructure.persistence.inmemory;
+package com.uq.bnb.infrastructure.persistence.inmemory;
 
-import co.edu.uniquindio.sga.domain.repository.GeneradorCodigoReserva;
-import co.edu.uniquindio.sga.domain.valueobject.CodigoReserva;
+import com.uq.bnb.domain.repository.GeneradorCodigoReserva;
+import com.uq.bnb.domain.valueobject.CodigoReserva;
 
 import java.util.concurrent.atomic.AtomicLong;
 

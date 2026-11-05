@@ -1,9 +1,9 @@
-package co.edu.uniquindio.sga.domain.service;
+package com.uq.bnb.domain.service;
 
-import co.edu.uniquindio.sga.domain.entity.Apartamento;
-import co.edu.uniquindio.sga.domain.entity.Bloqueo;
-import co.edu.uniquindio.sga.domain.exception.ReglaDominioException;
-import co.edu.uniquindio.sga.domain.repository.ReservaRepository;
+import com.uq.bnb.domain.entity.Apartamento;
+import com.uq.bnb.domain.entity.Bloqueo;
+import com.uq.bnb.domain.exception.ReglaDominioException;
+import com.uq.bnb.domain.repository.ReservaRepository;
 
 import java.util.Objects;
 

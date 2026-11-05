@@ -1,18 +1,18 @@
-package co.edu.uniquindio.sga.infrastructure.rest.mapper;
+package com.uq.bnb.infrastructure.rest.mapper;
 
-import co.edu.uniquindio.sga.application.dto.request.RegistrarTemporadaRequest;
-import co.edu.uniquindio.sga.application.dto.request.TramoRequest;
-import co.edu.uniquindio.sga.application.dto.response.AlojamientoResponse;
-import co.edu.uniquindio.sga.application.dto.response.ParametrosResponse;
-import co.edu.uniquindio.sga.application.dto.response.PoliticaCancelacionResponse;
-import co.edu.uniquindio.sga.application.dto.response.TemporadaResponse;
-import co.edu.uniquindio.sga.application.dto.response.TramoResponse;
-import co.edu.uniquindio.sga.application.usecase.ConsultarAlojamientoUseCase;
-import co.edu.uniquindio.sga.domain.entity.Alojamiento;
-import co.edu.uniquindio.sga.domain.entity.PoliticaCancelacion;
-import co.edu.uniquindio.sga.domain.entity.Temporada;
-import co.edu.uniquindio.sga.domain.valueobject.ParametrosAlojamiento;
-import co.edu.uniquindio.sga.domain.valueobject.TramoAntelacion;
+import com.uq.bnb.application.dto.request.RegistrarTemporadaRequest;
+import com.uq.bnb.application.dto.request.TramoRequest;
+import com.uq.bnb.application.dto.response.AlojamientoResponse;
+import com.uq.bnb.application.dto.response.ParametrosResponse;
+import com.uq.bnb.application.dto.response.PoliticaCancelacionResponse;
+import com.uq.bnb.application.dto.response.TemporadaResponse;
+import com.uq.bnb.application.dto.response.TramoResponse;
+import com.uq.bnb.application.usecase.ConsultarAlojamientoUseCase;
+import com.uq.bnb.domain.entity.Alojamiento;
+import com.uq.bnb.domain.entity.PoliticaCancelacion;
+import com.uq.bnb.domain.entity.Temporada;
+import com.uq.bnb.domain.valueobject.ParametrosAlojamiento;
+import com.uq.bnb.domain.valueobject.TramoAntelacion;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

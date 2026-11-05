@@ -1,4 +1,4 @@
-package co.edu.uniquindio.sga.application.exception;
+package com.uq.bnb.application.exception;
 
 /**
  * Recurso inexistente: pertenece a la capa de aplicación (no es una regla de negocio violada),

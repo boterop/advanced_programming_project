@@ -1,4 +1,4 @@
-package co.edu.uniquindio.sga.domain.valueobject;
+package com.uq.bnb.domain.valueobject;
 
 /**
  * 2.4 - Canal de origen de una reserva: el alojamiento vende por tres

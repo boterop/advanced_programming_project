@@ -1,6 +1,6 @@
-package co.edu.uniquindio.sga.application.dto.request;
+package com.uq.bnb.application.dto.request;
 
-import co.edu.uniquindio.sga.domain.valueobject.MedioPago;
+import com.uq.bnb.domain.valueobject.MedioPago;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalTime;

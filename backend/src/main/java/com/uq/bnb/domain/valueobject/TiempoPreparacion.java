@@ -1,6 +1,6 @@
-package co.edu.uniquindio.sga.domain.valueobject;
+package com.uq.bnb.domain.valueobject;
 
-import co.edu.uniquindio.sga.domain.exception.ReglaDominioException;
+import com.uq.bnb.domain.exception.ReglaDominioException;
 
 // RN-20: tiempo mínimo entre la salida de un grupo y la entrada del siguiente
 // L-13: el valor lo define cada equipo, nunca se quema en el código

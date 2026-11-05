@@ -1,9 +1,9 @@
-package co.edu.uniquindio.sga.domain.repository;
+package com.uq.bnb.domain.repository;
 
-import co.edu.uniquindio.sga.domain.entity.Reserva;
-import co.edu.uniquindio.sga.domain.valueobject.CodigoReserva;
-import co.edu.uniquindio.sga.domain.valueobject.EstadoReserva;
-import co.edu.uniquindio.sga.domain.valueobject.Estancia;
+import com.uq.bnb.domain.entity.Reserva;
+import com.uq.bnb.domain.valueobject.CodigoReserva;
+import com.uq.bnb.domain.valueobject.EstadoReserva;
+import com.uq.bnb.domain.valueobject.Estancia;
 
 import java.time.LocalDate;
 import java.util.List;

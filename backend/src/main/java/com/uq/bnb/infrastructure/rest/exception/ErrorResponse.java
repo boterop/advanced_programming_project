@@ -1,4 +1,4 @@
-package co.edu.uniquindio.sga.infrastructure.rest.exception;
+package com.uq.bnb.infrastructure.rest.exception;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package co.edu.uniquindio.sga.application.exception;
+package com.uq.bnb.application.exception;
 
 import java.util.UUID;
 

@@ -1,6 +1,6 @@
-package co.edu.uniquindio.sga.application.dto.response;
+package com.uq.bnb.application.dto.response;
 
-import co.edu.uniquindio.sga.domain.valueobject.MedioPago;
+import com.uq.bnb.domain.valueobject.MedioPago;
 
 import java.time.LocalDate;
 import java.util.UUID;

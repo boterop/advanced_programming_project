@@ -1,10 +1,10 @@
-package co.edu.uniquindio.sga.application.usecase;
+package com.uq.bnb.application.usecase;
 
-import co.edu.uniquindio.sga.application.exception.AlojamientoNoEncontradoException;
-import co.edu.uniquindio.sga.domain.entity.Alojamiento;
-import co.edu.uniquindio.sga.domain.entity.PoliticaCancelacion;
-import co.edu.uniquindio.sga.domain.repository.AlojamientoRepository;
-import co.edu.uniquindio.sga.domain.valueobject.TramoAntelacion;
+import com.uq.bnb.application.exception.AlojamientoNoEncontradoException;
+import com.uq.bnb.domain.entity.Alojamiento;
+import com.uq.bnb.domain.entity.PoliticaCancelacion;
+import com.uq.bnb.domain.repository.AlojamientoRepository;
+import com.uq.bnb.domain.valueobject.TramoAntelacion;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

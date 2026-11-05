@@ -1,4 +1,4 @@
-package co.edu.uniquindio.sga.application.exception;
+package com.uq.bnb.application.exception;
 
 // El alojamiento no tiene configurada la versión de política que se necesita (F-07)
 public class PoliticaCancelacionNoEncontradaException extends RuntimeException {

@@ -1,4 +1,4 @@
-package co.edu.uniquindio.sga.domain.valueobject;
+package com.uq.bnb.domain.valueobject;
 
 /**
  * Nivel de severidad de una Novedad. No estaba en el diagrama original como

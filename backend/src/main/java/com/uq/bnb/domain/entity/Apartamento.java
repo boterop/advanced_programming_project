@@ -1,11 +1,11 @@
-package co.edu.uniquindio.sga.domain.entity;
+package com.uq.bnb.domain.entity;
 
-import co.edu.uniquindio.sga.domain.exception.ReglaDominioException;
-import co.edu.uniquindio.sga.domain.valueobject.Dinero;
-import co.edu.uniquindio.sga.domain.valueobject.Dormitorio;
-import co.edu.uniquindio.sga.domain.valueobject.Estancia;
-import co.edu.uniquindio.sga.domain.valueobject.EstadoOperativo;
-import co.edu.uniquindio.sga.domain.valueobject.TipoApartamento;
+import com.uq.bnb.domain.exception.ReglaDominioException;
+import com.uq.bnb.domain.valueobject.Dinero;
+import com.uq.bnb.domain.valueobject.Dormitorio;
+import com.uq.bnb.domain.valueobject.Estancia;
+import com.uq.bnb.domain.valueobject.EstadoOperativo;
+import com.uq.bnb.domain.valueobject.TipoApartamento;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

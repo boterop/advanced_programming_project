@@ -1,6 +1,6 @@
-package co.edu.uniquindio.sga.domain.repository;
+package com.uq.bnb.domain.repository;
 
-import co.edu.uniquindio.sga.domain.entity.Apartamento;
+import com.uq.bnb.domain.entity.Apartamento;
 
 import java.util.List;
 import java.util.Optional;
