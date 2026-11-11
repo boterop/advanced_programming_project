@@ -16,6 +16,7 @@ import com.uq.bnb.application.usecase.ConsultarBloqueoUseCase;
 import com.uq.bnb.application.usecase.ConsultarTarifaUseCase;
 import com.uq.bnb.application.usecase.CrearApartamentoUseCase;
 import com.uq.bnb.application.usecase.DefinirTarifaUseCase;
+import com.uq.bnb.application.usecase.DesbloquearApartamentoUseCase;
 import com.uq.bnb.application.usecase.IniciarPreparacionApartamentoUseCase;
 import com.uq.bnb.application.usecase.ListarApartamentosUseCase;
 import com.uq.bnb.application.usecase.ListarBloqueosApartamentoUseCase;
@@ -33,6 +34,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,6 +58,7 @@ public class ApartamentoController {
   private final BloquearApartamentoUseCase bloquearApartamentoUseCase;
   private final ListarBloqueosApartamentoUseCase listarBloqueosApartamentoUseCase;
   private final ConsultarBloqueoUseCase consultarBloqueoUseCase;
+  private final DesbloquearApartamentoUseCase desbloquearApartamentoUseCase;
   private final DefinirTarifaUseCase definirTarifaUseCase;
   private final ListarTarifasApartamentoUseCase listarTarifasApartamentoUseCase;
   private final ConsultarTarifaUseCase consultarTarifaUseCase;
@@ -73,6 +76,7 @@ public class ApartamentoController {
       BloquearApartamentoUseCase bloquearApartamentoUseCase,
       ListarBloqueosApartamentoUseCase listarBloqueosApartamentoUseCase,
       ConsultarBloqueoUseCase consultarBloqueoUseCase,
+      DesbloquearApartamentoUseCase desbloquearApartamentoUseCase,
       DefinirTarifaUseCase definirTarifaUseCase,
       ListarTarifasApartamentoUseCase listarTarifasApartamentoUseCase,
       ConsultarTarifaUseCase consultarTarifaUseCase,
@@ -88,6 +92,7 @@ public class ApartamentoController {
     this.bloquearApartamentoUseCase = bloquearApartamentoUseCase;
     this.listarBloqueosApartamentoUseCase = listarBloqueosApartamentoUseCase;
     this.consultarBloqueoUseCase = consultarBloqueoUseCase;
+    this.desbloquearApartamentoUseCase = desbloquearApartamentoUseCase;
     this.definirTarifaUseCase = definirTarifaUseCase;
     this.listarTarifasApartamentoUseCase = listarTarifasApartamentoUseCase;
     this.consultarTarifaUseCase = consultarTarifaUseCase;
@@ -169,6 +174,13 @@ public class ApartamentoController {
       @PathVariable String identificacion, @PathVariable UUID id) {
     return mapper.toBloqueoResponse(
         identificacion, consultarBloqueoUseCase.ejecutar(identificacion, id));
+  }
+
+  @DeleteMapping("/{identificacion}/bloqueos/{id}")
+  public ResponseEntity<Void> desbloquear(
+      @PathVariable String identificacion, @PathVariable UUID id) {
+    desbloquearApartamentoUseCase.ejecutar(identificacion, id);
+    return ResponseEntity.noContent().build();
   }
 
   @PostMapping("/{identificacion}/tarifas")
