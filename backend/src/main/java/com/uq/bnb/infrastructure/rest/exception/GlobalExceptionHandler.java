@@ -1,13 +1,6 @@
 package com.uq.bnb.infrastructure.rest.exception;
 
-import com.uq.bnb.application.exception.AlojamientoNoEncontradoException;
-import com.uq.bnb.application.exception.ApartamentoNoEncontradoException;
-import com.uq.bnb.application.exception.BloqueoNoEncontradoException;
-import com.uq.bnb.application.exception.FolioNoEncontradoException;
-import com.uq.bnb.application.exception.PoliticaCancelacionNoEncontradaException;
-import com.uq.bnb.application.exception.ReservaNoEncontradaException;
-import com.uq.bnb.application.exception.TarifaNoEncontradaException;
-import com.uq.bnb.application.exception.TemporadaNoEncontradaException;
+import com.uq.bnb.application.exception.*;
 import com.uq.bnb.domain.exception.ReglaDominioException;
 import java.util.List;
 import java.util.stream.Stream;
@@ -108,7 +101,8 @@ public class GlobalExceptionHandler {
     FolioNoEncontradoException.class,
     PoliticaCancelacionNoEncontradaException.class,
     BloqueoNoEncontradoException.class,
-    TarifaNoEncontradaException.class
+    TarifaNoEncontradaException.class,
+    UsuarioNoEncontradoException.class
   })
   public ResponseEntity<ErrorResponse> manejarNoEncontrado(RuntimeException ex) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -151,5 +145,18 @@ public class GlobalExceptionHandler {
     LOG.error("Error no controlado", ex);
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
         .body(ErrorResponse.de("ERROR_INTERNO", "Error interno del servidor"));
+  }
+
+  @ExceptionHandler(CredencialesInvalidasException.class)
+  public ResponseEntity<ErrorResponse> manejarCredencialesInvalidas(
+          CredencialesInvalidasException ex) {
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+            .body(ErrorResponse.de("CREDENCIALES_INVALIDAS", ex.getMessage()));
+  }
+
+  @ExceptionHandler(UsuarioDuplicadoException.class)
+  public ResponseEntity<ErrorResponse> manejarUsuarioDuplicado(UsuarioDuplicadoException ex) {
+    return ResponseEntity.status(HttpStatus.CONFLICT)
+            .body(ErrorResponse.de("USUARIO_DUPLICADO", ex.getMessage()));
   }
 }

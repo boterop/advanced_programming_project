@@ -2,6 +2,7 @@ package com.uq.bnb.fixtures;
 
 import com.uq.bnb.domain.entity.PoliticaCancelacion;
 import com.uq.bnb.domain.valueobject.TramoAntelacion;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;

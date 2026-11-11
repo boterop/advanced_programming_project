@@ -48,6 +48,14 @@ public class ReservaJpaRepository implements ReservaRepository {
         .toList();
   }
 
+  @Override
+  @Transactional(readOnly = true)
+  public List<Reserva> buscarActivasPorTitular(String documento) {
+    return dataRepository.findByTitularDocumentoAndEstadoIn(documento, estadosActivos()).stream()
+        .map(mapper::toDomain)
+        .toList();
+  }
+
   private static List<EstadoReserva> estadosActivos() {
     return Arrays.stream(EstadoReserva.values()).filter(EstadoReserva::esActiva).toList();
   }

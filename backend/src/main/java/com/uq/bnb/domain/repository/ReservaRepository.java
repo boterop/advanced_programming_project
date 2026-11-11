@@ -17,6 +17,8 @@ public interface ReservaRepository {
 
   List<Reserva> buscarPorEstado(EstadoReserva estado);
 
+  List<Reserva> buscarActivasPorTitular(String documento);
+
   List<Reserva> buscar(
       EstadoReserva estado, String apartamentoId, LocalDate desde, LocalDate hasta);
 

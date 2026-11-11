@@ -1,13 +1,11 @@
 package com.uq.bnb.domain.valueobject;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import com.uq.bnb.domain.exception.ReglaDominioException;
-import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class EstanciaTest {
   private final LocalDate inicio = LocalDate.of(2030, 6, 10);

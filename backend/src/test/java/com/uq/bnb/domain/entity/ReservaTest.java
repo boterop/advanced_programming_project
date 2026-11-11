@@ -1,12 +1,12 @@
 package com.uq.bnb.domain.entity;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import com.uq.bnb.domain.exception.ReglaDominioException;
 import com.uq.bnb.domain.valueobject.EstadoReserva;
 import com.uq.bnb.fixtures.ReservaFixture;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ReservaTest {
   @Test

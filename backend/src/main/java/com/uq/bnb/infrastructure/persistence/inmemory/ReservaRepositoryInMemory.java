@@ -38,6 +38,14 @@ public class ReservaRepositoryInMemory implements ReservaRepository {
   }
 
   @Override
+  public List<Reserva> buscarActivasPorTitular(String documento) {
+    return tablaReservas.values().stream()
+            .filter(reserva -> reserva.titular().documento().equals(documento))
+            .filter(reserva -> reserva.estado() != null && reserva.estado().esActiva())
+            .toList();
+  }
+
+  @Override
   public Optional<Reserva> obtenerPorCodigo(CodigoReserva codigo) {
     return tablaReservas.values().stream().filter(r -> r.codigo().equals(codigo)).findFirst();
   }

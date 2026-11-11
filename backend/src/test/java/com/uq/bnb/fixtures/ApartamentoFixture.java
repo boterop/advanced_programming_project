@@ -3,6 +3,7 @@ package com.uq.bnb.fixtures;
 import com.uq.bnb.domain.entity.Apartamento;
 import com.uq.bnb.domain.valueobject.Dormitorio;
 import com.uq.bnb.domain.valueobject.EstadoOperativo;
+
 import java.util.List;
 
 public final class ApartamentoFixture {

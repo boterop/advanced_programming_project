@@ -1,0 +1,9 @@
+package com.uq.bnb.application.exception;
+
+import java.util.UUID;
+
+public class UsuarioNoEncontradoException extends RuntimeException{
+    public UsuarioNoEncontradoException(UUID id) {
+        super("No se encontró el usuario con id: " + id);
+    }
+}

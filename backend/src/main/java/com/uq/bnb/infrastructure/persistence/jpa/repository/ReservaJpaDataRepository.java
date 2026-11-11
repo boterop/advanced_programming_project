@@ -21,6 +21,9 @@ public interface ReservaJpaDataRepository
   List<ReservaEntity> findByApartamentoIdAndEstadoIn(
       String apartamentoId, Collection<EstadoReserva> estados);
 
+  List<ReservaEntity> findByTitularDocumentoAndEstadoIn(
+      String documento, Collection<EstadoReserva> estados);
+
   long countByCodigoStartingWith(String prefijo);
 
   @Query(

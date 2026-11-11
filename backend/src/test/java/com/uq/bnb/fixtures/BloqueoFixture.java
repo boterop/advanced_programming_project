@@ -2,6 +2,7 @@ package com.uq.bnb.fixtures;
 
 import com.uq.bnb.domain.entity.Bloqueo;
 import com.uq.bnb.domain.valueobject.Estancia;
+
 import java.time.LocalDate;
 
 public final class BloqueoFixture {

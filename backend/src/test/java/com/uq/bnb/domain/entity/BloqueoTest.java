@@ -1,12 +1,13 @@
 package com.uq.bnb.domain.entity;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import com.uq.bnb.domain.valueobject.Estancia;
 import com.uq.bnb.fixtures.BloqueoFixture;
-import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BloqueoTest {
   @Test

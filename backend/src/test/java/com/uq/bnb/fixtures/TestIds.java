@@ -1,6 +1,7 @@
 package com.uq.bnb.fixtures;
 
 import com.uq.bnb.domain.valueobject.ID;
+
 import java.util.concurrent.atomic.AtomicLong;
 
 public final class TestIds {

@@ -1,11 +1,9 @@
 package com.uq.bnb.domain.valueobject;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import com.uq.bnb.domain.exception.ReglaDominioException;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class IDTest {
   private static final String ID_VALIDO = "2a79549d-4526-46b3-a4a4-fbde0b435352";

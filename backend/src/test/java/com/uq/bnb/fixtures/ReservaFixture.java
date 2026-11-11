@@ -2,13 +2,8 @@ package com.uq.bnb.fixtures;
 
 import com.uq.bnb.domain.entity.Reserva;
 import com.uq.bnb.domain.entity.Titular;
-import com.uq.bnb.domain.valueobject.CanalOrigen;
-import com.uq.bnb.domain.valueobject.CodigoReserva;
-import com.uq.bnb.domain.valueobject.Cotizacion;
-import com.uq.bnb.domain.valueobject.DetalleNoche;
-import com.uq.bnb.domain.valueobject.Dinero;
-import com.uq.bnb.domain.valueobject.Estancia;
-import com.uq.bnb.domain.valueobject.VersionPolitica;
+import com.uq.bnb.domain.valueobject.*;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;

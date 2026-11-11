@@ -2,6 +2,7 @@ package com.uq.bnb.fixtures;
 
 import com.uq.bnb.domain.entity.Ocupante;
 import com.uq.bnb.domain.valueobject.ID;
+
 import java.time.LocalDate;
 
 public final class OcupanteFixture {
