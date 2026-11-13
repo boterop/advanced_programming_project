@@ -88,7 +88,7 @@ const Register = () => {
   return (
     <AuthLayout
       title="Crear cuenta"
-      subtitle="Regístrate como cliente emisor para solicitar envíos de paquetes."
+      subtitle="Regístrate para buscar y reservar apartamentos en el edificio."
       footer={
         <>
           ¿Ya tienes cuenta?{" "}

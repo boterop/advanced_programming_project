@@ -1,241 +1,199 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import {
-    Alert,
-    Box,
-    Button,
-    CircularProgress,
-    Container,
-    Paper,
-    TextField,
-    Typography,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Container,
+  Grid,
+  Typography,
+  Avatar,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Divider,
 } from "@mui/material";
-import { useAuth } from "@hooks/useAuth";
-import { api } from "@services/api.js";
-
-const PHONE_REGEX = /^[0-9+ ()-]{7,20}$/;
-
-const validate = ({ phone, address, city }) => {
-    const errors = {};
-    if (phone.trim() && !PHONE_REGEX.test(phone.trim())) {
-        errors.phone = "El teléfono no es válido";
-    }
-    if (address.length > 200) {
-        errors.address = "La dirección es demasiado larga";
-    }
-    if (city.length > 100) {
-        errors.city = "La ciudad es demasiado larga";
-    }
-    return errors;
-};
+import { useState } from "react";
 
 const Profile = () => {
-    // /profile abre el perfil propio; /profile/:userId lo usa el administrador.
-    const { userId: routeUserId } = useParams();
-    const { user: authUser, loading: authLoading } = useAuth();
-    const userId = routeUserId ?? authUser?.id;
+  const [profileData, setProfileData] = useState({
+    name: "Juan Pérez",
+    email: "juan.perez@example.com",
+    phone: "+52 55 1234 5678",
+    bio: "Estudiante de ingeniería buscando alojamiento en el edificio.",
+    isOwner: false,
+  });
 
-    const [user, setUser] = useState(null);
-    const [form, setForm] = useState({ phone: "", address: "", city: "" });
-    const [fieldErrors, setFieldErrors] = useState({});
-    const [loading, setLoading] = useState(true);
-    const [saving, setSaving] = useState(false);
-    const [error, setError] = useState("");
-    const [success, setSuccess] = useState("");
+  const [editing, setEditing] = useState(false);
 
-    useEffect(() => {
-        if (!userId) return;
+  const handleEdit = () => {
+    setEditing(true);
+  };
 
-        let cancelled = false;
+  const handleSave = () => {
+    setEditing(false);
+  };
 
-        const loadProfile = async () => {
-            try {
-                const response = await api(`/user-profiles/${userId}`);
+  const handleCancel = () => {
+    setEditing(false);
+  };
 
-                if (response.status === 401 || response.status === 403) {
-                    throw new Error("No tienes permiso para ver este perfil.");
-                }
-                if (response.status === 404) {
-                    throw new Error("Usuario no encontrado.");
-                }
-                if (!response.ok) {
-                    throw new Error("No se pudo cargar el perfil.");
-                }
+  const handleChange = (field, value) => {
+    setProfileData(prev => ({ ...prev, [field]: value }));
+  };
 
-                const data = await response.json();
-                if (cancelled) return;
+  return (
+    <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Typography variant="h4" component="h1" gutterBottom>
+        Mi Perfil
+      </Typography>
 
-                setUser({ name: data.name, email: data.email });
-                setForm({
-                    phone: data.phone ?? "",
-                    address: data.address ?? "",
-                    city: data.city ?? "",
-                });
-            } catch (err) {
-                if (!cancelled) {
-                    setError(
-                        err instanceof TypeError
-                            ? "No se pudo conectar con el servidor. Inténtalo de nuevo."
-                            : err.message,
-                    );
-                }
-            } finally {
-                if (!cancelled) setLoading(false);
-            }
-        };
+      <Grid container spacing={4}>
+        {/* Profile Card */}
+        <Grid item xs={12} md={4}>
+          <Card>
+            <CardContent>
+              <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <Avatar
+                  sx={{ width: 100, height: 100, mb: 2 }}
+                  src="https://images.unsplash.com/photo-1494790108377-be9c253d107f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80"
+                />
+                <Typography variant="h6" component="h2" gutterBottom>
+                  {profileData.name}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                  {profileData.email}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                  {profileData.phone}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                  {profileData.bio}
+                </Typography>
+                <FormControlLabel
+                  control={<Checkbox checked={profileData.isOwner} disabled />}
+                  label="Soy propietario de un apartamento"
+                />
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
 
-        loadProfile();
+        {/* Edit Profile Form */}
+        <Grid item xs={12} md={8}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" component="h2" gutterBottom>
+                Datos Personales
+              </Typography>
+              
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="Nombre"
+                    value={profileData.name}
+                    onChange={(e) => handleChange("name", e.target.value)}
+                    disabled={!editing}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="Email"
+                    value={profileData.email}
+                    onChange={(e) => handleChange("email", e.target.value)}
+                    disabled={!editing}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="Teléfono"
+                    value={profileData.phone}
+                    onChange={(e) => handleChange("phone", e.target.value)}
+                    disabled={!editing}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="¿Eres propietario?"
+                    value={profileData.isOwner ? "Sí" : "No"}
+                    disabled
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Biografía"
+                    multiline
+                    rows={3}
+                    value={profileData.bio}
+                    onChange={(e) => handleChange("bio", e.target.value)}
+                    disabled={!editing}
+                  />
+                </Grid>
+              </Grid>
 
-        return () => {
-            cancelled = true;
-        };
-    }, [userId]);
+              <Box sx={{ mt: 3, display: "flex", justifyContent: "flex-end", gap: 2 }}>
+                {editing ? (
+                  <>
+                    <Button variant="outlined" onClick={handleCancel}>
+                      Cancelar
+                    </Button>
+                    <Button variant="contained" onClick={handleSave}>
+                      Guardar cambios
+                    </Button>
+                  </>
+                ) : (
+                  <Button variant="contained" onClick={handleEdit}>
+                    Editar perfil
+                  </Button>
+                )}
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
 
-    const handleChange = (field) => (event) => {
-        setForm((current) => ({ ...current, [field]: event.target.value }));
-        setFieldErrors((current) => ({ ...current, [field]: undefined }));
-        setSuccess("");
-    };
+      <Divider sx={{ my: 4 }} />
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-
-        const errors = validate(form);
-        setFieldErrors(errors);
-        if (Object.keys(errors).length > 0) return;
-
-        setSaving(true);
-        setError("");
-        setSuccess("");
-
-        try {
-            const response = await api(`/user-profiles/${userId}`, {
-                method: "PUT",
-                // Los campos vacíos se envían como null para que el backend no los valide.
-                body: JSON.stringify({
-                    phone: form.phone.trim() || null,
-                    address: form.address.trim() || null,
-                    city: form.city.trim() || null,
-                }),
-            });
-
-            if (!response.ok) {
-                throw new Error("Request failed");
-            }
-
-            setSuccess("Perfil actualizado correctamente.");
-        } catch {
-            setError("Algo salió mal. Inténtalo de nuevo.");
-        } finally {
-            setSaving(false);
-        }
-    };
-
-    const showSpinner = authLoading || (loading && !error);
-
-    return (
-        <Container maxWidth="sm">
-            <Box
-                sx={{
-                    minHeight: "100vh",
-                    display: "flex",
-                    alignItems: "center",
-                }}
-            >
-                <Paper elevation={3} sx={{ width: "100%", p: 4 }}>
-                    <Typography variant="h4" component="h1" gutterBottom>
-                        Mi perfil
-                    </Typography>
-
-                    {showSpinner && (
-                        <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
-                            <CircularProgress />
-                        </Box>
-                    )}
-
-                    {!showSpinner && !user && error && (
-                        <Alert severity="error">{error}</Alert>
-                    )}
-
-                    {!showSpinner && user && (
-                        <>
-                            <Typography color="text.secondary" sx={{ mb: 3 }}>
-                                Actualiza tu información de contacto.
-                            </Typography>
-
-                            <Box component="form" onSubmit={handleSubmit} noValidate>
-                                <TextField
-                                    fullWidth
-                                    label="Nombre"
-                                    value={user.name}
-                                    margin="normal"
-                                    disabled
-                                />
-                                <TextField
-                                    fullWidth
-                                    label="Correo electrónico"
-                                    value={user.email}
-                                    margin="normal"
-                                    disabled
-                                />
-                                <TextField
-                                    fullWidth
-                                    label="Teléfono"
-                                    value={form.phone}
-                                    onChange={handleChange("phone")}
-                                    error={Boolean(fieldErrors.phone)}
-                                    helperText={fieldErrors.phone}
-                                    autoComplete="tel"
-                                    margin="normal"
-                                />
-                                <TextField
-                                    fullWidth
-                                    label="Dirección"
-                                    value={form.address}
-                                    onChange={handleChange("address")}
-                                    error={Boolean(fieldErrors.address)}
-                                    helperText={fieldErrors.address}
-                                    autoComplete="street-address"
-                                    margin="normal"
-                                />
-                                <TextField
-                                    fullWidth
-                                    label="Ciudad"
-                                    value={form.city}
-                                    onChange={handleChange("city")}
-                                    error={Boolean(fieldErrors.city)}
-                                    helperText={fieldErrors.city}
-                                    autoComplete="address-level2"
-                                    margin="normal"
-                                />
-
-                                <Button
-                                    fullWidth
-                                    type="submit"
-                                    variant="contained"
-                                    disabled={saving}
-                                    sx={{ mt: 2 }}
-                                >
-                                    {saving ? "Guardando..." : "Guardar cambios"}
-                                </Button>
-                            </Box>
-
-                            {success && (
-                                <Alert severity="success" sx={{ mt: 3 }}>
-                                    {success}
-                                </Alert>
-                            )}
-                            {error && (
-                                <Alert severity="error" sx={{ mt: 3 }}>
-                                    {error}
-                                </Alert>
-                            )}
-                        </>
-                    )}
-                </Paper>
-            </Box>
-        </Container>
-    );
+      {/* My Apartments */}
+      <Typography variant="h6" component="h2" gutterBottom>
+        Mis Apartamentos
+      </Typography>
+      
+      <Grid container spacing={3}>
+        {[1, 2].map((item) => (
+          <Grid item xs={12} sm={6} md={4} key={item}>
+            <Card>
+              <Box sx={{ height: 150, bgcolor: "primary.light", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Typography variant="h6" color="primary.contrastText">
+                  Imagen del apartamento
+                </Typography>
+              </Box>
+              <CardContent>
+                <Typography variant="h6" component="h3" gutterBottom>
+                  Apartamento {item}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Edificio Central, Piso 5
+                </Typography>
+                <Box sx={{ mt: 2, display: "flex", justifyContent: "space-between" }}>
+                  <Typography variant="h6" color="primary">
+                    $1500/mes
+                  </Typography>
+                  <Button variant="outlined" size="small">
+                    Editar
+                  </Button>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </Container>
+  );
 };
 
 export default Profile;

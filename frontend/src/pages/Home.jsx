@@ -1,235 +1,117 @@
 import {
   Box,
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
   Chip,
   CircularProgress,
-  Link,
-  Paper,
+  Container,
+  Grid,
+  TextField,
   Typography,
 } from "@mui/material";
-import { alpha } from "@mui/material/styles";
-import { Link as RouterLink } from "react-router-dom";
-import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
-import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
-import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { useAuth } from "@hooks/useAuth";
-import { TestLocation } from "@components";
-import { roleLabel } from "../utils/roleLabel";
-
-const MAIN_ACTIONS = [
-  {
-    to: "/shipments/new",
-    title: "Registrar envío",
-    description: "Crea un envío nuevo y obtén su código de seguimiento.",
-    icon: Inventory2OutlinedIcon,
-  },
-  {
-    to: "/shipments",
-    title: "Historial de envíos",
-    description: "Consulta tus envíos y su estado actual.",
-    icon: ReceiptLongOutlinedIcon,
-  },
-  {
-    to: "/incident-reports/new",
-    title: "Reportar incidente",
-    description: "Informa un problema con ubicación y fotografía.",
-    icon: ReportProblemOutlinedIcon,
-  },
-];
-
-// Tarjeta completamente clicable: el enlace del título se estira sobre toda
-// la tarjeta, así el nombre accesible del enlace es solo el título.
-const ActionCard = ({ to, title, description, icon: Icon, compact = false }) => (
-  <Paper
-    variant="outlined"
-    sx={(theme) => ({
-      position: "relative",
-      display: "flex",
-      flexDirection: compact ? "row" : "column",
-      alignItems: compact ? "center" : "flex-start",
-      gap: 2,
-      p: { xs: 2.5, md: 3 },
-      borderRadius: 3,
-      transition: "border-color 0.15s, background-color 0.15s",
-      "&:hover": {
-        borderColor: "primary.main",
-        bgcolor: alpha(theme.palette.primary.main, 0.03),
-      },
-    })}
-  >
-    <Box
-      aria-hidden
-      sx={(theme) => ({
-        display: "grid",
-        placeItems: "center",
-        width: 44,
-        height: 44,
-        flexShrink: 0,
-        borderRadius: 2,
-        bgcolor: alpha(theme.palette.primary.main, 0.1),
-        color: "primary.main",
-      })}
-    >
-      <Icon />
-    </Box>
-    <Box sx={{ flexGrow: 1, minWidth: 0 }}>
-      <Typography variant="h6" component="h3" sx={{ fontSize: 17 }}>
-        <Link
-          component={RouterLink}
-          to={to}
-          underline="none"
-          color="inherit"
-          sx={(theme) => ({
-            "&::after": {
-              content: '""',
-              position: "absolute",
-              inset: 0,
-              borderRadius: "inherit",
-            },
-            "&:focus-visible": { outline: "none" },
-            "&:focus-visible::after": {
-              outline: `3px solid ${theme.palette.primary.main}`,
-              outlineOffset: 2,
-            },
-          })}
-        >
-          {title}
-        </Link>
-      </Typography>
-      <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-        {description}
-      </Typography>
-    </Box>
-    <ArrowForwardIcon aria-hidden fontSize="small" sx={{ color: "primary.main" }} />
-  </Paper>
-);
+import { useNavigate } from "react-router-dom";
+import SearchIcon from "@mui/icons-material/Search";
 
 const Home = () => {
-  const { user, isAdmin, loading } = useAuth();
-
-  if (loading || !user) {
-    return (
-      <Box sx={{ display: "flex", justifyContent: "center", py: 8 }}>
-        <CircularProgress aria-label="Cargando sesión" />
-      </Box>
-    );
-  }
+  const navigate = useNavigate();
 
   return (
-    <Box sx={{ maxWidth: 1040, mx: "auto", px: { xs: 2, md: 3 } }}>
-      <Paper
-        elevation={0}
-        sx={(theme) => ({
+    <Box sx={{ bgcolor: "background.default", minHeight: "100vh", py: 4 }}>
+      {/* Hero Section */}
+      <Box
+        sx={{
+          backgroundImage: "url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          height: "70vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "white",
+          textAlign: "center",
           position: "relative",
-          overflow: "hidden",
-          borderRadius: 4,
-          p: { xs: 3, md: 5 },
-          bgcolor: "primary.main",
-          color: "primary.contrastText",
-          "& .route-end": { fill: theme.palette.brand.accent },
-        })}
+        }}
       >
-        <Box sx={{ position: "relative", maxWidth: { md: 520 } }}>
-          <Chip
-            label={roleLabel(user.role)}
-            size="small"
-            sx={{
-              mb: 2,
-              fontWeight: 600,
-              color: "primary.contrastText",
-              bgcolor: "rgba(255, 255, 255, 0.16)",
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
+        />
+        <Container maxWidth="lg" sx={{ position: "relative", zIndex: 1 }}>
+          <Typography variant="h2" component="h1" gutterBottom>
+            Encuentra tu nuevo hogar
+          </Typography>
+          <Typography variant="h5" gutterBottom>
+            Alquiler de apartamentos en UQBNB
+          </Typography>
+          <Button
+            variant="contained"
+            size="large"
+            sx={{ mt: 3, px: 4, py: 2 }}
+            onClick={() => navigate("/search")}
+          >
+            Buscar apartamentos
+          </Button>
+        </Container>
+      </Box>
+
+      {/* Search Section */}
+      <Container maxWidth="lg" sx={{ py: 4 }}>
+        <Box sx={{ display: "flex", justifyContent: "center", mb: 4 }}>
+          <TextField
+            fullWidth
+            variant="outlined"
+            placeholder="Buscar por ubicación, precio, tipo..."
+            sx={{ maxWidth: 600 }}
+            InputProps={{
+              endAdornment: <SearchIcon />
             }}
           />
-          <Typography variant="h4" component="h1" sx={{ fontWeight: 800 }}>
-            Hola, {user.name}
-          </Typography>
-          <Typography sx={{ mt: 1, opacity: 0.9 }}>
-            Gestiona tus envíos y reporta novedades desde un solo lugar.
-          </Typography>
         </Box>
+      </Container>
 
-        <Box
-          component="svg"
-          aria-hidden
-          focusable="false"
-          viewBox="0 0 320 120"
-          sx={{
-            display: { xs: "none", md: "block" },
-            position: "absolute",
-            right: 32,
-            bottom: 24,
-            width: 300,
-          }}
-        >
-          <path
-            d="M8 96 C 70 96, 90 24, 150 40 S 250 100, 308 28"
-            fill="none"
-            stroke="rgba(255, 255, 255, 0.5)"
-            strokeWidth="2.5"
-            strokeDasharray="2 9"
-            strokeLinecap="round"
-          />
-          <circle
-            cx="8"
-            cy="96"
-            r="7"
-            fill="none"
-            stroke="#ffffff"
-            strokeWidth="2.5"
-          />
-          <circle className="route-end" cx="308" cy="28" r="9" />
-        </Box>
-      </Paper>
-
-      <Typography variant="h6" component="h2" sx={{ mt: 4, mb: 2 }}>
-        ¿Qué quieres hacer?
-      </Typography>
-      <Box
-        sx={{
-          display: "grid",
-          gap: 2,
-          gridTemplateColumns: {
-            xs: "1fr",
-            md: "repeat(3, minmax(0, 1fr))",
-          },
-        }}
-      >
-        {MAIN_ACTIONS.map((action) => (
-          <ActionCard key={action.to} {...action} />
-        ))}
-      </Box>
-
-      <Typography variant="h6" component="h2" sx={{ mt: 4, mb: 2 }}>
-        Tu cuenta
-      </Typography>
-      <Box
-        sx={{
-          display: "grid",
-          gap: 2,
-          gridTemplateColumns: { xs: "1fr", md: "repeat(2, minmax(0, 1fr))" },
-        }}
-      >
-        <ActionCard
-          compact
-          to="/profile"
-          title="Mi perfil"
-          description="Revisa y actualiza tus datos personales."
-          icon={AccountCircleOutlinedIcon}
-        />
-        {isAdmin && (
-          <ActionCard
-            compact
-            to="/admin/users"
-            title="Administrar usuarios"
-            description="Gestiona las cuentas y los roles."
-            icon={AdminPanelSettingsOutlinedIcon}
-          />
-        )}
-      </Box>
-
-      <TestLocation />
+      {/* Featured Apartments */}
+      <Container maxWidth="lg" sx={{ py: 4 }}>
+        <Typography variant="h4" component="h2" gutterBottom textAlign="center" mb={4}>
+          Apartamentos destacados
+        </Typography>
+        
+        <Grid container spacing={4}>
+          {[1, 2, 3, 4].map((item) => (
+            <Grid item xs={12} sm={6} md={3} key={item}>
+              <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
+                <CardMedia
+                  component="img"
+                  height="200"
+                  image="https://images.unsplash.com/photo-1560185007-c58921c97a51?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80"
+                  alt={`Apartamento ${item}`}
+                />
+                <CardContent sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
+                  <Typography gutterBottom variant="h6" component="h3">
+                    Apartamento {item}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ flexGrow: 1 }}>
+                    Descripción del apartamento {item}
+                  </Typography>
+                  <Box sx={{ mt: 2, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <Chip label="2 habitaciones" color="primary" />
+                    <Typography variant="h6" color="primary">
+                      $1500/mes
+                    </Typography>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
     </Box>
   );
 };

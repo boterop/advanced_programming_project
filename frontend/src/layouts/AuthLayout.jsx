@@ -8,7 +8,7 @@ const AuthLayout = ({ title, subtitle, children, footer }) => (
       <Box className="auth-page__center">
         <Paper elevation={3} className="auth-card">
           <Typography variant="overline" className="auth-brand">
-            UQ Delivery
+            Edificio Rent
           </Typography>
           <Typography variant="h4" component="h1" className="auth-card__title">
             {title}
