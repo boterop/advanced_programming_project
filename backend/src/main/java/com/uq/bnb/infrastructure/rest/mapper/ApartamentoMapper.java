@@ -33,7 +33,8 @@ public abstract class ApartamentoMapper {
         toDormitorios(request.dormitorios()),
         null,
         Boolean.TRUE.equals(request.permiteMascotas()),
-        request.estadoOperativoInicial());
+        request.estadoOperativoInicial(),
+        request.imagenUrl());
   }
 
   public Bloqueo toBloqueo(BloquearApartamentoRequest request) {
@@ -65,6 +66,7 @@ public abstract class ApartamentoMapper {
 
   @Mapping(target = "id", expression = "java(java.util.UUID.fromString(apartamento.id().valor()))")
   @Mapping(target = "nombre", expression = "java(apartamento.nombre())")
+  @Mapping(target = "imagenUrl", expression = "java(apartamento.imagenUrl())")
   @Mapping(target = "capacidad", expression = "java(apartamento.capacidad())")
   @Mapping(
       target = "dormitorios",

@@ -24,7 +24,7 @@ const AdminDashboard = () => {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-  const [apartmentForm, setApartmentForm] = useState({ nombre: "", capacidad: 2, dormitorios: 1, permiteMascotas: false });
+  const [apartmentForm, setApartmentForm] = useState({ nombre: "", capacidad: 2, dormitorios: 1, permiteMascotas: false, imagenUrl: "" });
   const [seasonForm, setSeasonForm] = useState({ nombre: "", fechaInicio: today, fechaFin: today });
   const [tariffForm, setTariffForm] = useState({ apartamentoId: "", temporadaId: "", valorPorNoche: "", vigenteDesde: today });
   const [policyDate, setPolicyDate] = useState(today);
@@ -101,8 +101,9 @@ const AdminDashboard = () => {
       })),
       estadoOperativoInicial: "PREPARADO",
       permiteMascotas: apartmentForm.permiteMascotas,
+      imagenUrl: apartmentForm.imagenUrl.trim() || null,
     }, "Apartamento creado. Su ID UUID fue generado por el backend.");
-    if (created) setApartmentForm({ nombre: "", capacidad: 2, dormitorios: 1, permiteMascotas: false });
+    if (created) setApartmentForm({ nombre: "", capacidad: 2, dormitorios: 1, permiteMascotas: false, imagenUrl: "" });
   };
 
   const createSeason = async (event) => {
@@ -211,6 +212,7 @@ const AdminDashboard = () => {
               <Typography variant="h6" gutterBottom>Registrar apartamento</Typography>
               <Box component="form" onSubmit={createApartment} sx={{ display: "grid", gap: 2 }}>
                 <TextField required label="Nombre" value={apartmentForm.nombre} onChange={(event) => setApartmentForm({ ...apartmentForm, nombre: event.target.value })} />
+                <TextField label="URL de imagen" type="url" placeholder="https://..." value={apartmentForm.imagenUrl} onChange={(event) => setApartmentForm({ ...apartmentForm, imagenUrl: event.target.value })} />
                 <TextField required type="number" label="Capacidad" value={apartmentForm.capacidad} onChange={(event) => setApartmentForm({ ...apartmentForm, capacidad: event.target.value })} slotProps={{ htmlInput: { min: 1 } }} />
                 <TextField required type="number" label="Dormitorios" value={apartmentForm.dormitorios} onChange={(event) => setApartmentForm({ ...apartmentForm, dormitorios: event.target.value })} slotProps={{ htmlInput: { min: 1 } }} />
                 <FormControlLabel control={<Checkbox checked={apartmentForm.permiteMascotas} onChange={(event) => setApartmentForm({ ...apartmentForm, permiteMascotas: event.target.checked })} />} label="Admite mascotas" />

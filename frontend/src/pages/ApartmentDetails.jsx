@@ -44,6 +44,12 @@ const ApartmentDetails = () => {
       {error && <Alert severity="error">{error}</Alert>}
       {apartment && (
         <Paper sx={{ p: { xs: 2, md: 4 } }}>
+          <Box
+            component="img"
+            src={apartment.imagenUrl}
+            alt={`Imagen de ${apartment.nombre}`}
+            sx={{ width: "100%", height: { xs: 220, md: 400 }, objectFit: "cover", borderRadius: 2, mb: 3 }}
+          />
           <Typography variant="h4" component="h1" gutterBottom>{apartment.nombre}</Typography>
           <Typography color="text.secondary" gutterBottom>ID: {apartment.id}</Typography>
           <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", my: 2 }}>

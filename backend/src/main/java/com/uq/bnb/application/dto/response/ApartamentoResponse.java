@@ -7,6 +7,7 @@ import java.util.UUID;
 public record ApartamentoResponse(
     UUID id,
     String nombre,
+    String imagenUrl,
     int capacidad,
     List<DormitorioResponse> dormitorios,
     boolean permiteMascotas,

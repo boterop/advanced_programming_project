@@ -26,6 +26,9 @@ public class ApartamentoEntity {
   @Column(name = "nombre", nullable = false)
   private String nombre;
 
+  @Column(name = "imagen_url")
+  private String imagenUrl;
+
   @Column(name = "capacidad", nullable = false)
   private int capacidad;
 
@@ -69,6 +72,7 @@ public class ApartamentoEntity {
   public ApartamentoEntity(
       UUID id,
       String nombre,
+      String imagenUrl,
       int capacidad,
       String tipoNombre,
       List<String> tipoCaracteristicas,
@@ -77,6 +81,7 @@ public class ApartamentoEntity {
       boolean activo) {
     this.id = id;
     this.nombre = nombre;
+    this.imagenUrl = imagenUrl;
     this.capacidad = capacidad;
     this.tipoNombre = tipoNombre;
     this.tipoCaracteristicas = new ArrayList<>(tipoCaracteristicas);
@@ -106,6 +111,10 @@ public class ApartamentoEntity {
 
   public String getNombre() {
     return nombre;
+  }
+
+  public String getImagenUrl() {
+    return imagenUrl;
   }
 
   public int getCapacidad() {

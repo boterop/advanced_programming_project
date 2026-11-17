@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, Chip, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, CardMedia, Chip, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const ApartmentCard = ({ apartment }) => {
@@ -7,6 +7,13 @@ const ApartmentCard = ({ apartment }) => {
 
   return (
     <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
+      <CardMedia
+        component="img"
+        height="200"
+        image={apartment.imagenUrl}
+        alt={`Imagen de ${apartment.nombre}`}
+        sx={{ objectFit: "cover" }}
+      />
       <CardContent sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
         <Typography gutterBottom variant="h6" component="h2">
           {apartment.nombre}

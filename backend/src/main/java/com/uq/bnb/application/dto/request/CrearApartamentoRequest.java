@@ -15,4 +15,5 @@ public record CrearApartamentoRequest(
         List<DormitorioRequest> dormitorios,
     @NotNull(message = "El estado operativo inicial es obligatorio")
         EstadoOperativo estadoOperativoInicial,
-    Boolean permiteMascotas) {}
+    Boolean permiteMascotas,
+    String imagenUrl) {}

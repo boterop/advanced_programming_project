@@ -21,6 +21,7 @@ public final class Apartamento {
 
   private final ID id;
   private final String nombre;
+  private final String imagenUrl;
   private int capacidad;
   private final List<Dormitorio> dormitorios;
   private final TipoApartamento tipo;
@@ -34,6 +35,7 @@ public final class Apartamento {
   private Apartamento(
       ID id,
       String nombre,
+      String imagenUrl,
       int capacidad,
       List<Dormitorio> dormitorios,
       TipoApartamento tipo,
@@ -41,6 +43,7 @@ public final class Apartamento {
       EstadoOperativo estadoOperativo) {
     this.id = id;
     this.nombre = nombre;
+    this.imagenUrl = imagenUrl;
     this.capacidad = capacidad;
     this.dormitorios = new ArrayList<>(dormitorios);
     this.tipo = tipo;
@@ -76,6 +79,19 @@ public final class Apartamento {
       TipoApartamento tipo,
       boolean permiteMascotas,
       EstadoOperativo estadoOperativoInicial) {
+    return crear(id, nombre, capacidad, dormitorios, tipo, permiteMascotas,
+        estadoOperativoInicial, imagenPredeterminada(nombre));
+  }
+
+  public static Apartamento crear(
+      ID id,
+      String nombre,
+      int capacidad,
+      List<Dormitorio> dormitorios,
+      TipoApartamento tipo,
+      boolean permiteMascotas,
+      EstadoOperativo estadoOperativoInicial,
+      String imagenUrl) {
     Objects.requireNonNull(id, "El ID del apartamento no puede ser nulo");
     if (nombre == null || nombre.isBlank()) {
       throw new ReglaDominioException("El nombre del apartamento no puede estar vacío");
@@ -91,6 +107,7 @@ public final class Apartamento {
     return new Apartamento(
         id,
         nombre,
+        imagenUrl == null || imagenUrl.isBlank() ? imagenPredeterminada(nombre) : imagenUrl,
         capacidad,
         dormitorios,
         tipo,
@@ -110,10 +127,28 @@ public final class Apartamento {
       List<Bloqueo> bloqueos,
       List<Novedad> novedades,
       boolean activo) {
+    return reconstruir(id, nombre, capacidad, dormitorios, tipo, permiteMascotas,
+        estadoOperativo, tarifas, bloqueos, novedades, activo, imagenPredeterminada(nombre));
+  }
+
+  public static Apartamento reconstruir(
+      ID id,
+      String nombre,
+      int capacidad,
+      List<Dormitorio> dormitorios,
+      TipoApartamento tipo,
+      boolean permiteMascotas,
+      EstadoOperativo estadoOperativo,
+      List<Tarifa> tarifas,
+      List<Bloqueo> bloqueos,
+      List<Novedad> novedades,
+      boolean activo,
+      String imagenUrl) {
     Apartamento apartamento =
         new Apartamento(
             id,
             nombre,
+            imagenUrl == null || imagenUrl.isBlank() ? imagenPredeterminada(nombre) : imagenUrl,
             capacidad,
             dormitorios,
             tipo,
@@ -124,6 +159,15 @@ public final class Apartamento {
     apartamento.novedades.addAll(novedades);
     apartamento.activo = activo;
     return apartamento;
+  }
+
+  private static String imagenPredeterminada(String nombre) {
+    String[] imagenes = {
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80"
+    };
+    return imagenes[Math.floorMod(nombre == null ? 0 : nombre.hashCode(), imagenes.length)];
   }
 
   public void registrarOcupacion() {

@@ -25,6 +25,7 @@ public class ApartamentoPersistenceMapper {
         new ApartamentoEntity(
             java.util.UUID.fromString(apartamento.id().valor()),
             apartamento.nombre(),
+            apartamento.imagenUrl(),
             apartamento.capacidad(),
             tipo == null ? null : tipo.nombreTipo(),
             tipo == null ? List.of() : tipo.caracteristicas(),
@@ -121,6 +122,7 @@ public class ApartamentoPersistenceMapper {
         tarifas,
         bloqueos,
         novedades,
-        entity.isActivo());
+        entity.isActivo(),
+        entity.getImagenUrl());
   }
 }
