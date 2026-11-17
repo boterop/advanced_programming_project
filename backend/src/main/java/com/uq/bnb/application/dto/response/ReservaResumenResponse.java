@@ -6,7 +6,7 @@ import java.time.LocalDate;
 public record ReservaResumenResponse(
     String codigo,
     EstadoReserva estado,
-    String identificacionApartamento,
+    String apartamentoId,
     LocalDate fechaEntrada,
     LocalDate fechaSalida,
     String nombreTitular,

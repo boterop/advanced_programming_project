@@ -71,7 +71,7 @@ public class ReservaController {
       @Valid @RequestBody CrearReservaRequest request) {
     Reserva creada =
         crearReservaUseCase.ejecutar(
-            request.identificacionApartamento(), mapper.toSolicitud(request));
+            request.apartamentoId(), mapper.toSolicitud(request));
     URI location =
         ServletUriComponentsBuilder.fromCurrentRequest()
             .path("/{codigo}")
@@ -87,7 +87,7 @@ public class ReservaController {
     return consultarReservasUseCase
         .ejecutar(
             filtros.estado(),
-            filtros.identificacionApartamento(),
+            filtros.apartamentoId(),
             filtros.desde(),
             filtros.hasta(),
             pageable)

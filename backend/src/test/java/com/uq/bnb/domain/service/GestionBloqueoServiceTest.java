@@ -31,7 +31,7 @@ class GestionBloqueoServiceTest {
   @Test
   void rechazaUnBloqueoQueSeCruzaConUnaReservaActiva() {
     Apartamento apartamento = ApartamentoFixture.crear();
-    reservas.guardar(ReservaFixture.crear());
+    reservas.guardar(ReservaFixture.crear(apartamento.id().valor()));
     Bloqueo bloqueo =
         Bloqueo.crear(
             com.uq.bnb.fixtures.TestIds.next(),

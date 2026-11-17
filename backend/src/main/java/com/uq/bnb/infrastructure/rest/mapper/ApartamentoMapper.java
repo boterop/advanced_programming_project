@@ -28,7 +28,6 @@ public abstract class ApartamentoMapper {
   public Apartamento toDomain(CrearApartamentoRequest request) {
     return Apartamento.crear(
         idProvider.obtener(),
-        request.identificacion(),
         request.nombre(),
         request.capacidad(),
         toDormitorios(request.dormitorios()),
@@ -64,7 +63,7 @@ public abstract class ApartamentoMapper {
 
   public abstract Dormitorio toDormitorio(DormitorioRequest request);
 
-  @Mapping(target = "identificacion", expression = "java(apartamento.identificacion())")
+  @Mapping(target = "id", expression = "java(java.util.UUID.fromString(apartamento.id().valor()))")
   @Mapping(target = "nombre", expression = "java(apartamento.nombre())")
   @Mapping(target = "capacidad", expression = "java(apartamento.capacidad())")
   @Mapping(
@@ -89,10 +88,10 @@ public abstract class ApartamentoMapper {
 
   public abstract List<TarifaResponse> toTarifaResponses(List<Tarifa> tarifas);
 
-  public BloqueoResponse toBloqueoResponse(String identificacionApartamento, Bloqueo bloqueo) {
+  public BloqueoResponse toBloqueoResponse(String apartamentoId, Bloqueo bloqueo) {
     return new BloqueoResponse(
         java.util.UUID.fromString(bloqueo.id().valor()),
-        identificacionApartamento,
+        apartamentoId,
         bloqueo.rango().entrada(),
         bloqueo.rango().salida(),
         bloqueo.motivo());

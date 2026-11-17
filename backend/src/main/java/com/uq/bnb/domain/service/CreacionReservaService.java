@@ -86,7 +86,7 @@ public class CreacionReservaService {
         alojamiento.parametros())) {
       throw new ReglaDominioException(
           "RN-01 / RN-07 / RN-20: el apartamento "
-              + apartamento.identificacion()
+              + apartamento.id().valor()
               + " no está disponible del "
               + estancia.entrada()
               + " al "
@@ -105,7 +105,7 @@ public class CreacionReservaService {
             folioId,
             idsCargos,
             generadorCodigo.generar(),
-            apartamento.identificacion(),
+            apartamento.id().valor(),
             solicitud.titular(),
             estancia,
             solicitud.canalOrigen(),

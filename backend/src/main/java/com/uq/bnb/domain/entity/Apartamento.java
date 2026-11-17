@@ -20,7 +20,6 @@ import lombok.Getter;
 public final class Apartamento {
 
   private final ID id;
-  private final String identificacion;
   private final String nombre;
   private int capacidad;
   private final List<Dormitorio> dormitorios;
@@ -34,7 +33,6 @@ public final class Apartamento {
 
   private Apartamento(
       ID id,
-      String identificacion,
       String nombre,
       int capacidad,
       List<Dormitorio> dormitorios,
@@ -42,7 +40,6 @@ public final class Apartamento {
       boolean permiteMascotas,
       EstadoOperativo estadoOperativo) {
     this.id = id;
-    this.identificacion = identificacion;
     this.nombre = nombre;
     this.capacidad = capacidad;
     this.dormitorios = new ArrayList<>(dormitorios);
@@ -54,38 +51,32 @@ public final class Apartamento {
 
   public static Apartamento crear(
       ID id,
-      String identificacion,
       String nombre,
       int capacidad,
       List<Dormitorio> dormitorios,
       EstadoOperativo estadoOperativoInicial) {
-    return crear(id, identificacion, nombre, capacidad, dormitorios, null, estadoOperativoInicial);
+    return crear(id, nombre, capacidad, dormitorios, null, estadoOperativoInicial);
   }
 
   public static Apartamento crear(
       ID id,
-      String identificacion,
       String nombre,
       int capacidad,
       List<Dormitorio> dormitorios,
       TipoApartamento tipo,
       EstadoOperativo estadoOperativoInicial) {
-    return crear(
-        id, identificacion, nombre, capacidad, dormitorios, tipo, false, estadoOperativoInicial);
+    return crear(id, nombre, capacidad, dormitorios, tipo, false, estadoOperativoInicial);
   }
 
   public static Apartamento crear(
       ID id,
-      String identificacion,
       String nombre,
       int capacidad,
       List<Dormitorio> dormitorios,
       TipoApartamento tipo,
       boolean permiteMascotas,
       EstadoOperativo estadoOperativoInicial) {
-    if (identificacion == null || identificacion.isBlank()) {
-      throw new ReglaDominioException("La identificación del apartamento no puede estar vacía");
-    }
+    Objects.requireNonNull(id, "El ID del apartamento no puede ser nulo");
     if (nombre == null || nombre.isBlank()) {
       throw new ReglaDominioException("El nombre del apartamento no puede estar vacío");
     }
@@ -99,7 +90,6 @@ public final class Apartamento {
     Objects.requireNonNull(estadoOperativoInicial, "El estado operativo inicial no puede ser nulo");
     return new Apartamento(
         id,
-        identificacion,
         nombre,
         capacidad,
         dormitorios,
@@ -110,7 +100,6 @@ public final class Apartamento {
 
   public static Apartamento reconstruir(
       ID id,
-      String identificacion,
       String nombre,
       int capacidad,
       List<Dormitorio> dormitorios,
@@ -124,7 +113,6 @@ public final class Apartamento {
     Apartamento apartamento =
         new Apartamento(
             id,
-            identificacion,
             nombre,
             capacidad,
             dormitorios,
@@ -176,7 +164,7 @@ public final class Apartamento {
   public void verificarAdmiteGrupo(int totalOcupantes, boolean conMascota) {
     if (conMascota && !permiteMascotas) {
       throw new ReglaDominioException(
-          "RN-Propia-03: el apartamento " + identificacion + " no permite mascotas");
+          "RN-Propia-03: el apartamento " + id.valor() + " no permite mascotas");
     }
     int cupos = cuposNecesarios(totalOcupantes, conMascota);
     if (cupos > capacidad) {
@@ -187,7 +175,7 @@ public final class Apartamento {
                   + " ocupantes con mascota necesitan "
                   + cupos
                   + " cupos y el apartamento "
-                  + identificacion
+                  + id.valor()
                   + " solo tiene "
                   + capacidad
               : "RN-02: "
@@ -195,7 +183,7 @@ public final class Apartamento {
                   + " ocupantes superan la capacidad de "
                   + capacidad
                   + " del apartamento "
-                  + identificacion);
+                  + id.valor());
     }
   }
 
@@ -260,7 +248,7 @@ public final class Apartamento {
     if (noEsPosterior) {
       throw new ReglaDominioException(
           "La nueva tarifa del apartamento "
-              + identificacion
+              + id.valor()
               + " debe regir después de la tarifa más reciente de esa temporada");
     }
     Tarifa nueva = Tarifa.crear(idTarifa, temporadaId, valorPorNoche, vigenteDesde);
@@ -298,7 +286,7 @@ public final class Apartamento {
             () ->
                 new ReglaDominioException(
                     "El apartamento "
-                        + identificacion
+                        + id.valor()
                         + " no tiene tarifa vigente para la temporada indicada en la fecha "
                         + fecha));
   }
@@ -317,7 +305,7 @@ public final class Apartamento {
     if (!activo) {
       throw new ReglaDominioException(
           "El apartamento "
-              + identificacion
+              + id.valor()
               + " está retirado de la venta: no se puede cambiar su capacidad");
     }
     if (nuevaCapacidad <= 0) {
@@ -334,7 +322,7 @@ public final class Apartamento {
   public void desactivar() {
     if (!activo) {
       throw new ReglaDominioException(
-          "El apartamento " + identificacion + " ya está retirado de la venta");
+          "El apartamento " + id.valor() + " ya está retirado de la venta");
     }
     this.activo = false;
   }

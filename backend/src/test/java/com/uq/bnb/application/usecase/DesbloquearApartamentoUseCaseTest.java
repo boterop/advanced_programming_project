@@ -29,10 +29,10 @@ class DesbloquearApartamentoUseCaseTest {
     apartamento.agregarBloqueo(bloqueo);
     apartamentos.guardar(apartamento);
 
-    useCase.ejecutar(apartamento.identificacion(), java.util.UUID.fromString(bloqueo.id().valor()));
+    useCase.ejecutar(apartamento.id().valor(), java.util.UUID.fromString(bloqueo.id().valor()));
 
     assertEquals(
-        0, apartamentos.buscarPorId(apartamento.identificacion()).orElseThrow().bloqueos().size());
+        0, apartamentos.buscarPorId(apartamento.id().valor()).orElseThrow().bloqueos().size());
   }
 
   @Test
@@ -42,6 +42,6 @@ class DesbloquearApartamentoUseCaseTest {
 
     assertThrows(
         BloqueoNoEncontradoException.class,
-        () -> useCase.ejecutar(apartamento.identificacion(), java.util.UUID.randomUUID()));
+        () -> useCase.ejecutar(apartamento.id().valor(), java.util.UUID.randomUUID()));
   }
 }

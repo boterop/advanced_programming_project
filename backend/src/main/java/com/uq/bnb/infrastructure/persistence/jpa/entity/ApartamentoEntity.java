@@ -20,11 +20,8 @@ import java.util.UUID;
 @Table(name = "apartamento")
 public class ApartamentoEntity {
   @Id
-  @Column(name = "identificacion", length = 40)
-  private String identificacion;
-
-  @Column(name = "uuid", nullable = false, unique = true)
-  private UUID uuid;
+  @Column(name = "id", nullable = false)
+  private UUID id;
 
   @Column(name = "nombre", nullable = false)
   private String nombre;
@@ -70,8 +67,7 @@ public class ApartamentoEntity {
   protected ApartamentoEntity() {}
 
   public ApartamentoEntity(
-      UUID uuid,
-      String identificacion,
+      UUID id,
       String nombre,
       int capacidad,
       String tipoNombre,
@@ -79,8 +75,7 @@ public class ApartamentoEntity {
       boolean permiteMascotas,
       EstadoOperativo estadoOperativo,
       boolean activo) {
-    this.uuid = uuid;
-    this.identificacion = identificacion;
+    this.id = id;
     this.nombre = nombre;
     this.capacidad = capacidad;
     this.tipoNombre = tipoNombre;
@@ -105,12 +100,8 @@ public class ApartamentoEntity {
     novedades.add(novedad);
   }
 
-  public String getIdentificacion() {
-    return identificacion;
-  }
-
-  public UUID getUuid() {
-    return uuid;
+  public UUID getId() {
+    return id;
   }
 
   public String getNombre() {

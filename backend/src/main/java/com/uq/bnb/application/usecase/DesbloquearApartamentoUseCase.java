@@ -18,13 +18,13 @@ public class DesbloquearApartamentoUseCase {
   }
 
   @Transactional
-  public void ejecutar(String identificacionApartamento, UUID idBloqueo) {
+  public void ejecutar(String apartamentoId, UUID idBloqueo) {
     Apartamento apartamento =
         apartamentoRepository
-            .buscarPorId(identificacionApartamento)
-            .orElseThrow(() -> new ApartamentoNoEncontradoException(identificacionApartamento));
+            .buscarPorId(apartamentoId)
+            .orElseThrow(() -> new ApartamentoNoEncontradoException(apartamentoId));
     if (!apartamento.eliminarBloqueo(new ID(idBloqueo.toString()))) {
-      throw new BloqueoNoEncontradoException(identificacionApartamento, idBloqueo);
+      throw new BloqueoNoEncontradoException(apartamentoId, idBloqueo);
     }
     apartamentoRepository.guardar(apartamento);
   }

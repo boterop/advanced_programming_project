@@ -22,7 +22,7 @@ public class GestionBloqueoService {
     if (hayReservaConflicto) {
       throw new ReglaDominioException(
           "RN-07 / 7.3: no se puede bloquear el apartamento "
-              + apartamento.id()
+              + apartamento.id().valor()
               + " del "
               + bloqueo.rango().entrada()
               + " al "

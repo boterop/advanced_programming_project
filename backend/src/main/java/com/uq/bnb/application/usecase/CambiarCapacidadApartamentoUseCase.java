@@ -20,11 +20,11 @@ public class CambiarCapacidadApartamentoUseCase {
   }
 
   @Transactional
-  public Apartamento ejecutar(String identificacion, int nuevaCapacidad) {
+  public Apartamento ejecutar(String id, int nuevaCapacidad) {
     Apartamento apartamento =
         apartamentoRepository
-            .buscarPorId(identificacion)
-            .orElseThrow(() -> new ApartamentoNoEncontradoException(identificacion));
+            .buscarPorId(id)
+            .orElseThrow(() -> new ApartamentoNoEncontradoException(id));
     registroApartamentoService.cambiarCapacidad(apartamento, nuevaCapacidad);
     apartamentoRepository.guardar(apartamento);
     return apartamento;

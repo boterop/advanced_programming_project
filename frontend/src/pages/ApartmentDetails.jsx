@@ -45,7 +45,7 @@ const ApartmentDetails = () => {
       {apartment && (
         <Paper sx={{ p: { xs: 2, md: 4 } }}>
           <Typography variant="h4" component="h1" gutterBottom>{apartment.nombre}</Typography>
-          <Typography color="text.secondary" gutterBottom>Identificación: {apartment.identificacion}</Typography>
+          <Typography color="text.secondary" gutterBottom>ID: {apartment.id}</Typography>
           <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", my: 2 }}>
             <Chip label={`Capacidad: ${apartment.capacidad}`} />
             <Chip label={apartment.activo ? "Activo" : "Inactivo"} color={apartment.activo ? "success" : "default"} />

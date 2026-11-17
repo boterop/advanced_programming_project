@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public record CotizacionResponse(
-    String identificacionApartamento,
+    String apartamentoId,
     LocalDate fechaEntrada,
     LocalDate fechaSalida,
     int noches,

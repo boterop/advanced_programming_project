@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public record BloqueoResponse(
     UUID id,
-    String identificacionApartamento,
+    String apartamentoId,
     LocalDate fechaInicio,
     LocalDate fechaFin,
     String motivo) {}

@@ -31,14 +31,14 @@ public class DefinirTarifaUseCase {
 
   @Transactional
   public Tarifa ejecutar(
-      String identificacionApartamento,
+      String apartamentoId,
       UUID temporadaId,
       Dinero valorPorNoche,
       LocalDate vigenteDesde) {
     Apartamento apartamento =
         apartamentoRepository
-            .buscarPorId(identificacionApartamento)
-            .orElseThrow(() -> new ApartamentoNoEncontradoException(identificacionApartamento));
+            .buscarPorId(apartamentoId)
+            .orElseThrow(() -> new ApartamentoNoEncontradoException(apartamentoId));
     alojamientoRepository
         .obtener()
         .orElseThrow(AlojamientoNoEncontradoException::new)

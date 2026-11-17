@@ -20,11 +20,11 @@ public class BloquearApartamentoUseCase {
   }
 
   @Transactional
-  public Bloqueo ejecutar(String identificacion, Bloqueo bloqueo) {
+  public Bloqueo ejecutar(String id, Bloqueo bloqueo) {
     Apartamento apartamento =
         apartamentoRepository
-            .buscarPorId(identificacion)
-            .orElseThrow(() -> new ApartamentoNoEncontradoException(identificacion));
+            .buscarPorId(id)
+            .orElseThrow(() -> new ApartamentoNoEncontradoException(id));
     gestionBloqueoService.registrarBloqueo(apartamento, bloqueo);
     apartamentoRepository.guardar(apartamento);
     return bloqueo;

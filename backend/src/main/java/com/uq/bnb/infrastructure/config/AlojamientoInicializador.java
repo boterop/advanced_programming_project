@@ -67,27 +67,30 @@ public class AlojamientoInicializador implements ApplicationRunner {
 
   private static final List<FichaApartamento> INVENTARIO =
       List.of(
-          new FichaApartamento("ATK-001", "Attack Suite", 2, 4, 80_000, 100_000, 125_000),
           new FichaApartamento(
-              "ATK-002", "Attack Suite Exclusive", 4, 8, 110_000, 135_000, 165_000),
-          new FichaApartamento("BTL-001", "Battle Suite", 1, 2, 90_000, 110_000, 140_000),
+              "10000000-0000-4000-8000-000000000001",
+              "Eclipse Towers, Apt 31",
+              2,
+              4,
+              80_000,
+              100_000,
+              125_000),
           new FichaApartamento(
-              "BTL-002", "Battle Suite Exclusive", 3, 6, 120_000, 145_000, 180_000),
-          new FichaApartamento("CTL-001", "Controller Suite", 2, 4, 95_000, 115_000, 145_000),
+              "10000000-0000-4000-8000-000000000002",
+              "Del Perro Heights, Apt 20",
+              3,
+              6,
+              110_000,
+              135_000,
+              165_000),
           new FichaApartamento(
-              "CTL-002", "Controller Suite Exclusive", 4, 8, 130_000, 160_000, 200_000),
-          new FichaApartamento("DFD-001", "Defender Suite", 2, 4, 85_000, 105_000, 130_000),
-          new FichaApartamento(
-              "DFD-002", "Defender Suite Exclusive", 4, 8, 115_000, 140_000, 170_000),
-          new FichaApartamento("EXT-001", "Executioner Suite", 3, 6, 105_000, 130_000, 160_000),
-          new FichaApartamento("GNR-001", "Gunner Suite", 1, 2, 85_000, 105_000, 130_000),
-          new FichaApartamento(
-              "GNR-002", "Gunner Suite Exclusive", 3, 6, 115_000, 140_000, 175_000),
-          new FichaApartamento("HLR-001", "Healer Suite", 1, 2, 90_000, 110_000, 135_000),
-          new FichaApartamento(
-              "HLR-002", "Healer Suite Exclusive", 3, 6, 120_000, 145_000, 180_000),
-          new FichaApartamento("OPR-001", "Operator Suite", 1, 2, 80_000, 100_000, 120_000),
-          new FichaApartamento("SNR-001", "Scanner Suite", 2, 4, 100_000, 120_000, 150_000));
+              "10000000-0000-4000-8000-000000000003",
+              "Tinsel Towers, Apt 29",
+              1,
+              2,
+              90_000,
+              110_000,
+              140_000));
   private final AlojamientoRepository alojamientoRepository;
   private final ApartamentoRepository apartamentoRepository;
   private final ReservaRepository reservaRepository;
@@ -158,8 +161,7 @@ public class AlojamientoInicializador implements ApplicationRunner {
       }
       Apartamento apartamento =
           Apartamento.crear(
-              idProvider.obtener(),
-              ficha.id(),
+              new ID(ficha.id()),
               ficha.nombre(),
               ficha.capacidad(),
               dormitorios(ficha),
@@ -177,7 +179,10 @@ public class AlojamientoInicializador implements ApplicationRunner {
   }
 
   private void cargarBloqueoDePrueba() {
-    Apartamento apartamento = apartamentoRepository.buscarPorId("GNR-001").orElseThrow();
+    Apartamento apartamento =
+        apartamentoRepository
+            .buscarPorId("10000000-0000-4000-8000-000000000003")
+            .orElseThrow();
     if (!apartamento.bloqueos().isEmpty()) {
       return;
     }
@@ -200,7 +205,7 @@ public class AlojamientoInicializador implements ApplicationRunner {
     Reserva pendiente =
         crearReserva(
             alojamiento,
-            "BTL-002",
+            "10000000-0000-4000-8000-000000000002",
             hoy.plusDays(20),
             3,
             Titular.crear(
@@ -214,7 +219,7 @@ public class AlojamientoInicializador implements ApplicationRunner {
     Reserva confirmada =
         crearReserva(
             alojamiento,
-            "CTL-001",
+            "10000000-0000-4000-8000-000000000001",
             hoy.plusDays(30),
             2,
             Titular.crear(
@@ -235,7 +240,7 @@ public class AlojamientoInicializador implements ApplicationRunner {
     Reserva cancelada =
         crearReserva(
             alojamiento,
-            "DFD-001",
+            "10000000-0000-4000-8000-000000000003",
             hoy.plusDays(40),
             2,
             Titular.crear(

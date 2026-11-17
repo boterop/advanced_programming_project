@@ -10,7 +10,7 @@ public record ReservaDetalleResponse(
     String codigo,
     EstadoReserva estado,
     CanalOrigen canalOrigen,
-    String identificacionApartamento,
+    String apartamentoId,
     LocalDate fechaEntrada,
     LocalDate fechaSalida,
     int noches,

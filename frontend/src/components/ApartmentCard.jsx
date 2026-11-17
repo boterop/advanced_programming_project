@@ -12,7 +12,7 @@ const ApartmentCard = ({ apartment }) => {
           {apartment.nombre}
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-          Identificación: {apartment.identificacion}
+          ID: {apartment.id}
         </Typography>
         <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", mb: 2 }}>
           <Chip label={`Capacidad: ${apartment.capacidad}`} size="small" />
@@ -29,7 +29,7 @@ const ApartmentCard = ({ apartment }) => {
           variant="outlined"
           fullWidth
           sx={{ mt: "auto" }}
-          onClick={() => navigate(`/apartment/${encodeURIComponent(apartment.identificacion)}`)}
+          onClick={() => navigate(`/apartment/${encodeURIComponent(apartment.id)}`)}
         >
           Ver detalles
         </Button>

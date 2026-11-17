@@ -50,7 +50,7 @@ const Home = () => {
       )}
       <Grid container spacing={3} sx={{ mt: 1 }}>
         {apartments.map((apartment) => (
-          <Grid item xs={12} sm={6} md={4} key={apartment.identificacion}>
+          <Grid item xs={12} sm={6} md={4} key={apartment.id}>
             <ApartmentCard apartment={apartment} />
           </Grid>
         ))}

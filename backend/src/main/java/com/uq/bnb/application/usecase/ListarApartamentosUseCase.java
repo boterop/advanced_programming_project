@@ -20,7 +20,7 @@ public class ListarApartamentosUseCase {
   public Page<Apartamento> ejecutar(Pageable pageable) {
     return Paginacion.paginar(
         apartamentoRepository.obtenerTodos().stream()
-            .sorted(Comparator.comparing(Apartamento::identificacion))
+            .sorted(Comparator.comparing(apartamento -> apartamento.id().valor()))
             .toList(),
         pageable);
   }

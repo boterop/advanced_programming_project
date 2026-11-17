@@ -43,11 +43,10 @@ class DisponibilidadApartamentoServiceTest {
           PoliticaAnticipo.noExige());
 
   @Test
-  void listaApartamentosDisponiblesOrdenadosPorIdentificacion() {
+  void listaApartamentosDisponiblesOrdenadosPorId() {
     Apartamento segundo =
         Apartamento.crear(
             TestIds.next(),
-            "APT-002",
             "Segundo",
             4,
             List.of(new Dormitorio("Dormitorio", "Cama doble")),
@@ -73,7 +72,7 @@ class DisponibilidadApartamentoServiceTest {
   void excluyeReservasActivasQueSeSolapanConLaEstancia() {
     Apartamento apartamento = ApartamentoFixture.crear();
     apartamentos.guardar(apartamento);
-    reservas.guardar(ReservaFixture.crear());
+    reservas.guardar(ReservaFixture.crear(apartamento.id().valor()));
 
     assertTrue(servicio.buscarDisponibles(estancia, 2, false, parametros).isEmpty());
   }

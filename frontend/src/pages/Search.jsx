@@ -98,7 +98,7 @@ const Search = () => {
           {apartments.length === 0 && <Alert severity="info">No hay apartamentos disponibles con esos criterios.</Alert>}
           <Grid container spacing={3}>
             {apartments.map((apartment) => (
-              <Grid item xs={12} sm={6} md={4} key={apartment.identificacion}>
+              <Grid item xs={12} sm={6} md={4} key={apartment.id}>
                 <ApartmentCard apartment={apartment} />
               </Grid>
             ))}

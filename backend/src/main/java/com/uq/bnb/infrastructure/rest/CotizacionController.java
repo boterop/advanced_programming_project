@@ -29,7 +29,7 @@ public class CotizacionController {
     Estancia estancia = mapper.toEstancia(request);
     Cotizacion cotizacion =
         cotizarEstanciaUseCase.ejecutar(
-            request.identificacionApartamento(), estancia, mapper.toOcupantes(request.ocupantes()));
-    return mapper.toResponse(request.identificacionApartamento(), estancia, cotizacion);
+            request.apartamentoId(), estancia, mapper.toOcupantes(request.ocupantes()));
+    return mapper.toResponse(request.apartamentoId(), estancia, cotizacion);
   }
 }

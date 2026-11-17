@@ -15,11 +15,11 @@ public class MarcarApartamentoPreparadoUseCase {
   }
 
   @Transactional
-  public Apartamento ejecutar(String identificacion) {
+  public Apartamento ejecutar(String id) {
     Apartamento apartamento =
         apartamentoRepository
-            .buscarPorId(identificacion)
-            .orElseThrow(() -> new ApartamentoNoEncontradoException(identificacion));
+            .buscarPorId(id)
+            .orElseThrow(() -> new ApartamentoNoEncontradoException(id));
     apartamento.marcarPreparado();
     apartamentoRepository.guardar(apartamento);
     return apartamento;
