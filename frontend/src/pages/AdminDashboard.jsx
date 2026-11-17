@@ -102,7 +102,7 @@ const AdminDashboard = () => {
       estadoOperativoInicial: "PREPARADO",
       permiteMascotas: apartmentForm.permiteMascotas,
       imagenUrl: apartmentForm.imagenUrl.trim() || null,
-    }, "Apartamento creado. Su ID UUID fue generado por el backend.");
+    }, "Apartamento creado.");
     if (created) setApartmentForm({ nombre: "", capacidad: 2, dormitorios: 1, permiteMascotas: false, imagenUrl: "" });
   };
 
@@ -196,10 +196,10 @@ const AdminDashboard = () => {
             <Card><CardContent>
               <Typography variant="h6" gutterBottom>Apartamentos ({apartments.length})</Typography>
               <Table size="small">
-                <TableHead><TableRow><TableCell>Nombre / ID UUID</TableCell><TableCell>Capacidad</TableCell><TableCell>Estado</TableCell></TableRow></TableHead>
+                <TableHead><TableRow><TableCell>Apartamento</TableCell><TableCell>Capacidad</TableCell><TableCell>Estado</TableCell></TableRow></TableHead>
                 <TableBody>{apartments.map((apartment) => (
                   <TableRow key={apartment.id}>
-                    <TableCell>{apartment.nombre}<Typography variant="caption" display="block" color="text.secondary">{apartment.id}</Typography></TableCell>
+                    <TableCell>{apartment.nombre}</TableCell>
                     <TableCell>{apartment.capacidad}</TableCell>
                     <TableCell>{apartment.estadoOperativo}</TableCell>
                   </TableRow>
@@ -260,7 +260,7 @@ const AdminDashboard = () => {
                 Entrada {accommodation.parametros.horaEntrada} · salida {accommodation.parametros.horaSalida} · preparación {accommodation.parametros.tiempoPreparacionHoras} h · anticipo {accommodation.parametros.exigeAnticipo ? `${accommodation.parametros.porcentajeAnticipo * 100}%` : "no requerido"}
               </Typography>}
               <Typography variant="subtitle1" sx={{ mt: 2 }}>Temporadas</Typography>
-              {accommodation?.temporadas?.map((season) => <Typography key={season.id} variant="body2">{season.nombre}: {season.fechaInicio ?? "sin inicio"} – {season.fechaFin ?? "sin fin"} · ID {season.id}</Typography>)}
+              {accommodation?.temporadas?.map((season) => <Typography key={season.id} variant="body2">{season.nombre}: {season.fechaInicio ?? "sin inicio"} – {season.fechaFin ?? "sin fin"}</Typography>)}
               <Typography variant="subtitle1" sx={{ mt: 2 }}>Política de cancelación vigente</Typography>
               {accommodation?.politicaVigente?.tramos?.map((segment) => <Typography key={segment.antelacionMinimaHoras} variant="body2">Desde {segment.antelacionMinimaHoras} h: retención {segment.porcentajeRetencion * 100}%</Typography>)}
               <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 2 }}>Versiones de política guardadas: {policies.length}</Typography>

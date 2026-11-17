@@ -18,9 +18,6 @@ const ApartmentCard = ({ apartment }) => {
         <Typography gutterBottom variant="h6" component="h2">
           {apartment.nombre}
         </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-          ID: {apartment.id}
-        </Typography>
         <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", mb: 2 }}>
           <Chip label={`Capacidad: ${apartment.capacidad}`} size="small" />
           <Chip label={`${bedrooms.length} dormitorios`} size="small" />
