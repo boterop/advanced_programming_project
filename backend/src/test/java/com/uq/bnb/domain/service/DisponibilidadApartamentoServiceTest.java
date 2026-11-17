@@ -44,6 +44,7 @@ class DisponibilidadApartamentoServiceTest {
 
   @Test
   void listaApartamentosDisponiblesOrdenadosPorId() {
+    Apartamento primero = ApartamentoFixture.crear();
     Apartamento segundo =
         Apartamento.crear(
             TestIds.next(),
@@ -51,7 +52,6 @@ class DisponibilidadApartamentoServiceTest {
             4,
             List.of(new Dormitorio("Dormitorio", "Cama doble")),
             EstadoOperativo.PREPARADO);
-    Apartamento primero = ApartamentoFixture.crear();
     apartamentos.guardar(segundo);
     apartamentos.guardar(primero);
 
