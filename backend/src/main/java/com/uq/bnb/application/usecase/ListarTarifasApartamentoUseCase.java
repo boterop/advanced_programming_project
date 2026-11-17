@@ -19,8 +19,7 @@ public class ListarTarifasApartamentoUseCase {
   }
 
   @Transactional(readOnly = true)
-  public Page<Tarifa> ejecutar(
-      String apartamentoId, UUID temporadaId, Pageable pageable) {
+  public Page<Tarifa> ejecutar(String apartamentoId, UUID temporadaId, Pageable pageable) {
     Apartamento apartamento =
         apartamentoRepository
             .buscarPorId(apartamentoId)

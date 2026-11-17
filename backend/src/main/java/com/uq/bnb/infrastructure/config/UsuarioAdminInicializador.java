@@ -36,9 +36,6 @@ public class UsuarioAdminInicializador implements ApplicationRunner {
     }
     usuarioRepository.save(
         new Usuario(
-            "Administrador de prueba",
-            email,
-            passwordEncoder.encode(password),
-            RolUsuario.ADMIN));
+            "Administrador de prueba", email, passwordEncoder.encode(password), RolUsuario.ADMIN));
   }
 }

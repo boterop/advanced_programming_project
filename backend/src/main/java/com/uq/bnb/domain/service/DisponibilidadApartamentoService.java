@@ -39,9 +39,7 @@ public class DisponibilidadApartamentoService {
             ? estancia
             : new Estancia(estancia.entrada().minusDays(1), estancia.salida().plusDays(1));
     List<Estancia> estanciasReservadas =
-        reservaRepository
-            .buscarActivasPorApartamento(apartamento.id().valor(), consulta)
-            .stream()
+        reservaRepository.buscarActivasPorApartamento(apartamento.id().valor(), consulta).stream()
             .map(Reserva::estancia)
             .toList();
     return apartamento.estaDisponible(

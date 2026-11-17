@@ -30,8 +30,7 @@ public class CotizarEstanciaUseCase {
   }
 
   @Transactional(readOnly = true)
-  public Cotizacion ejecutar(
-      String apartamentoId, Estancia estancia, List<Ocupante> ocupantes) {
+  public Cotizacion ejecutar(String apartamentoId, Estancia estancia, List<Ocupante> ocupantes) {
     Alojamiento alojamiento =
         alojamientoRepository.obtener().orElseThrow(AlojamientoNoEncontradoException::new);
     Apartamento apartamento =

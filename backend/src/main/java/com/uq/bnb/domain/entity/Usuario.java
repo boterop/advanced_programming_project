@@ -1,10 +1,10 @@
 package com.uq.bnb.domain.entity;
 
+import com.uq.bnb.domain.valueobject.RolUsuario;
 import jakarta.persistence.*;
+import java.util.UUID;
 import lombok.Getter;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import java.util.UUID;
-import com.uq.bnb.domain.valueobject.RolUsuario;
 
 @Getter
 @Entity
@@ -27,8 +27,7 @@ public class Usuario {
   @Column(nullable = false)
   private RolUsuario role;
 
-  protected Usuario() {
-  }
+  protected Usuario() {}
 
   public Usuario(String name, String email, String password) {
     this(name, email, password, RolUsuario.CLIENTE);
@@ -53,9 +52,23 @@ public class Usuario {
     this.password = passwordEncoder.encode(newPassword);
   }
 
-  public String id() { return id == null ? null : id.toString(); }
-  public String name() { return name; }
-  public String email() { return email; }
-  public String password() { return password; }
-  public RolUsuario getRole() { return role; }
+  public String id() {
+    return id == null ? null : id.toString();
+  }
+
+  public String name() {
+    return name;
+  }
+
+  public String email() {
+    return email;
+  }
+
+  public String password() {
+    return password;
+  }
+
+  public RolUsuario getRole() {
+    return role;
+  }
 }

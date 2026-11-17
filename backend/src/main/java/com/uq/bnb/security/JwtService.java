@@ -6,14 +6,13 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class JwtService {
@@ -59,8 +58,7 @@ public class JwtService {
   }
 
   public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-    return Jwts
-        .builder()
+    return Jwts.builder()
         .setClaims(extraClaims)
         .setSubject(userDetails.getUsername())
         .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -70,8 +68,7 @@ public class JwtService {
   }
 
   public String generateToken(Map<String, Object> extraClaims, String email) {
-    return Jwts
-        .builder()
+    return Jwts.builder()
         .setClaims(extraClaims)
         .setSubject(email)
         .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -99,8 +96,7 @@ public class JwtService {
   }
 
   private Claims extractAllClaims(String token) {
-    return Jwts
-        .parserBuilder()
+    return Jwts.parserBuilder()
         .setSigningKey(Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey)))
         .build()
         .parseClaimsJws(token)

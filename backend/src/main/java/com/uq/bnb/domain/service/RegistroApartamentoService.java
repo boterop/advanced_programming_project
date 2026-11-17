@@ -22,17 +22,14 @@ public class RegistroApartamentoService {
     Objects.requireNonNull(apartamento, "El apartamento no puede ser nulo");
     if (apartamentoRepository.buscarPorId(apartamento.id().valor()).isPresent()) {
       throw new ReglaDominioException(
-          "Ya existe un apartamento con el ID "
-              + apartamento.id().valor()
-              + " (L-04)");
+          "Ya existe un apartamento con el ID " + apartamento.id().valor() + " (L-04)");
     }
     apartamentoRepository.guardar(apartamento);
   }
 
   public void retirar(Apartamento apartamento) {
     Objects.requireNonNull(apartamento, "El apartamento no puede ser nulo");
-    List<Reserva> activas =
-        reservaRepository.buscarActivasPorApartamento(apartamento.id().valor());
+    List<Reserva> activas = reservaRepository.buscarActivasPorApartamento(apartamento.id().valor());
     if (!activas.isEmpty()) {
       throw new ReglaDominioException(
           "7.3: no se puede retirar el apartamento "

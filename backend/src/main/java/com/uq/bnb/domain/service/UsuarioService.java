@@ -1,13 +1,11 @@
 package com.uq.bnb.domain.service;
 
-import java.util.Optional;
-import java.util.UUID;
-
-import org.springframework.stereotype.Service;
-
 import com.uq.bnb.domain.entity.Usuario;
 import com.uq.bnb.domain.repository.UsuarioRepository;
 import com.uq.bnb.domain.valueobject.ID;
+import java.util.Optional;
+import java.util.UUID;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UsuarioService {

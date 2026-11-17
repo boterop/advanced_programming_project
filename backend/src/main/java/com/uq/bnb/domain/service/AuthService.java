@@ -24,9 +24,7 @@ public class AuthService {
   private final String dummyHash;
 
   public AuthService(
-      UsuarioRepository usuarioRepository,
-      PasswordEncoder passwordEncoder,
-      JwtService jwtService) {
+      UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
     this.usuarioRepository = usuarioRepository;
     this.passwordEncoder = passwordEncoder;
     this.jwtService = jwtService;
@@ -39,7 +37,8 @@ public class AuthService {
     if (usuarioRepository.findByEmail(email).isPresent()) {
       throw new EmailAlreadyExistsException();
     }
-    Usuario usuario = new Usuario(request.name().trim(), email, passwordEncoder.encode(request.password()));
+    Usuario usuario =
+        new Usuario(request.name().trim(), email, passwordEncoder.encode(request.password()));
     try {
       usuario = usuarioRepository.saveAndFlush(usuario);
     } catch (DataIntegrityViolationException ex) {
@@ -47,7 +46,9 @@ public class AuthService {
     }
     // Se firma usando la clave primaria ya asignada por la base de datos.
     return AuthResponse.bearer(
-        jwtService.generateToken(usuario.id()), jwtService.getExpirationSeconds(), UsuarioResponse.from(usuario));
+        jwtService.generateToken(usuario.id()),
+        jwtService.getExpirationSeconds(),
+        UsuarioResponse.from(usuario));
   }
 
   @Transactional(readOnly = true)
@@ -59,13 +60,17 @@ public class AuthService {
       throw new InvalidCredentialsException();
     }
     return AuthResponse.bearer(
-        jwtService.generateToken(usuario.id()), jwtService.getExpirationSeconds(), UsuarioResponse.from(usuario));
+        jwtService.generateToken(usuario.id()),
+        jwtService.getExpirationSeconds(),
+        UsuarioResponse.from(usuario));
   }
 
   @Transactional(readOnly = true)
   public UsuarioResponse obtenerPorId(String id) {
     try {
-      return usuarioRepository.findById(UUID.fromString(id)).map(UsuarioResponse::from)
+      return usuarioRepository
+          .findById(UUID.fromString(id))
+          .map(UsuarioResponse::from)
           .orElseThrow(InvalidCredentialsException::new);
     } catch (IllegalArgumentException ex) {
       throw new InvalidCredentialsException();

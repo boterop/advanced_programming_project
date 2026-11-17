@@ -28,13 +28,13 @@ import com.uq.bnb.domain.entity.Bloqueo;
 import com.uq.bnb.domain.entity.Tarifa;
 import com.uq.bnb.infrastructure.rest.mapper.ApartamentoMapper;
 import jakarta.validation.Valid;
-import org.springframework.security.access.prepost.PreAuthorize;
 import java.net.URI;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -155,8 +155,7 @@ public class ApartamentoController {
   @PostMapping("/{id}/bloquear")
   @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<BloqueoResponse> bloquear(
-      @PathVariable UUID id,
-      @Valid @RequestBody BloquearApartamentoRequest request) {
+      @PathVariable UUID id, @Valid @RequestBody BloquearApartamentoRequest request) {
     Bloqueo creado = bloquearApartamentoUseCase.ejecutar(id.toString(), mapper.toBloqueo(request));
     URI location =
         ServletUriComponentsBuilder.fromCurrentContextPath()

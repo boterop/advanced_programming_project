@@ -79,8 +79,15 @@ public final class Apartamento {
       TipoApartamento tipo,
       boolean permiteMascotas,
       EstadoOperativo estadoOperativoInicial) {
-    return crear(id, nombre, capacidad, dormitorios, tipo, permiteMascotas,
-        estadoOperativoInicial, imagenPredeterminada(nombre));
+    return crear(
+        id,
+        nombre,
+        capacidad,
+        dormitorios,
+        tipo,
+        permiteMascotas,
+        estadoOperativoInicial,
+        imagenPredeterminada(nombre));
   }
 
   public static Apartamento crear(
@@ -127,8 +134,19 @@ public final class Apartamento {
       List<Bloqueo> bloqueos,
       List<Novedad> novedades,
       boolean activo) {
-    return reconstruir(id, nombre, capacidad, dormitorios, tipo, permiteMascotas,
-        estadoOperativo, tarifas, bloqueos, novedades, activo, imagenPredeterminada(nombre));
+    return reconstruir(
+        id,
+        nombre,
+        capacidad,
+        dormitorios,
+        tipo,
+        permiteMascotas,
+        estadoOperativo,
+        tarifas,
+        bloqueos,
+        novedades,
+        activo,
+        imagenPredeterminada(nombre));
   }
 
   public static Apartamento reconstruir(

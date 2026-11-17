@@ -31,10 +31,7 @@ public class DefinirTarifaUseCase {
 
   @Transactional
   public Tarifa ejecutar(
-      String apartamentoId,
-      UUID temporadaId,
-      Dinero valorPorNoche,
-      LocalDate vigenteDesde) {
+      String apartamentoId, UUID temporadaId, Dinero valorPorNoche, LocalDate vigenteDesde) {
     Apartamento apartamento =
         apartamentoRepository
             .buscarPorId(apartamentoId)

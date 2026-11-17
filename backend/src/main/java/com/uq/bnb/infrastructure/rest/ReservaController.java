@@ -17,12 +17,12 @@ import com.uq.bnb.application.usecase.RegistrarSalidaUseCase;
 import com.uq.bnb.domain.entity.Reserva;
 import com.uq.bnb.infrastructure.rest.mapper.ReservaMapper;
 import jakarta.validation.Valid;
-import org.springframework.security.access.prepost.PreAuthorize;
 import java.net.URI;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -71,8 +71,7 @@ public class ReservaController {
   public ResponseEntity<ReservaDetalleResponse> crear(
       @Valid @RequestBody CrearReservaRequest request) {
     Reserva creada =
-        crearReservaUseCase.ejecutar(
-            request.apartamentoId(), mapper.toSolicitud(request));
+        crearReservaUseCase.ejecutar(request.apartamentoId(), mapper.toSolicitud(request));
     URI location =
         ServletUriComponentsBuilder.fromCurrentRequest()
             .path("/{codigo}")
@@ -88,11 +87,7 @@ public class ReservaController {
       @PageableDefault(size = 10) Pageable pageable) {
     return consultarReservasUseCase
         .ejecutar(
-            filtros.estado(),
-            filtros.apartamentoId(),
-            filtros.desde(),
-            filtros.hasta(),
-            pageable)
+            filtros.estado(), filtros.apartamentoId(), filtros.desde(), filtros.hasta(), pageable)
         .map(mapper::toResumenResponse);
   }
 
