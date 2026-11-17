@@ -48,6 +48,16 @@ public class JwtService {
     return generateToken(new HashMap<>(), email);
   }
 
+  /** Generates a token whose subject is the persisted user's primary key. */
+  public String generateToken(Long userId) {
+    if (userId == null) throw new IllegalArgumentException("El id del usuario es obligatorio");
+    return generateToken(userId.toString());
+  }
+
+  public long getExpirationSeconds() {
+    return expirationMinutes * 60L;
+  }
+
   public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
     return Jwts
         .builder()

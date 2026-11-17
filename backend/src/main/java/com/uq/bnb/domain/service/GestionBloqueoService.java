@@ -10,21 +10,19 @@ public class GestionBloqueoService {
   private final ReservaRepository reservaRepository;
 
   public GestionBloqueoService(ReservaRepository reservaRepository) {
-    this.reservaRepository =
-        Objects.requireNonNull(reservaRepository, "El repositorio de reservas no puede ser nulo");
+    this.reservaRepository = Objects.requireNonNull(reservaRepository, "El repositorio de reservas no puede ser nulo");
   }
 
   public void registrarBloqueo(Apartamento apartamento, Bloqueo bloqueo) {
     Objects.requireNonNull(apartamento, "El apartamento no puede ser nulo");
     Objects.requireNonNull(bloqueo, "El bloqueo no puede ser nulo");
-    boolean hayReservaConflicto =
-        !reservaRepository
-            .buscarActivasPorApartamento(apartamento.identificacion(), bloqueo.rango())
-            .isEmpty();
+    boolean hayReservaConflicto = !reservaRepository
+        .buscarActivasPorApartamento(apartamento.id().valor(), bloqueo.rango())
+        .isEmpty();
     if (hayReservaConflicto) {
       throw new ReglaDominioException(
           "RN-07 / 7.3: no se puede bloquear el apartamento "
-              + apartamento.identificacion()
+              + apartamento.id()
               + " del "
               + bloqueo.rango().entrada()
               + " al "

@@ -56,10 +56,11 @@ const App = () => (
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
       </Route>
+
       <Route element={<AppLayout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/search" element={<Search />} />
         <Route element={<RequireAuth />}>
-          <Route path="/search" element={<Search />} />
           <Route path="/apartment/:id" element={<ApartmentDetails />} />
           <Route path="/profile" element={<Profile />} />
         </Route>
@@ -69,3 +70,4 @@ const App = () => (
 );
 
 export default App;
+

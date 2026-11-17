@@ -5,7 +5,6 @@ import java.util.UUID;
 
 public record ID(String valor) {
   public ID {
-
     if (valor == null || valor.isBlank()) {
       throw new ReglaDominioException("El ID no es valido");
     }

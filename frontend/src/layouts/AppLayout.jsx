@@ -53,6 +53,10 @@ const AppLayout = () => {
 
   const isHome = pathname === "/";
   const title = getPageTitle(pathname);
+  
+  // Check if we're on an authentication page
+  const isAuthPage = pathname === "/login" || pathname === "/register" || 
+                   pathname === "/forgot-password" || pathname === "/reset-password";
 
   const handleBack = () => {
     // key === "default" indica que esta es la primera entrada del historial
@@ -90,6 +94,7 @@ const AppLayout = () => {
       onNavigate={closeMobileMenu}
       onLogout={handleLogout}
       loggingOut={loggingOut}
+      isAuthPage={isAuthPage}
     />
   );
 

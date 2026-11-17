@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { alpha } from "@mui/material/styles";
-import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import { getNavItems } from "./navigationItems";
 import { roleLabel } from "../utils/roleLabel";
@@ -58,7 +58,7 @@ const itemSx = (theme) => ({
  * Contenido de la navegación privada. Se reutiliza tal cual dentro del
  * Drawer permanente (escritorio) y del Drawer temporal (móvil).
  */
-const AppNavigation = ({ user, isAdmin, onNavigate, onLogout, loggingOut }) => {
+const AppNavigation = ({ user, isAdmin, onNavigate, onLogout, loggingOut, isAuthPage }) => {
   const { pathname } = useLocation();
   const items = getNavItems(isAdmin);
 
@@ -68,7 +68,7 @@ const AppNavigation = ({ user, isAdmin, onNavigate, onLogout, loggingOut }) => {
         component={RouterLink}
         to="/"
         onClick={onNavigate}
-        aria-label="UQ Delivery, ir al inicio"
+        aria-label="UQBNB, ir al inicio"
         sx={(theme) => ({
           display: "flex",
           alignItems: "center",
@@ -96,10 +96,10 @@ const AppNavigation = ({ user, isAdmin, onNavigate, onLogout, loggingOut }) => {
             color: "primary.dark",
           })}
         >
-          <LocalShippingOutlinedIcon fontSize="small" />
+          <HomeOutlinedIcon fontSize="small" />
         </Box>
         <Typography variant="h6" component="span" sx={{ fontWeight: 800 }}>
-          UQ Delivery
+          UQBNB
         </Typography>
       </Box>
 
@@ -143,43 +143,66 @@ const AppNavigation = ({ user, isAdmin, onNavigate, onLogout, loggingOut }) => {
       <Divider />
 
       <Box sx={{ p: 2, flexShrink: 0 }}>
-        {user && (
-          <Box
-            sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 2 }}
-          >
-            <Avatar
-              aria-hidden
-              sx={{
-                width: 40,
-                height: 40,
-                bgcolor: "primary.main",
-                fontSize: 15,
-                fontWeight: 700,
-              }}
+        {user ? (
+          <>
+            <Box
+              sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 2 }}
             >
-              {getInitials(user.name)}
-            </Avatar>
-            <Box sx={{ minWidth: 0 }}>
-              <Typography variant="body2" noWrap sx={{ fontWeight: 700 }}>
-                {user.name}
-              </Typography>
-              <Typography variant="caption" color="text.secondary" noWrap>
-                {roleLabel(user.role)}
-              </Typography>
+              <Avatar
+                aria-hidden
+                sx={{
+                  width: 40,
+                  height: 40,
+                  bgcolor: "primary.main",
+                  fontSize: 15,
+                  fontWeight: 700,
+                }}
+              >
+                {getInitials(user.name)}
+              </Avatar>
+              <Box sx={{ minWidth: 0 }}>
+                <Typography variant="body2" noWrap sx={{ fontWeight: 700 }}>
+                  {user.name}
+                </Typography>
+                <Typography variant="caption" color="text.secondary" noWrap>
+                  {roleLabel(user.role)}
+                </Typography>
+              </Box>
             </Box>
+            <Button
+              fullWidth
+              variant="outlined"
+              color="inherit"
+              startIcon={<LogoutOutlinedIcon />}
+              onClick={onLogout}
+              disabled={loggingOut}
+              sx={{ borderColor: "divider", justifyContent: "flex-start" }}
+            >
+              Cerrar sesión
+            </Button>
+          </>
+        ) : (
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+            <Button
+              component={RouterLink}
+              to="/login"
+              variant="outlined"
+              fullWidth
+              onClick={onNavigate}
+            >
+              Iniciar sesión
+            </Button>
+            <Button
+              component={RouterLink}
+              to="/register"
+              variant="contained"
+              fullWidth
+              onClick={onNavigate}
+            >
+              Registrarse
+            </Button>
           </Box>
         )}
-        <Button
-          fullWidth
-          variant="outlined"
-          color="inherit"
-          startIcon={<LogoutOutlinedIcon />}
-          onClick={onLogout}
-          disabled={loggingOut}
-          sx={{ borderColor: "divider", justifyContent: "flex-start" }}
-        >
-          Cerrar sesión
-        </Button>
       </Box>
     </Box>
   );
