@@ -4,6 +4,7 @@ FROM eclipse-temurin:${JDK_VERSION}-jdk AS base
 WORKDIR /app
 COPY .mvn/ .mvn/
 COPY mvnw pom.xml ./
+COPY lombok.config ./
 RUN --mount=type=cache,target=/root/.m2 \
   ./mvnw -B -ntp dependency:go-offline
 
@@ -22,7 +23,7 @@ FROM eclipse-temurin:${JDK_VERSION}-jdk AS production
 WORKDIR /app
 RUN groupadd --system spring \
   && useradd --system --gid spring --home-dir /app --shell /usr/sbin/nologin spring
-COPY --from=build /workspace/target/project-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /app/target/bnb-0.0.1-SNAPSHOT.jar app.jar
 USER spring:spring
 EXPOSE 8080
 ENV JAVA_TOOL_OPTIONS="-XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError"
