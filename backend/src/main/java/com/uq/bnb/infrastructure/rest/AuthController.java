@@ -47,7 +47,7 @@ public class AuthController {
     return authService.obtenerPorId(authentication.getName());
   }
 
-  @PostMapping("/logout")
+  @GetMapping("/logout")
   public ResponseEntity<Void> logout(HttpServletResponse response) {
     Cookie cookie = new Cookie("access_token", "");
     cookie.setHttpOnly(true);

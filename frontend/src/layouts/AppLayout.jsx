@@ -30,7 +30,7 @@ const DRAWER_WIDTH = 272;
 const AppLayout = () => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"), { noSsr: true });
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const { pathname, key } = useLocation();
   const navigate = useNavigate();
 
@@ -52,7 +52,7 @@ const AppLayout = () => {
   }, [pathname]);
 
   const isHome = pathname === "/";
-  const title = getPageTitle(pathname);
+  const title = getPageTitle(pathname, isAdmin);
   
   const handleBack = () => {
     // key === "default" indica que esta es la primera entrada del historial
@@ -86,6 +86,7 @@ const AppLayout = () => {
   const navigation = (
     <AppNavigation
       user={user}
+      isAdmin={isAdmin}
       onNavigate={closeMobileMenu}
       onLogout={handleLogout}
       loggingOut={loggingOut}

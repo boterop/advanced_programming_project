@@ -1,5 +1,7 @@
 package com.uq.bnb.security;
 
+import com.uq.bnb.domain.entity.Usuario;
+import com.uq.bnb.domain.repository.UsuarioRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -19,9 +21,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   private static final String BEARER = "Bearer ";
 
   private final JwtService jwtService;
+  private final UsuarioRepository usuarioRepository;
 
-  public JwtAuthenticationFilter(JwtService jwtService) {
+  public JwtAuthenticationFilter(JwtService jwtService, UsuarioRepository usuarioRepository) {
     this.jwtService = jwtService;
+    this.usuarioRepository = usuarioRepository;
   }
 
   @Override
@@ -49,15 +53,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     if (token != null) {
       jwtService
           .extractValidSubject(token)
-          .ifPresent(subject -> {
-            var auth =
-                new UsernamePasswordAuthenticationToken(
-                    subject,
-                    null,
-                    List.of(new SimpleGrantedAuthority("ROLE_USER"))); // Simple role for now
-            SecurityContextHolder.getContext().setAuthentication(auth);
-          });
+          .flatMap(this::findUser)
+          .ifPresent(
+              user -> {
+                var auth =
+                    new UsernamePasswordAuthenticationToken(
+                        user.id(),
+                        null,
+                        List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name())));
+                SecurityContextHolder.getContext().setAuthentication(auth);
+              });
     }
     chain.doFilter(request, response);
+  }
+
+  private java.util.Optional<Usuario> findUser(String subject) {
+    try {
+      return usuarioRepository.findById(java.util.UUID.fromString(subject));
+    } catch (IllegalArgumentException exception) {
+      return java.util.Optional.empty();
+    }
   }
 }

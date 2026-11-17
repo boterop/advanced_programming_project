@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.UUID;
+import com.uq.bnb.domain.valueobject.RolUsuario;
 
 @Getter
 @Entity
@@ -22,13 +23,22 @@ public class Usuario {
   @Column(nullable = false)
   private String password;
 
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
+  private RolUsuario role;
+
   protected Usuario() {
   }
 
   public Usuario(String name, String email, String password) {
+    this(name, email, password, RolUsuario.CLIENTE);
+  }
+
+  public Usuario(String name, String email, String password, RolUsuario role) {
     this.name = name;
     this.email = email;
     this.password = password;
+    this.role = role;
   }
 
   public void updatePassword(String newPassword, PasswordEncoder passwordEncoder) {
@@ -47,4 +57,5 @@ public class Usuario {
   public String name() { return name; }
   public String email() { return email; }
   public String password() { return password; }
+  public RolUsuario getRole() { return role; }
 }

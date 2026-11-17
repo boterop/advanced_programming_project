@@ -14,6 +14,7 @@ import { alpha } from "@mui/material/styles";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import { getNavItems } from "./navigationItems";
+import { roleLabel } from "../utils/roleLabel";
 
 const getInitials = (name) =>
   (name ?? "")
@@ -57,9 +58,9 @@ const itemSx = (theme) => ({
  * Contenido de la navegación privada. Se reutiliza tal cual dentro del
  * Drawer permanente (escritorio) y del Drawer temporal (móvil).
  */
-const AppNavigation = ({ user, onNavigate, onLogout, loggingOut }) => {
+const AppNavigation = ({ user, isAdmin, onNavigate, onLogout, loggingOut }) => {
   const { pathname } = useLocation();
-  const items = getNavItems();
+  const items = getNavItems(isAdmin);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
@@ -141,6 +142,12 @@ const AppNavigation = ({ user, onNavigate, onLogout, loggingOut }) => {
 
       <Divider />
 
+      <Box sx={{ px: 2, pt: 1 }}>
+        <Button component={RouterLink} to="/privacy" size="small" onClick={onNavigate}>
+          Privacidad
+        </Button>
+      </Box>
+
       <Box sx={{ p: 2, flexShrink: 0 }}>
         {user ? (
           <>
@@ -164,7 +171,7 @@ const AppNavigation = ({ user, onNavigate, onLogout, loggingOut }) => {
                   {user.name}
                 </Typography>
                 <Typography variant="caption" color="text.secondary" noWrap>
-                  {user.email}
+                  {roleLabel(user.role)} · {user.email}
                 </Typography>
               </Box>
             </Box>

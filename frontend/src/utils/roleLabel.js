@@ -1,5 +1,6 @@
 const ROLE_LABELS = {
   ADMIN: "Administrador",
+  CLIENTE: "Cliente",
   REPARTIDOR: "Repartidor",
   CLIENTE_EMISOR: "Cliente emisor",
   CLIENTE_RECEPTOR: "Cliente receptor",

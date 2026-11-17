@@ -25,6 +25,10 @@ const AuthLayout = ({ title, subtitle, children, footer }) => (
           <Link component={RouterLink} to="/" underline="hover">
             Volver al inicio
           </Link>
+          {" · "}
+          <Link component={RouterLink} to="/privacy" underline="hover">
+            Política de privacidad
+          </Link>
         </Typography>
       </Box>
     </Container>

@@ -16,6 +16,8 @@ import ResetPassword from "./pages/ResetPassword";
 import Search from "./pages/Search";
 import ApartmentDetails from "./pages/ApartmentDetails";
 import Profile from "./pages/Profile";
+import PrivacyPolicy from "./pages/DataPolicy";
+import AdminDashboard from "./pages/AdminDashboard";
 import AppLayout from "./layouts/AppLayout";
 import { useAuth } from "./hooks/useAuth";
 
@@ -47,9 +49,18 @@ const RequireUnAuth = () => {
   return <Navigate to="/" replace />;
 };
 
+const RequireAdmin = () => {
+  const { isAdmin, loading } = useAuth();
+
+  if (loading) return null;
+  if (!isAdmin) return <Navigate to="/" replace />;
+  return <Outlet />;
+};
+
 const App = () => (
   <BrowserRouter>
     <Routes>
+      <Route path="/privacy" element={<PrivacyPolicy />} />
       <Route element={<RequireUnAuth />}>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -63,6 +74,9 @@ const App = () => (
           <Route path="/search" element={<Search />} />
           <Route path="/apartment/:id" element={<ApartmentDetails />} />
           <Route path="/profile" element={<Profile />} />
+          <Route element={<RequireAdmin />}>
+            <Route path="/admin" element={<AdminDashboard />} />
+          </Route>
         </Route>
       </Route>
     </Routes>

@@ -28,6 +28,7 @@ import com.uq.bnb.domain.entity.Bloqueo;
 import com.uq.bnb.domain.entity.Tarifa;
 import com.uq.bnb.infrastructure.rest.mapper.ApartamentoMapper;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import java.net.URI;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
@@ -102,6 +103,7 @@ public class ApartamentoController {
   }
 
   @PostMapping
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<ApartamentoResponse> crear(
       @Valid @RequestBody CrearApartamentoRequest request) {
     Apartamento creado = crearApartamentoUseCase.ejecutar(mapper.toDomain(request));
@@ -137,6 +139,7 @@ public class ApartamentoController {
   }
 
   @PutMapping("/{id}/capacidad")
+  @PreAuthorize("hasRole('ADMIN')")
   public ApartamentoResponse cambiarCapacidad(
       @PathVariable UUID id, @Valid @RequestBody CambiarCapacidadRequest request) {
     return mapper.toResponse(
@@ -144,11 +147,13 @@ public class ApartamentoController {
   }
 
   @PutMapping("/{id}/retirar")
+  @PreAuthorize("hasRole('ADMIN')")
   public ApartamentoResponse retirar(@PathVariable UUID id) {
     return mapper.toResponse(retirarApartamentoUseCase.ejecutar(id.toString()));
   }
 
   @PostMapping("/{id}/bloquear")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<BloqueoResponse> bloquear(
       @PathVariable UUID id,
       @Valid @RequestBody BloquearApartamentoRequest request) {
@@ -178,6 +183,7 @@ public class ApartamentoController {
   }
 
   @DeleteMapping("/{apartamentoId}/bloqueos/{bloqueoId}")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<Void> desbloquear(
       @PathVariable UUID apartamentoId, @PathVariable UUID bloqueoId) {
     desbloquearApartamentoUseCase.ejecutar(apartamentoId.toString(), bloqueoId);
@@ -185,6 +191,7 @@ public class ApartamentoController {
   }
 
   @PostMapping("/{id}/tarifas")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<TarifaResponse> definirTarifa(
       @PathVariable UUID id, @Valid @RequestBody DefinirTarifaRequest request) {
     Tarifa creada =
@@ -219,11 +226,13 @@ public class ApartamentoController {
   }
 
   @PutMapping("/{id}/iniciar-preparacion")
+  @PreAuthorize("hasRole('ADMIN')")
   public ApartamentoResponse iniciarPreparacion(@PathVariable UUID id) {
     return mapper.toResponse(iniciarPreparacionApartamentoUseCase.ejecutar(id.toString()));
   }
 
   @PutMapping("/{id}/marcar-preparado")
+  @PreAuthorize("hasRole('ADMIN')")
   public ApartamentoResponse marcarPreparado(@PathVariable UUID id) {
     return mapper.toResponse(marcarApartamentoPreparadoUseCase.ejecutar(id.toString()));
   }

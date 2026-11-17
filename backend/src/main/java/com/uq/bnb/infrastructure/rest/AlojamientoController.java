@@ -15,6 +15,7 @@ import com.uq.bnb.domain.entity.PoliticaCancelacion;
 import com.uq.bnb.domain.entity.Temporada;
 import com.uq.bnb.infrastructure.rest.mapper.AlojamientoMapper;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import java.net.URI;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
@@ -63,6 +64,7 @@ public class AlojamientoController {
   }
 
   @PostMapping("/temporadas")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<TemporadaResponse> registrarTemporada(
       @Valid @RequestBody RegistrarTemporadaRequest request) {
     Temporada creada = registrarTemporadaUseCase.ejecutar(mapper.toDomain(request));
@@ -80,6 +82,7 @@ public class AlojamientoController {
   }
 
   @PostMapping("/politica-cancelacion")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<PoliticaCancelacionResponse> definirPolitica(
       @Valid @RequestBody DefinirPoliticaCancelacionRequest request) {
     PoliticaCancelacion creada =
