@@ -9,6 +9,7 @@ import com.uq.bnb.infrastructure.rest.mapper.FolioMapper;
 import jakarta.validation.Valid;
 import java.net.URI;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,12 +35,14 @@ public class FolioController {
   }
 
   @GetMapping
+  @PreAuthorize("hasRole('ADMIN')")
   public FolioResponse consultar(@PathVariable String codigo) {
     Folio folio = consultarFolioUseCase.ejecutar(mapper.toCodigo(codigo));
     return mapper.toResponse(codigo, folio);
   }
 
   @PostMapping("/pagos")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<FolioResponse> registrarPago(
       @PathVariable String codigo, @Valid @RequestBody RegistrarPagoRequest request) {
     Folio folio =

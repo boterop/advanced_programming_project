@@ -9,24 +9,24 @@ import lombok.Getter;
 public final class CanalVenta {
 
   private final ID id;
-  private final String identificacion;
+  private final String codigoExterno;
   private final String nombre;
   private final CanalOrigen origen;
   private final boolean activo;
 
   private CanalVenta(
-      ID id, String identificacion, String nombre, CanalOrigen origen, boolean activo) {
+      ID id, String codigoExterno, String nombre, CanalOrigen origen, boolean activo) {
     this.id = id;
-    this.identificacion = identificacion;
+    this.codigoExterno = codigoExterno;
     this.nombre = nombre;
     this.origen = origen;
     this.activo = activo;
   }
 
   public static CanalVenta crear(
-      ID id, String identificacion, String nombre, CanalOrigen origen, boolean activo) {
-    if (identificacion == null) {
-      throw new ReglaDominioException("El canal de venta debe tener una identificacion");
+      ID id, String codigoExterno, String nombre, CanalOrigen origen, boolean activo) {
+    if (codigoExterno == null) {
+      throw new ReglaDominioException("El canal de venta debe tener un código externo");
     }
 
     if (nombre == null || nombre.isBlank()) {
@@ -36,7 +36,7 @@ public final class CanalVenta {
     if (origen == null) {
       throw new ReglaDominioException("El canal de venta debe tener un tipo de origen");
     }
-    return new CanalVenta(id, identificacion, nombre, origen, activo);
+    return new CanalVenta(id, codigoExterno, nombre, origen, activo);
   }
 
   public void verificarCanalOrigen() {

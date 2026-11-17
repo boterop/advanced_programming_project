@@ -17,11 +17,11 @@ public class ConsultarBloqueoUseCase {
   }
 
   @Transactional(readOnly = true)
-  public Bloqueo ejecutar(String identificacionApartamento, UUID idBloqueo) {
+  public Bloqueo ejecutar(String apartamentoId, UUID idBloqueo) {
     return apartamentoRepository
-        .buscarPorId(identificacionApartamento)
-        .orElseThrow(() -> new ApartamentoNoEncontradoException(identificacionApartamento))
+        .buscarPorId(apartamentoId)
+        .orElseThrow(() -> new ApartamentoNoEncontradoException(apartamentoId))
         .bloqueo(new com.uq.bnb.domain.valueobject.ID(idBloqueo.toString()))
-        .orElseThrow(() -> new BloqueoNoEncontradoException(identificacionApartamento, idBloqueo));
+        .orElseThrow(() -> new BloqueoNoEncontradoException(apartamentoId, idBloqueo));
   }
 }

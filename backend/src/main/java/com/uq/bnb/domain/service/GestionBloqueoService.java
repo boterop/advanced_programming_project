@@ -19,12 +19,12 @@ public class GestionBloqueoService {
     Objects.requireNonNull(bloqueo, "El bloqueo no puede ser nulo");
     boolean hayReservaConflicto =
         !reservaRepository
-            .buscarActivasPorApartamento(apartamento.identificacion(), bloqueo.rango())
+            .buscarActivasPorApartamento(apartamento.id().valor(), bloqueo.rango())
             .isEmpty();
     if (hayReservaConflicto) {
       throw new ReglaDominioException(
           "RN-07 / 7.3: no se puede bloquear el apartamento "
-              + apartamento.identificacion()
+              + apartamento.id().valor()
               + " del "
               + bloqueo.rango().entrada()
               + " al "

@@ -39,9 +39,7 @@ public class DisponibilidadApartamentoService {
             ? estancia
             : new Estancia(estancia.entrada().minusDays(1), estancia.salida().plusDays(1));
     List<Estancia> estanciasReservadas =
-        reservaRepository
-            .buscarActivasPorApartamento(apartamento.identificacion(), consulta)
-            .stream()
+        reservaRepository.buscarActivasPorApartamento(apartamento.id().valor(), consulta).stream()
             .map(Reserva::estancia)
             .toList();
     return apartamento.estaDisponible(
@@ -54,7 +52,7 @@ public class DisponibilidadApartamentoService {
         .filter(
             apartamento ->
                 estaDisponible(apartamento, estancia, totalOcupantes, conMascota, parametros))
-        .sorted(Comparator.comparing(Apartamento::identificacion))
+        .sorted(Comparator.comparing(apartamento -> apartamento.id().valor()))
         .toList();
   }
 }

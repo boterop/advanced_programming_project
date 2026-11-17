@@ -19,12 +19,11 @@ public class ListarTarifasApartamentoUseCase {
   }
 
   @Transactional(readOnly = true)
-  public Page<Tarifa> ejecutar(
-      String identificacionApartamento, UUID temporadaId, Pageable pageable) {
+  public Page<Tarifa> ejecutar(String apartamentoId, UUID temporadaId, Pageable pageable) {
     Apartamento apartamento =
         apartamentoRepository
-            .buscarPorId(identificacionApartamento)
-            .orElseThrow(() -> new ApartamentoNoEncontradoException(identificacionApartamento));
+            .buscarPorId(apartamentoId)
+            .orElseThrow(() -> new ApartamentoNoEncontradoException(apartamentoId));
     return Paginacion.paginar(
         temporadaId == null
             ? apartamento.historialTarifas()

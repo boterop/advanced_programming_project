@@ -12,12 +12,12 @@ public class EntregaApartamentoService {
     Objects.requireNonNull(reserva, "La reserva no puede ser nula");
     Objects.requireNonNull(apartamento, "El apartamento no puede ser nulo");
     Objects.requireNonNull(hoy, "La fecha actual no puede ser nula");
-    if (!reserva.apartamentoId().equals(apartamento.identificacion())) {
+    if (!reserva.apartamentoId().equals(apartamento.id().valor())) {
       throw new ReglaDominioException(
           "La reserva "
               + reserva.codigo().valor()
               + " no corresponde al apartamento "
-              + apartamento.identificacion());
+              + apartamento.id().valor());
     }
     if (reserva.estado() != EstadoReserva.CONFIRMADA) {
       throw new ReglaDominioException(
@@ -40,7 +40,7 @@ public class EntregaApartamentoService {
     if (!apartamento.estadoOperativo().permiteRegistro()) {
       throw new ReglaDominioException(
           "RN-11: el apartamento "
-              + apartamento.identificacion()
+              + apartamento.id().valor()
               + " debe estar PREPARADO para recibir a un grupo (estado actual: "
               + apartamento.estadoOperativo()
               + ")");

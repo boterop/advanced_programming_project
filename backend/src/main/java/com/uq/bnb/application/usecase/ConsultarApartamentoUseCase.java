@@ -15,9 +15,9 @@ public class ConsultarApartamentoUseCase {
   }
 
   @Transactional(readOnly = true)
-  public Apartamento ejecutar(String identificacion) {
+  public Apartamento ejecutar(String id) {
     return apartamentoRepository
-        .buscarPorId(identificacion)
-        .orElseThrow(() -> new ApartamentoNoEncontradoException(identificacion));
+        .buscarPorId(id)
+        .orElseThrow(() -> new ApartamentoNoEncontradoException(id));
   }
 }

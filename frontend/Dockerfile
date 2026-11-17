@@ -1,21 +1,20 @@
-ARG NODE_VERSION=26.8.1
+ARG NODE_VERSION=26.12.0
 
-FROM node:${NODE_VERSION}-alpine as base
+FROM node:${NODE_VERSION}-alpine AS build
+ARG VITE_API_URL
+
 WORKDIR /app
-RUN npm i -g pnpm@latest
 COPY package.json pnpm-lock.yaml ./
+RUN npm install -g pnpm@latest
 RUN pnpm i
-
-FROM base AS development
 COPY . .
-EXPOSE 3000
-CMD ["pnpm", "dev"]
 
-FROM base as build
-COPY . .
-RUN pnpm run build
+ENV VITE_API_URL=$VITE_API_URL
 
-FROM nginx:alpine
+RUN pnpm build
+
+FROM nginx:alpine AS production
 COPY --from=build /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+

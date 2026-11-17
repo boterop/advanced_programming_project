@@ -20,23 +20,20 @@ public class RegistroApartamentoService {
 
   public void registrar(Apartamento apartamento) {
     Objects.requireNonNull(apartamento, "El apartamento no puede ser nulo");
-    if (apartamentoRepository.buscarPorId(apartamento.identificacion()).isPresent()) {
+    if (apartamentoRepository.buscarPorId(apartamento.id().valor()).isPresent()) {
       throw new ReglaDominioException(
-          "Ya existe un apartamento con la identificación "
-              + apartamento.identificacion()
-              + " (L-04)");
+          "Ya existe un apartamento con el ID " + apartamento.id().valor() + " (L-04)");
     }
     apartamentoRepository.guardar(apartamento);
   }
 
   public void retirar(Apartamento apartamento) {
     Objects.requireNonNull(apartamento, "El apartamento no puede ser nulo");
-    List<Reserva> activas =
-        reservaRepository.buscarActivasPorApartamento(apartamento.identificacion());
+    List<Reserva> activas = reservaRepository.buscarActivasPorApartamento(apartamento.id().valor());
     if (!activas.isEmpty()) {
       throw new ReglaDominioException(
           "7.3: no se puede retirar el apartamento "
-              + apartamento.identificacion()
+              + apartamento.id().valor()
               + " porque tiene "
               + activas.size()
               + " reserva(s) activa(s) o futura(s)");
@@ -46,7 +43,7 @@ public class RegistroApartamentoService {
 
   public void cambiarCapacidad(Apartamento apartamento, int nuevaCapacidad) {
     Objects.requireNonNull(apartamento, "El apartamento no puede ser nulo");
-    reservaRepository.buscarActivasPorApartamento(apartamento.identificacion()).stream()
+    reservaRepository.buscarActivasPorApartamento(apartamento.id().valor()).stream()
         .filter(reserva -> reserva.cuposNecesarios() > nuevaCapacidad)
         .findFirst()
         .ifPresent(
@@ -57,7 +54,7 @@ public class RegistroApartamentoService {
                       + " ocupa "
                       + reserva.cuposNecesarios()
                       + " cupos; la capacidad del apartamento "
-                      + apartamento.identificacion()
+                      + apartamento.id().valor()
                       + " no puede bajar a "
                       + nuevaCapacidad);
             });

@@ -17,6 +17,10 @@ public final class ReservaFixture {
   private ReservaFixture() {}
 
   public static Reserva crear() {
+    return crear(TestIds.next().valor());
+  }
+
+  public static Reserva crear(String apartamentoId) {
     LocalDate inicio = LocalDate.of(2030, 6, 10);
     Titular titular =
         Titular.crear(TestIds.next(), "123456789", "Jhon Doe", LocalDate.of(1990, 1, 1));
@@ -28,7 +32,7 @@ public final class ReservaFixture {
             TestIds.next(),
             List.of(TestIds.next()),
             CodigoReserva.de(2030, TestIds.next().hashCode() & 0x7fffffff),
-            "APT-001",
+            apartamentoId,
             titular,
             new Estancia(inicio, inicio.plusDays(1)),
             CanalOrigen.DIRECTO,

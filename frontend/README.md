@@ -1,35 +1,63 @@
-# React + TypeScript + Vite
+# Edificio Rent - Plataforma de Alquiler de Apartamentos
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Plataforma web para la reserva y gestión de apartamentos en un edificio residencial.
 
-Currently, two official plugins are available:
+## Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Búsqueda y filtrado de apartamentos
+- Visualización detallada de propiedades
+- Sistema de autenticación de usuarios
+- Gestión de perfiles de usuario
+- Reservas de apartamentos
 
-## React Compiler
+## Tecnologías
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- React 18
+- Material UI
+- React Router
+- Vite
+- Tailwind CSS
 
-Note: This will impact Vite dev & build performances.
-You can also try [the experimental native React Compiler support in plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md#rust-react-compiler) by using `compiler: true` in the plugin options instead of using the Babel plugin.
+## Estructura del Proyecto
 
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```
+src/
+├── components/     # Componentes reutilizables
+├── layouts/        # Diseños de página
+├── pages/        # Páginas de la aplicación
+├── services/       # Servicios de API
+├── utils/        # Funciones auxiliares
+├── styles/         # Estilos globales
+└── hooks/          # Hooks personalizados
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Instrucciones de Desarrollo
+
+1. Instalar dependencias:
+   ```bash
+   pnpm install
+   ```
+
+2. Iniciar el servidor de desarrollo:
+   ```bash
+   pnpm run dev
+   ```
+
+3. Construir para producción:
+   ```bash
+   pnpm run build
+   ```
+
+4. Ejecutar pruebas:
+   ```bash
+   pnpm run test
+   ```
+
+## Estructura de Rutas
+
+- `/` - Página de inicio
+- `/login` - Inicio de sesión
+- `/register` - Registro de usuarios
+- `/search` - Búsqueda de apartamentos
+- `/apartment/:id` - Detalles del apartamento
+- `/profile` - Perfil del usuario

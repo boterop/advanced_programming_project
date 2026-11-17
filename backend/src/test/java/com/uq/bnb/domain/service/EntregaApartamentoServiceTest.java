@@ -17,7 +17,7 @@ class EntregaApartamentoServiceTest {
   @Test
   void autorizaLaEntregaDeUnaReservaConfirmadaEnLaFechaDeEntrada() {
     Apartamento apartamento = ApartamentoFixture.crear();
-    Reserva reserva = ReservaFixture.crear();
+    Reserva reserva = ReservaFixture.crear(apartamento.id().valor());
     reserva.confirmar();
 
     assertDoesNotThrow(
@@ -27,7 +27,7 @@ class EntregaApartamentoServiceTest {
   @Test
   void rechazaLaEntregaAntesDeLaFechaDeEntrada() {
     Apartamento apartamento = ApartamentoFixture.crear();
-    Reserva reserva = ReservaFixture.crear();
+    Reserva reserva = ReservaFixture.crear(apartamento.id().valor());
     reserva.confirmar();
 
     assertThrows(
@@ -38,7 +38,7 @@ class EntregaApartamentoServiceTest {
   @Test
   void rechazaLaEntregaSiLaReservaNoEstaConfirmada() {
     Apartamento apartamento = ApartamentoFixture.crear();
-    Reserva reserva = ReservaFixture.crear();
+    Reserva reserva = ReservaFixture.crear(apartamento.id().valor());
 
     assertThrows(
         ReglaDominioException.class,

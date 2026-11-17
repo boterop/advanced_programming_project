@@ -34,6 +34,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -102,13 +103,14 @@ public class ApartamentoController {
   }
 
   @PostMapping
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<ApartamentoResponse> crear(
       @Valid @RequestBody CrearApartamentoRequest request) {
     Apartamento creado = crearApartamentoUseCase.ejecutar(mapper.toDomain(request));
     URI location =
         ServletUriComponentsBuilder.fromCurrentRequest()
-            .path("/{identificacion}")
-            .buildAndExpand(creado.identificacion())
+            .path("/{id}")
+            .buildAndExpand(creado.id().valor())
             .toUri();
     return ResponseEntity.created(location).body(mapper.toResponse(creado));
   }
@@ -131,64 +133,69 @@ public class ApartamentoController {
         .map(mapper::toResponse);
   }
 
-  @GetMapping("/{identificacion}")
-  public ApartamentoResponse consultar(@PathVariable String identificacion) {
-    return mapper.toResponse(consultarApartamentoUseCase.ejecutar(identificacion));
+  @GetMapping("/{id}")
+  public ApartamentoResponse consultar(@PathVariable UUID id) {
+    return mapper.toResponse(consultarApartamentoUseCase.ejecutar(id.toString()));
   }
 
-  @PutMapping("/{identificacion}/capacidad")
+  @PutMapping("/{id}/capacidad")
+  @PreAuthorize("hasRole('ADMIN')")
   public ApartamentoResponse cambiarCapacidad(
-      @PathVariable String identificacion, @Valid @RequestBody CambiarCapacidadRequest request) {
+      @PathVariable UUID id, @Valid @RequestBody CambiarCapacidadRequest request) {
     return mapper.toResponse(
-        cambiarCapacidadApartamentoUseCase.ejecutar(identificacion, request.capacidad()));
+        cambiarCapacidadApartamentoUseCase.ejecutar(id.toString(), request.capacidad()));
   }
 
-  @PutMapping("/{identificacion}/retirar")
-  public ApartamentoResponse retirar(@PathVariable String identificacion) {
-    return mapper.toResponse(retirarApartamentoUseCase.ejecutar(identificacion));
+  @PutMapping("/{id}/retirar")
+  @PreAuthorize("hasRole('ADMIN')")
+  public ApartamentoResponse retirar(@PathVariable UUID id) {
+    return mapper.toResponse(retirarApartamentoUseCase.ejecutar(id.toString()));
   }
 
   @PostMapping("/{id}/bloquear")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<BloqueoResponse> bloquear(
-      @PathVariable("id") String identificacion,
-      @Valid @RequestBody BloquearApartamentoRequest request) {
-    Bloqueo creado = bloquearApartamentoUseCase.ejecutar(identificacion, mapper.toBloqueo(request));
+      @PathVariable UUID id, @Valid @RequestBody BloquearApartamentoRequest request) {
+    Bloqueo creado = bloquearApartamentoUseCase.ejecutar(id.toString(), mapper.toBloqueo(request));
     URI location =
         ServletUriComponentsBuilder.fromCurrentContextPath()
-            .path("/apartamentos/{identificacion}/bloqueos/{id}")
-            .buildAndExpand(identificacion, creado.id().valor())
+            .path("/apartamentos/{apartamentoId}/bloqueos/{bloqueoId}")
+            .buildAndExpand(id, creado.id().valor())
             .toUri();
-    return ResponseEntity.created(location).body(mapper.toBloqueoResponse(identificacion, creado));
+    return ResponseEntity.created(location).body(mapper.toBloqueoResponse(id.toString(), creado));
   }
 
-  @GetMapping("/{identificacion}/bloqueos")
+  @GetMapping("/{id}/bloqueos")
   public Page<BloqueoResponse> listarBloqueos(
-      @PathVariable String identificacion, @PageableDefault(size = 10) Pageable pageable) {
+      @PathVariable UUID id, @PageableDefault(size = 10) Pageable pageable) {
     return listarBloqueosApartamentoUseCase
-        .ejecutar(identificacion, pageable)
-        .map(bloqueo -> mapper.toBloqueoResponse(identificacion, bloqueo));
+        .ejecutar(id.toString(), pageable)
+        .map(bloqueo -> mapper.toBloqueoResponse(id.toString(), bloqueo));
   }
 
-  @GetMapping("/{identificacion}/bloqueos/{id}")
+  @GetMapping("/{apartamentoId}/bloqueos/{bloqueoId}")
   public BloqueoResponse consultarBloqueo(
-      @PathVariable String identificacion, @PathVariable UUID id) {
+      @PathVariable UUID apartamentoId, @PathVariable UUID bloqueoId) {
     return mapper.toBloqueoResponse(
-        identificacion, consultarBloqueoUseCase.ejecutar(identificacion, id));
+        apartamentoId.toString(),
+        consultarBloqueoUseCase.ejecutar(apartamentoId.toString(), bloqueoId));
   }
 
-  @DeleteMapping("/{identificacion}/bloqueos/{id}")
+  @DeleteMapping("/{apartamentoId}/bloqueos/{bloqueoId}")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<Void> desbloquear(
-      @PathVariable String identificacion, @PathVariable UUID id) {
-    desbloquearApartamentoUseCase.ejecutar(identificacion, id);
+      @PathVariable UUID apartamentoId, @PathVariable UUID bloqueoId) {
+    desbloquearApartamentoUseCase.ejecutar(apartamentoId.toString(), bloqueoId);
     return ResponseEntity.noContent().build();
   }
 
-  @PostMapping("/{identificacion}/tarifas")
+  @PostMapping("/{id}/tarifas")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<TarifaResponse> definirTarifa(
-      @PathVariable String identificacion, @Valid @RequestBody DefinirTarifaRequest request) {
+      @PathVariable UUID id, @Valid @RequestBody DefinirTarifaRequest request) {
     Tarifa creada =
         definirTarifaUseCase.ejecutar(
-            identificacion,
+            id.toString(),
             request.temporadaId(),
             mapper.toDinero(request.valorPorNoche()),
             request.vigenteDesde());
@@ -200,29 +207,32 @@ public class ApartamentoController {
     return ResponseEntity.created(location).body(mapper.toTarifaResponse(creada));
   }
 
-  @GetMapping("/{identificacion}/tarifas")
+  @GetMapping("/{id}/tarifas")
   public Page<TarifaResponse> listarTarifas(
-      @PathVariable String identificacion,
+      @PathVariable UUID id,
       @RequestParam(required = false) UUID temporadaId,
       @PageableDefault(size = 10) Pageable pageable) {
     return listarTarifasApartamentoUseCase
-        .ejecutar(identificacion, temporadaId, pageable)
+        .ejecutar(id.toString(), temporadaId, pageable)
         .map(mapper::toTarifaResponse);
   }
 
-  @GetMapping("/{identificacion}/tarifas/{id}")
+  @GetMapping("/{apartamentoId}/tarifas/{tarifaId}")
   public TarifaResponse consultarTarifa(
-      @PathVariable String identificacion, @PathVariable UUID id) {
-    return mapper.toTarifaResponse(consultarTarifaUseCase.ejecutar(identificacion, id));
+      @PathVariable UUID apartamentoId, @PathVariable UUID tarifaId) {
+    return mapper.toTarifaResponse(
+        consultarTarifaUseCase.ejecutar(apartamentoId.toString(), tarifaId));
   }
 
-  @PutMapping("/{identificacion}/iniciar-preparacion")
-  public ApartamentoResponse iniciarPreparacion(@PathVariable String identificacion) {
-    return mapper.toResponse(iniciarPreparacionApartamentoUseCase.ejecutar(identificacion));
+  @PutMapping("/{id}/iniciar-preparacion")
+  @PreAuthorize("hasRole('ADMIN')")
+  public ApartamentoResponse iniciarPreparacion(@PathVariable UUID id) {
+    return mapper.toResponse(iniciarPreparacionApartamentoUseCase.ejecutar(id.toString()));
   }
 
-  @PutMapping("/{identificacion}/marcar-preparado")
-  public ApartamentoResponse marcarPreparado(@PathVariable String identificacion) {
-    return mapper.toResponse(marcarApartamentoPreparadoUseCase.ejecutar(identificacion));
+  @PutMapping("/{id}/marcar-preparado")
+  @PreAuthorize("hasRole('ADMIN')")
+  public ApartamentoResponse marcarPreparado(@PathVariable UUID id) {
+    return mapper.toResponse(marcarApartamentoPreparadoUseCase.ejecutar(id.toString()));
   }
 }

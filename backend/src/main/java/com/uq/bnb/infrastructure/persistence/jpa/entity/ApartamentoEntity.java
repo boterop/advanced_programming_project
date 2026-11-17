@@ -20,14 +20,14 @@ import java.util.UUID;
 @Table(name = "apartamento")
 public class ApartamentoEntity {
   @Id
-  @Column(name = "identificacion", length = 40)
-  private String identificacion;
-
-  @Column(name = "uuid", nullable = false, unique = true)
-  private UUID uuid;
+  @Column(name = "id", nullable = false)
+  private UUID id;
 
   @Column(name = "nombre", nullable = false)
   private String nombre;
+
+  @Column(name = "imagen_url")
+  private String imagenUrl;
 
   @Column(name = "capacidad", nullable = false)
   private int capacidad;
@@ -70,18 +70,18 @@ public class ApartamentoEntity {
   protected ApartamentoEntity() {}
 
   public ApartamentoEntity(
-      UUID uuid,
-      String identificacion,
+      UUID id,
       String nombre,
+      String imagenUrl,
       int capacidad,
       String tipoNombre,
       List<String> tipoCaracteristicas,
       boolean permiteMascotas,
       EstadoOperativo estadoOperativo,
       boolean activo) {
-    this.uuid = uuid;
-    this.identificacion = identificacion;
+    this.id = id;
     this.nombre = nombre;
+    this.imagenUrl = imagenUrl;
     this.capacidad = capacidad;
     this.tipoNombre = tipoNombre;
     this.tipoCaracteristicas = new ArrayList<>(tipoCaracteristicas);
@@ -105,16 +105,16 @@ public class ApartamentoEntity {
     novedades.add(novedad);
   }
 
-  public String getIdentificacion() {
-    return identificacion;
-  }
-
-  public UUID getUuid() {
-    return uuid;
+  public UUID getId() {
+    return id;
   }
 
   public String getNombre() {
     return nombre;
+  }
+
+  public String getImagenUrl() {
+    return imagenUrl;
   }
 
   public int getCapacidad() {

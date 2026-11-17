@@ -21,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -63,6 +64,7 @@ public class AlojamientoController {
   }
 
   @PostMapping("/temporadas")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<TemporadaResponse> registrarTemporada(
       @Valid @RequestBody RegistrarTemporadaRequest request) {
     Temporada creada = registrarTemporadaUseCase.ejecutar(mapper.toDomain(request));
@@ -80,6 +82,7 @@ public class AlojamientoController {
   }
 
   @PostMapping("/politica-cancelacion")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<PoliticaCancelacionResponse> definirPolitica(
       @Valid @RequestBody DefinirPoliticaCancelacionRequest request) {
     PoliticaCancelacion creada =

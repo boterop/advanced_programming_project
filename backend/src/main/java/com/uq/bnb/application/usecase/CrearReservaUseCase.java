@@ -41,13 +41,13 @@ public class CrearReservaUseCase {
   }
 
   @Transactional
-  public Reserva ejecutar(String identificacionApartamento, SolicitudReserva solicitud) {
+  public Reserva ejecutar(String apartamentoId, SolicitudReserva solicitud) {
     Alojamiento alojamiento =
         alojamientoRepository.obtener().orElseThrow(AlojamientoNoEncontradoException::new);
     Apartamento apartamento =
         apartamentoRepository
-            .buscarPorId(identificacionApartamento)
-            .orElseThrow(() -> new ApartamentoNoEncontradoException(identificacionApartamento));
+            .buscarPorId(apartamentoId)
+            .orElseThrow(() -> new ApartamentoNoEncontradoException(apartamentoId));
     Reserva reserva =
         creacionReservaService.crear(
             alojamiento, apartamento, solicitud, LocalDateTime.now(clock), idProvider::obtener);

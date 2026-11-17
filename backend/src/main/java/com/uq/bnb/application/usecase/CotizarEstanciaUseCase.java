@@ -30,14 +30,13 @@ public class CotizarEstanciaUseCase {
   }
 
   @Transactional(readOnly = true)
-  public Cotizacion ejecutar(
-      String identificacionApartamento, Estancia estancia, List<Ocupante> ocupantes) {
+  public Cotizacion ejecutar(String apartamentoId, Estancia estancia, List<Ocupante> ocupantes) {
     Alojamiento alojamiento =
         alojamientoRepository.obtener().orElseThrow(AlojamientoNoEncontradoException::new);
     Apartamento apartamento =
         apartamentoRepository
-            .buscarPorId(identificacionApartamento)
-            .orElseThrow(() -> new ApartamentoNoEncontradoException(identificacionApartamento));
+            .buscarPorId(apartamentoId)
+            .orElseThrow(() -> new ApartamentoNoEncontradoException(apartamentoId));
     return cotizadorEstanciaService.cotizar(alojamiento, apartamento, estancia, ocupantes);
   }
 }

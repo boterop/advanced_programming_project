@@ -24,8 +24,8 @@ public class ApartamentoPersistenceMapper {
     ApartamentoEntity entity =
         new ApartamentoEntity(
             java.util.UUID.fromString(apartamento.id().valor()),
-            apartamento.identificacion(),
             apartamento.nombre(),
+            apartamento.imagenUrl(),
             apartamento.capacidad(),
             tipo == null ? null : tipo.nombreTipo(),
             tipo == null ? List.of() : tipo.caracteristicas(),
@@ -112,8 +112,7 @@ public class ApartamentoPersistenceMapper {
                         n.getGravedad()))
             .toList();
     return Apartamento.reconstruir(
-        new com.uq.bnb.domain.valueobject.ID(entity.getUuid().toString()),
-        entity.getIdentificacion(),
+        new com.uq.bnb.domain.valueobject.ID(entity.getId().toString()),
         entity.getNombre(),
         entity.getCapacidad(),
         dormitorios,
@@ -123,6 +122,7 @@ public class ApartamentoPersistenceMapper {
         tarifas,
         bloqueos,
         novedades,
-        entity.isActivo());
+        entity.isActivo(),
+        entity.getImagenUrl());
   }
 }

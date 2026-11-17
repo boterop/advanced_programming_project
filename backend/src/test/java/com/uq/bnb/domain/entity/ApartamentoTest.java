@@ -16,7 +16,6 @@ class ApartamentoTest {
   private Apartamento crear() {
     return Apartamento.crear(
         TestIds.next(),
-        "APT-001",
         "Apartamento central",
         4,
         List.of(
@@ -29,7 +28,8 @@ class ApartamentoTest {
   void creaConEstadoActivoYValoresRecibidos() {
     Apartamento apartamento = crear();
 
-    assertEquals("APT-001", apartamento.identificacion());
+    assertEquals(
+        apartamento.id().valor(), java.util.UUID.fromString(apartamento.id().valor()).toString());
     assertEquals(4, apartamento.capacidad());
     assertEquals(2, apartamento.dormitorios().size());
     assertEquals(EstadoOperativo.PREPARADO, apartamento.estadoOperativo());

@@ -40,9 +40,9 @@ public abstract class CotizacionMapper {
   public abstract List<DetalleNocheResponse> toDetalleResponses(List<DetalleNoche> detalles);
 
   public CotizacionResponse toResponse(
-      String identificacionApartamento, Estancia estancia, Cotizacion cotizacion) {
+      String apartamentoId, Estancia estancia, Cotizacion cotizacion) {
     return new CotizacionResponse(
-        identificacionApartamento,
+        apartamentoId,
         estancia.entrada(),
         estancia.salida(),
         cotizacion.totalNoches(),

@@ -22,6 +22,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -70,8 +71,7 @@ public class ReservaController {
   public ResponseEntity<ReservaDetalleResponse> crear(
       @Valid @RequestBody CrearReservaRequest request) {
     Reserva creada =
-        crearReservaUseCase.ejecutar(
-            request.identificacionApartamento(), mapper.toSolicitud(request));
+        crearReservaUseCase.ejecutar(request.apartamentoId(), mapper.toSolicitud(request));
     URI location =
         ServletUriComponentsBuilder.fromCurrentRequest()
             .path("/{codigo}")
@@ -81,25 +81,24 @@ public class ReservaController {
   }
 
   @GetMapping
+  @PreAuthorize("hasRole('ADMIN')")
   public Page<ReservaResumenResponse> consultar(
       @Valid @ModelAttribute ConsultarReservasRequest filtros,
       @PageableDefault(size = 10) Pageable pageable) {
     return consultarReservasUseCase
         .ejecutar(
-            filtros.estado(),
-            filtros.identificacionApartamento(),
-            filtros.desde(),
-            filtros.hasta(),
-            pageable)
+            filtros.estado(), filtros.apartamentoId(), filtros.desde(), filtros.hasta(), pageable)
         .map(mapper::toResumenResponse);
   }
 
   @GetMapping("/{codigo}")
+  @PreAuthorize("hasRole('ADMIN')")
   public ReservaDetalleResponse consultarPorCodigo(@PathVariable String codigo) {
     return mapper.toDetalleResponse(consultarReservaUseCase.ejecutar(mapper.toCodigo(codigo)));
   }
 
   @PutMapping("/{codigo}/confirmar")
+  @PreAuthorize("hasRole('ADMIN')")
   public ReservaDetalleResponse confirmar(
       @PathVariable String codigo,
       @Valid @RequestBody(required = false) ConfirmarReservaRequest request) {
@@ -113,6 +112,7 @@ public class ReservaController {
   }
 
   @PutMapping("/{codigo}/cancelar")
+  @PreAuthorize("hasRole('ADMIN')")
   public ReservaDetalleResponse cancelar(
       @PathVariable String codigo, @Valid @RequestBody CancelarReservaRequest request) {
     return mapper.toDetalleResponse(
@@ -120,16 +120,19 @@ public class ReservaController {
   }
 
   @PutMapping("/{codigo}/registrar-llegada")
+  @PreAuthorize("hasRole('ADMIN')")
   public ReservaDetalleResponse registrarLlegada(@PathVariable String codigo) {
     return mapper.toDetalleResponse(registrarLlegadaUseCase.ejecutar(mapper.toCodigo(codigo)));
   }
 
   @PutMapping("/{codigo}/registrar-salida")
+  @PreAuthorize("hasRole('ADMIN')")
   public ReservaDetalleResponse registrarSalida(@PathVariable String codigo) {
     return mapper.toDetalleResponse(registrarSalidaUseCase.ejecutar(mapper.toCodigo(codigo)));
   }
 
   @PutMapping("/{codigo}/no-show")
+  @PreAuthorize("hasRole('ADMIN')")
   public ReservaDetalleResponse declararNoShow(@PathVariable String codigo) {
     return mapper.toDetalleResponse(declararNoShowUseCase.ejecutar(mapper.toCodigo(codigo)));
   }

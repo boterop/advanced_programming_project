@@ -21,11 +21,11 @@ class RegistroApartamentoServiceTest {
 
     servicio.registrar(apartamento);
 
-    assertEquals(apartamento, apartamentos.buscarPorId(apartamento.identificacion()).orElseThrow());
+    assertEquals(apartamento, apartamentos.buscarPorId(apartamento.id().valor()).orElseThrow());
   }
 
   @Test
-  void rechazaUnaIdentificacionYaRegistrada() {
+  void rechazaUnIdYaRegistrado() {
     Apartamento apartamento = ApartamentoFixture.crear();
     servicio.registrar(apartamento);
 

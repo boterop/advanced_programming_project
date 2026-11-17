@@ -16,12 +16,12 @@ public class ApartamentoRepositoryInMemory implements ApartamentoRepository {
 
   @Override
   public void guardar(Apartamento apartamento) {
-    repositorio.put(apartamento.identificacion(), apartamento);
+    repositorio.put(apartamento.id().valor(), apartamento);
   }
 
   @Override
-  public Optional<Apartamento> buscarPorId(String identificacion) {
-    return Optional.ofNullable(repositorio.get(identificacion));
+  public Optional<Apartamento> buscarPorId(String id) {
+    return Optional.ofNullable(repositorio.get(id));
   }
 
   @Override

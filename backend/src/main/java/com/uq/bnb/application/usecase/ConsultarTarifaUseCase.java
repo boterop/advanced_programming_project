@@ -17,11 +17,11 @@ public class ConsultarTarifaUseCase {
   }
 
   @Transactional(readOnly = true)
-  public Tarifa ejecutar(String identificacionApartamento, UUID idTarifa) {
+  public Tarifa ejecutar(String apartamentoId, UUID idTarifa) {
     return apartamentoRepository
-        .buscarPorId(identificacionApartamento)
-        .orElseThrow(() -> new ApartamentoNoEncontradoException(identificacionApartamento))
+        .buscarPorId(apartamentoId)
+        .orElseThrow(() -> new ApartamentoNoEncontradoException(apartamentoId))
         .tarifa(new com.uq.bnb.domain.valueobject.ID(idTarifa.toString()))
-        .orElseThrow(() -> new TarifaNoEncontradaException(identificacionApartamento, idTarifa));
+        .orElseThrow(() -> new TarifaNoEncontradaException(apartamentoId, idTarifa));
   }
 }

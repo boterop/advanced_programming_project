@@ -18,11 +18,11 @@ public class ListarBloqueosApartamentoUseCase {
   }
 
   @Transactional(readOnly = true)
-  public Page<Bloqueo> ejecutar(String identificacionApartamento, Pageable pageable) {
+  public Page<Bloqueo> ejecutar(String apartamentoId, Pageable pageable) {
     return Paginacion.paginar(
         apartamentoRepository
-            .buscarPorId(identificacionApartamento)
-            .orElseThrow(() -> new ApartamentoNoEncontradoException(identificacionApartamento))
+            .buscarPorId(apartamentoId)
+            .orElseThrow(() -> new ApartamentoNoEncontradoException(apartamentoId))
             .bloqueos()
             .stream()
             .sorted(Comparator.comparing(b -> b.rango().entrada()))
