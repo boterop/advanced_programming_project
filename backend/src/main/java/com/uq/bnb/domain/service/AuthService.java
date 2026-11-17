@@ -10,6 +10,7 @@ import com.uq.bnb.domain.exception.InvalidCredentialsException;
 import com.uq.bnb.domain.repository.UsuarioRepository;
 import com.uq.bnb.security.JwtService;
 import java.util.Locale;
+import java.util.UUID;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -64,9 +65,9 @@ public class AuthService {
   @Transactional(readOnly = true)
   public UsuarioResponse obtenerPorId(String id) {
     try {
-      return usuarioRepository.findById(Long.valueOf(id)).map(UsuarioResponse::from)
+      return usuarioRepository.findById(UUID.fromString(id)).map(UsuarioResponse::from)
           .orElseThrow(InvalidCredentialsException::new);
-    } catch (NumberFormatException ex) {
+    } catch (IllegalArgumentException ex) {
       throw new InvalidCredentialsException();
     }
   }

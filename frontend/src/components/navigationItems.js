@@ -2,7 +2,6 @@ import { matchPath } from "react-router-dom";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 const matches = (pattern, pathname) =>
   matchPath({ path: pattern, end: true }, pathname) !== null;
@@ -33,8 +32,7 @@ export const NAV_ITEMS = [
   },
 ];
 
-export const getNavItems = (isAdmin) =>
-  NAV_ITEMS;
+export const getNavItems = () => NAV_ITEMS;
 
 export const getPageTitle = (pathname) => {
   return NAV_ITEMS.find((item) => item.isActive(pathname))?.label ?? "";
@@ -42,5 +40,4 @@ export const getPageTitle = (pathname) => {
 
 // A dónde volver cuando no hay historial interno (p. ej. al abrir la URL
 // directamente en una pestaña nueva).
-export const getBackFallback = (pathname) =>
-  "/";
+export const getBackFallback = () => "/";

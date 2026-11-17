@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 import { Alert, Box, Button, Link, TextField } from "@mui/material";
 import AuthLayout from "../layouts/AuthLayout";
+import { api } from "../services/api.js";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -24,9 +25,11 @@ const ResetPassword = () => {
     setLoading(true);
 
     try {
-      // In a real app, this would make an API call
-      // For now we just simulate success
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await api("/password-recovery/reset", {
+        method: "POST",
+        body: JSON.stringify({ token, password }),
+      });
+      if (!response.ok) throw new Error("El servidor no pudo restablecer la contraseña.");
       setSuccess(true);
     } catch (err) {
       setFormError(err.message);

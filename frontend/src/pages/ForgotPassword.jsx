@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Alert, Box, Button, Link, TextField } from "@mui/material";
 import AuthLayout from "../layouts/AuthLayout";
+import { api } from "../services/api.js";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -16,9 +17,11 @@ const ForgotPassword = () => {
     setLoading(true);
 
     try {
-      // In a real app, this would make an API call
-      // For now we just simulate success
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await api("/password-recovery", {
+        method: "POST",
+        body: JSON.stringify({ email: email.trim() }),
+      });
+      if (!response.ok) throw new Error("El servidor no pudo procesar la recuperación de contraseña.");
       setSuccess(true);
     } catch (err) {
       setFormError(err.message);

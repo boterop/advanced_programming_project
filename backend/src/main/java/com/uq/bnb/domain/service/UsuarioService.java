@@ -1,6 +1,7 @@
 package com.uq.bnb.domain.service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -22,8 +23,8 @@ public class UsuarioService {
 
   public Optional<Usuario> obtenerPorId(ID id) {
     try {
-      return usuarioRepository.findById(Long.valueOf(id.valor()));
-    } catch (NumberFormatException ex) {
+      return usuarioRepository.findById(UUID.fromString(id.valor()));
+    } catch (IllegalArgumentException ex) {
       return Optional.empty();
     }
   }

@@ -30,7 +30,7 @@ const DRAWER_WIDTH = 272;
 const AppLayout = () => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"), { noSsr: true });
-  const { user, isAdmin } = useAuth();
+  const { user } = useAuth();
   const { pathname, key } = useLocation();
   const navigate = useNavigate();
 
@@ -54,10 +54,6 @@ const AppLayout = () => {
   const isHome = pathname === "/";
   const title = getPageTitle(pathname);
   
-  // Check if we're on an authentication page
-  const isAuthPage = pathname === "/login" || pathname === "/register" || 
-                   pathname === "/forgot-password" || pathname === "/reset-password";
-
   const handleBack = () => {
     // key === "default" indica que esta es la primera entrada del historial
     // (URL abierta directamente): no hay a dónde volver con navigate(-1).
@@ -90,11 +86,9 @@ const AppLayout = () => {
   const navigation = (
     <AppNavigation
       user={user}
-      isAdmin={isAdmin}
       onNavigate={closeMobileMenu}
       onLogout={handleLogout}
       loggingOut={loggingOut}
-      isAuthPage={isAuthPage}
     />
   );
 

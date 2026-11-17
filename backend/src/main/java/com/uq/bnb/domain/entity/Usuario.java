@@ -3,14 +3,15 @@ package com.uq.bnb.domain.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import java.util.UUID;
 
 @Getter
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
   @Column(nullable = false)
   private String name;
