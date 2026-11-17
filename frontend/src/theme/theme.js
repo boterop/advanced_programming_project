@@ -4,37 +4,39 @@ const theme = createTheme({
   palette: {
     mode: "light",
     primary: {
-      main: "#0B5D6B",
-      dark: "#073F49",
-      light: "#3E8C99",
+      main: "#17624F",
+      dark: "#103E34",
+      light: "#4D8B73",
       contrastText: "#ffffff",
     },
     secondary: {
-      main: "#B45309",
+      main: "#C66A43",
       contrastText: "#ffffff",
     },
     background: {
-      default: "#F2F5F6",
-      paper: "#ffffff",
+      default: "#F5F4EF",
+      paper: "#FFFEFB",
     },
     text: {
-      primary: "#14262C",
-      secondary: "#4A5C63",
+      primary: "#1D302A",
+      secondary: "#61716B",
     },
-    divider: "#DCE4E7",
-    // Acento de marca de UQ Delivery (logo y detalles puntuales).
+    divider: "#E5E7DF",
     brand: {
-      accent: "#F5A524",
+      accent: "#E8B66B",
     },
   },
   shape: {
-    borderRadius: 10,
+    borderRadius: 14,
   },
   typography: {
     fontFamily:
       'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-    h4: { fontWeight: 700 },
-    h5: { fontWeight: 700 },
+    h1: { fontWeight: 800, letterSpacing: "-0.035em" },
+    h2: { fontWeight: 800, letterSpacing: "-0.03em" },
+    h3: { fontWeight: 800, letterSpacing: "-0.025em" },
+    h4: { fontWeight: 750, letterSpacing: "-0.02em" },
+    h5: { fontWeight: 750, letterSpacing: "-0.015em" },
     h6: { fontWeight: 700 },
     button: { textTransform: "none", fontWeight: 600 },
   },
